@@ -1,34 +1,67 @@
 <template>
   <div>
-    <b-card title="Kick start your project 🚀">
-      <b-card-text>All the best for your new project.</b-card-text>
-      <b-card-text>Please make sure to read our <b-link
-        href="https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/"
-        target="_blank"
-      >
-        Template Documentation
-      </b-link> to understand where to go from here and how to use our template.</b-card-text>
-    </b-card>
-
-    <b-card title="Want to integrate JWT? 🔒">
-      <b-card-text>We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.</b-card-text>
-      <b-card-text>Please read our  JWT Documentation to get more out of JWT authentication.</b-card-text>
-    </b-card>
+    <l-map
+      :zoom="zoom"
+      :center="center"
+      :options="options"
+      @ready="attachSidebar"
+    >
+      <l-tile-layer :url="url" />
+    </l-map>
   </div>
 </template>
 
 <script>
-import { BCard, BCardText, BLink } from 'bootstrap-vue'
+import { LMap, LTileLayer } from 'vue2-leaflet'
+import 'leaflet/dist/leaflet.css'
+import "leaflet-sidebar-v2"
+import "leaflet-sidebar-v2/css/leaflet-sidebar.css"
 
 export default {
   components: {
-    BCard,
-    BCardText,
-    BLink,
+    LMap,
+    LTileLayer
   },
+  data() {
+    return {
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      zoom: 8,
+      center: [47.313220, -1.319482],
+      options: {
+        zoomControl: false
+      }
+    }
+  },
+
+  methods: {
+    attachSidebar(mapObject) {
+      const sidebar = window.L.control.sidebar({
+        autopan: false, // whether to maintain the centered map point when opening the sidebar
+        closeButton: true, // whether t add a close button to the panes
+        container: "#sidebar", // the DOM container or #ID of a predefined sidebar container that should be used
+        position: "left" // left or right
+      });
+
+      sidebar.addTo(mapObject);
+
+      /* add a button with click listener */
+      sidebar.addPanel({
+          id: 'click',
+          tab: 'A',
+          pane: 'içerik',
+          title: 'profile'
+      });
+
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.vue2leaflet-map{
+  &.leaflet-container{
+    height: 100vh;
+    width: 100vw;
+  }
+}
 </style>
