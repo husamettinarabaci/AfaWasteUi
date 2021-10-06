@@ -16,6 +16,8 @@ import { LMap, LTileLayer } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 import "leaflet-sidebar-v2"
 import "leaflet-sidebar-v2/css/leaflet-sidebar.css"
+import "leaflet-extra-markers"
+import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
 
 export default {
   components: {
@@ -35,6 +37,14 @@ export default {
 
   methods: {
     attachSidebar(mapObject) {
+      console.log(L.ExtraMarkers)
+      var redMarker = L.ExtraMarkers.icon({
+          icon: 'fa-dumpster',
+          markerColor: 'green-dark',
+          shape: 'circle',
+          prefix: 'fa'
+      });
+      var marker = L.marker([47.331377157798244, -1.5765380859375002], {icon: redMarker}).addTo(mapObject);
       const sidebar = window.L.control.sidebar({
         autopan: false, // whether to maintain the centered map point when opening the sidebar
         closeButton: true, // whether t add a close button to the panes

@@ -40,7 +40,7 @@ export default {
   // Currently, router.currentRoute is not reactive and doesn't trigger any change
   computed: {
     layout() {
-      if (this.$route.meta.layout === 'full') return 'layout-full'
+      if (this.$route.meta.layout === 'full' || this.$route.meta.layout === undefined) return 'layout-full'
       return `layout-${this.contentLayoutType}`
     },
     contentLayoutType() {

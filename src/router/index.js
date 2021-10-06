@@ -16,13 +16,13 @@ const router = new VueRouter({
       component: () => import('@/views/Home.vue'),
       meta: {
         layout: 'full',
-        pageTitle: 'Homeqq',
-        breadcrumb: [
-          {
-            text: 'Home',
-            active: true,
-          },
-        ],
+        //pageTitle: 'Homeqq',
+        //breadcrumb: [
+        //  {
+        //    text: 'Home',
+        //    active: true,
+        //  },
+        //],
       },
     },
     {
