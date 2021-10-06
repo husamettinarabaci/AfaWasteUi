@@ -6,6 +6,8 @@ import app from './app'
 import appConfig from './app-config'
 import verticalMenu from './vertical-menu'
 
+import dashboard from './dashboard'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -13,6 +15,7 @@ export default new Vuex.Store({
     app,
     appConfig,
     verticalMenu,
+    dashboard
   },
   strict: process.env.DEV,
 })

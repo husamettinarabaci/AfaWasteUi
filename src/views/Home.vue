@@ -4,9 +4,10 @@
       :zoom="zoom"
       :center="center"
       :options="options"
-      @ready="attachSidebar"
+      @ready="mapReady"
     >
       <l-tile-layer :url="url" />
+      <sidebar/>
     </l-map>
   </div>
 </template>
@@ -19,10 +20,13 @@ import "leaflet-sidebar-v2/css/leaflet-sidebar.css"
 import "leaflet-extra-markers"
 import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
 
+import Sidebar from './dashboard/sidebar/Index';
+
 export default {
   components: {
     LMap,
-    LTileLayer
+    LTileLayer,
+    Sidebar
   },
   data() {
     return {
@@ -36,38 +40,30 @@ export default {
   },
 
   methods: {
-    attachSidebar(mapObject) {
-      console.log(L.ExtraMarkers)
+    mapReady(map){
+      // Add sidebar to vuex state
+      this.$store.commit('dashboard/setMap', map)
+
+      // Add markers to map
+      this.attachMarkers(map);
+
+    },
+
+    attachMarkers(map){
       var redMarker = L.ExtraMarkers.icon({
           icon: 'fa-dumpster',
           markerColor: 'green-dark',
           shape: 'circle',
           prefix: 'fa'
       });
-      var marker = L.marker([47.331377157798244, -1.5765380859375002], {icon: redMarker}).addTo(mapObject);
-      const sidebar = window.L.control.sidebar({
-        autopan: false, // whether to maintain the centered map point when opening the sidebar
-        closeButton: true, // whether t add a close button to the panes
-        container: "#sidebar", // the DOM container or #ID of a predefined sidebar container that should be used
-        position: "left" // left or right
-      });
-
-      sidebar.addTo(mapObject);
-
-      /* add a button with click listener */
-      sidebar.addPanel({
-          id: 'click',
-          tab: 'A',
-          pane: 'içerik',
-          title: 'profile'
-      });
-
+      var marker = L.marker([47.331377157798244, -1.5765380859375002], {icon: redMarker}).addTo(map);
     }
   }
 }
 </script>
 
 <style lang="scss">
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css);
 .vue2leaflet-map{
   &.leaflet-container{
     height: 100vh;

@@ -1,0 +1,127 @@
+<template>
+    <div id="sidebar" class="leaflet-sidebar collapsed">
+        <!-- nav tabs -->
+        <div class="leaflet-sidebar-tabs">
+            <!-- top aligned tabs -->
+            <ul role="tablist">
+                <li v-for="tab in tabs" :key="tab.id" @click="clickedTab(tab)">
+                    <a :href="'#' + tab.id" role="tab">
+                        <i :class="tab.icon"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- bottom aligned tabs -->
+            <ul role="tablist">
+                <li>
+                    <a data-toggle="modal" data-target="infoModal">
+                        <i class="fa fa-info"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- panel content -->
+        <div class="leaflet-sidebar-content">
+            <div v-for="tab in tabs" :key="tab.id" class="leaflet-sidebar-pane" :id="tab.id">
+                <h1 class="leaflet-sidebar-header">
+                    {{ tab.title }}
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+
+                <div class="sidebar-content">
+                    <div :is="tab.content"></div>
+                </div>
+            </div>
+        </div>         
+    </div>
+</template>
+
+<script>
+import Summary from './tabs/Summary';
+import Search from './tabs/Search';
+import Trucks from './tabs/Trucks';
+import Dumpsters from './tabs/Dumpsters';
+import Containers from './tabs/Containers';
+import Recycles from './tabs/Recycles';
+
+
+export default {
+    components: {
+        Summary,
+        Search,
+        Trucks,
+        Dumpsters,
+        Containers,
+        Recycles
+    },
+
+    data(){
+        return {
+            options: {
+                autopan: false,       // whether to maintain the centered map point when opening the sidebar
+                closeButton: true,    // whether t add a close button to the panes
+                container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
+                position: 'left',     // left or right
+            },
+            tabs: [
+                {
+                    id: 'summary',
+                    icon: 'fa fa-bars',
+                    content: 'Summary',
+                    title: 'Özet'
+                },
+                {
+                    id: 'search',
+                    icon: 'fa fa-search',
+                    content: 'Search',
+                    title: 'Arama'
+                },
+                {
+                    id: 'trucks',
+                    icon: 'fa fa-truck',
+                    content: 'Trucks',
+                    title: 'Kamyonlar'
+                },
+                {
+                    id: 'dumpsters',
+                    icon: 'fa fa-dumpster',
+                    content: 'Dumpsters',
+                    title: 'Galvaniz'
+                },
+                {
+                    id: 'containers',
+                    icon: 'fa fa-archive',
+                    content: 'Containers',
+                    title: 'Yer altı ve Yer üstü çöpler'
+                },
+                {
+                    id: 'recycles',
+                    icon: 'fa fa-recycle',
+                    content: 'Recycles',
+                    title: 'Geri Dönüşüm Cihazları'
+                }
+            ],
+            currentTab: ''
+        }
+    },
+
+    watch: {
+        '$store.state.dashboard.map': function(newVal, oldVal){
+            var sidebar = L.control.sidebar(this.options).addTo(newVal);
+        }
+    },
+
+    methods: {
+        clickedTab(tab){
+            console.log('tab: ', tab);
+            this.currentTab = tab.id;
+            
+        }
+    }
+}
+</script>
+
+<style lang="scss">
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css);
+</style>
