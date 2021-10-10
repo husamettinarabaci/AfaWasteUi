@@ -4,7 +4,7 @@
         <div class="leaflet-sidebar-tabs">
             <!-- top aligned tabs -->
             <ul role="tablist">
-                <li v-for="tab in tabs" :key="tab.id" @click="clickedTab(tab)">
+                <li v-for="tab in tabs" :key="tab.id" :data-tab="tab.id" :ref="'tab-' + tab.id" @click="tabChanged(tab)">
                     <a :href="'#' + tab.id" role="tab">
                         <i :class="tab.icon"></i>
                     </a>
@@ -13,12 +13,22 @@
 
             <!-- bottom aligned tabs -->
             <ul role="tablist">
-                <li>
-                    <a data-toggle="modal" data-target="infoModal">
+                <li @click="showInfo">
+                    <a data-toggle="modal">
                         <i class="fa fa-info"></i>
                     </a>
                 </li>
             </ul>
+
+            <b-modal
+            id="infoModal"
+            centered
+            size="lg"
+            title="Detay Bilgi"
+            hide-footer
+            >
+                <p>Biscuit chocolate cake gummies. Lollipop I love macaroon bear claw caramels. I love marshmallow tiramisu I love fruitcake I love gummi bears. Carrot cake topping liquorice. Pudding caramels liquorice sweet I love. Donut powder cupcake ice cream tootsie roll jelly.</p>
+            </b-modal>
         </div>
 
         <!-- panel content -->
@@ -38,6 +48,8 @@
 </template>
 
 <script>
+import { BModal } from 'bootstrap-vue'
+
 import Summary from './tabs/Summary';
 import Search from './tabs/Search';
 import Trucks from './tabs/Trucks';
@@ -48,6 +60,7 @@ import Recycles from './tabs/Recycles';
 
 export default {
     components: {
+        BModal,
         Summary,
         Search,
         Trucks,
@@ -58,6 +71,7 @@ export default {
 
     data(){
         return {
+            sidebar: null,
             options: {
                 autopan: false,       // whether to maintain the centered map point when opening the sidebar
                 closeButton: true,    // whether t add a close button to the panes
@@ -102,21 +116,28 @@ export default {
                     title: 'Geri Dönüşüm Cihazları'
                 }
             ],
-            currentTab: ''
         }
     },
 
     watch: {
         '$store.state.dashboard.map': function(newVal, oldVal){
-            var sidebar = L.control.sidebar(this.options).addTo(newVal);
+            this.sidebar = L.control.sidebar(this.options).addTo(newVal);
+            this.$store.commit('dashboard/setSidebarObject', this.sidebar);
         }
     },
 
     methods: {
-        clickedTab(tab){
-            console.log('tab: ', tab);
-            this.currentTab = tab.id;
-            
+        tabChanged(tab){
+            this.$bvModal.hide('infoModal');
+            let active = this.$refs['tab-' + tab.id][0].classList.contains('active');
+            this.$store.commit('dashboard/setCurrentTab', active ? tab.id : '');
+            //let active = this.$refs['tab-' + tab.id][0].classList.contains('active');
+            //this.$store.commit('dashboard/setSidebarStatus', active ? 'open' : 'close');
+        },
+
+        showInfo(){
+            this.sidebar.close();
+            this.$bvModal.show('infoModal')
         }
     }
 }
