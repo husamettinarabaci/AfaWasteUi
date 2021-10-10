@@ -27,7 +27,7 @@
             title="Detay Bilgi"
             hide-footer
             >
-                <p>Biscuit chocolate cake gummies. Lollipop I love macaroon bear claw caramels. I love marshmallow tiramisu I love fruitcake I love gummi bears. Carrot cake topping liquorice. Pudding caramels liquorice sweet I love. Donut powder cupcake ice cream tootsie roll jelly.</p>
+                <p>Content goes here..</p>
             </b-modal>
         </div>
 

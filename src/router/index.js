@@ -25,28 +25,28 @@ const router = new VueRouter({
         //],
       },
     },
-    {
-      path: '/second-page',
-      name: 'second-page',
-      component: () => import('@/views/SecondPage.vue'),
-      meta: {
-        pageTitle: 'Second Page',
-        breadcrumb: [
-          {
-            text: 'Second Page',
-            active: true,
-          },
-        ],
-      },
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/Login.vue'),
-      meta: {
-        layout: 'full',
-      },
-    },
+    //{
+    //  path: '/second-page',
+    //  name: 'second-page',
+    //  component: () => import('@/views/SecondPage.vue'),
+    //  meta: {
+    //    pageTitle: 'Second Page',
+    //    breadcrumb: [
+    //      {
+    //        text: 'Second Page',
+    //        active: true,
+    //      },
+    //    ],
+    //  },
+    //},
+    //{
+    //  path: '/login',
+    //  name: 'login',
+    //  component: () => import('@/views/Login.vue'),
+    //  meta: {
+    //    layout: 'full',
+    //  },
+    //},
     {
       path: '/error-404',
       name: 'error-404',
