@@ -40,7 +40,7 @@
                 </h1>
 
                 <div class="sidebar-content">
-                    <div :is="tab.content"></div>
+                    <component :is="tab.content"></component>
                 </div>
             </div>
         </div>         

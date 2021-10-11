@@ -8,11 +8,15 @@
     >
       <l-tile-layer :url="url" />
       <sidebar/>
+      <dumpsters-popup ref="dumpstersPopup"/>
+      <containers-popup ref="containersPopup"/>
+      <recycles-popup ref="recyclesPopup"/>
     </l-map>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import { LMap, LTileLayer } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 import "leaflet-sidebar-v2"
@@ -20,18 +24,26 @@ import "leaflet-sidebar-v2/css/leaflet-sidebar.css"
 import "leaflet-extra-markers"
 import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
 
+// Get datas
 import rfTagsData from '../data/rfTags.data';
 import trucksData from '../data/trucks.data';
 import ultData from '../data/ult.data';
 import recycleData from '../data/recycle.data';
 
 import Sidebar from './dashboard/sidebar/Index';
+// Popups
+import DumpstersPopup from './dashboard/popups/Dumpsters';
+import ContainersPopup from './dashboard/popups/Containers';
+import RecyclesPopup from './dashboard/popups/Recycles';
 
 export default {
   components: {
     LMap,
     LTileLayer,
-    Sidebar
+    Sidebar,
+    DumpstersPopup,
+    ContainersPopup,
+    RecyclesPopup
   },
   data() {
     return {
@@ -150,13 +162,14 @@ export default {
     },
 
     attachMarkers(map){
+      const popupOptions = {
+          'maxWidth': '500',
+          'width' : '250',
+          'height' : '300',
+          'className': 'tagPopup'
+      };
+
       this.rfTags.forEach(data => {
-        const popupOptions = {
-            'maxWidth': '500',
-            'width' : '250',
-            'height' : '300',
-            'className': 'tagPopup'
-        };
         var redMarker = L.ExtraMarkers.icon({
             icon: 'fa-dumpster',
             markerColor: 'green-dark',
@@ -166,21 +179,11 @@ export default {
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
         //var formattedDate = utilsHelper.dateFormat(data.last_event);
-        var formattedDate = data.last_event;
-        var popupContent = `
-        <div class="videoCard">
-            <video class="tagVideo" controls autoplay>
-                <source  src="https://media.giphy.com/media/LcGFscTzOn9xm/giphy.mp4" type="video/mp4" autoplay loop>
-                secure connection could not be established
-            </video>
-            <strong>Son Okunma Tarihi</strong>
-            <hr/>
-            <div class="hour">${formattedDate}</div>
-            <div class="date">${formattedDate}</div>
-            </div>
-        </div>
-        `
-        marker.bindPopup(popupContent, popupOptions);
+        var formattedDate = moment(data.last_event).format('DD.MM.YYYY hh:mm:ss');
+        var popupContent = this.$refs.dumpstersPopup;
+        marker.bindPopup(popupContent.$el, popupOptions).on('click', function(e) {
+          map.setView(e.target.getLatLng(),5);
+        });
         this.rfTagsMarkers.push(marker);
       });
       this.trucks.forEach(data => {
@@ -201,6 +204,10 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        var popupContent = this.$refs.containersPopup;
+        marker.bindPopup(popupContent.$el, popupOptions).on('click', function(e) {
+          map.setView(e.target.getLatLng(),5);
+        });
         this.ultsMarkers.push(marker);
       })
       this.recycles.forEach(data => {
@@ -211,6 +218,10 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        var popupContent = this.$refs.recyclesPopup;
+        marker.bindPopup(popupContent.$el, popupOptions).on('click', function(e) {
+          map.setView(e.target.getLatLng(),5);
+        });
         this.recyclesMarkers.push(marker);
       })
       this.groupRfTagMarkers = L.layerGroup(this.rfTagsMarkers).addTo(map);
