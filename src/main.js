@@ -8,6 +8,9 @@ import App from './App.vue'
 
 // Global Components
 import './global-components'
+import moment from 'moment';
+moment.locale('tr');
+Vue.prototype.$moment = moment;
 
 // 3rd party plugins
 import '@/libs/portal-vue'

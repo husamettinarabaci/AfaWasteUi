@@ -8,15 +8,11 @@
     >
       <l-tile-layer :url="url" />
       <sidebar/>
-      <dumpsters-popup ref="dumpstersPopup"/>
-      <containers-popup ref="containersPopup"/>
-      <recycles-popup ref="recyclesPopup"/>
     </l-map>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
 import { LMap, LTileLayer } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 import "leaflet-sidebar-v2"
@@ -31,19 +27,12 @@ import ultData from '../data/ult.data';
 import recycleData from '../data/recycle.data';
 
 import Sidebar from './dashboard/sidebar/Index';
-// Popups
-import DumpstersPopup from './dashboard/popups/Dumpsters';
-import ContainersPopup from './dashboard/popups/Containers';
-import RecyclesPopup from './dashboard/popups/Recycles';
 
 export default {
   components: {
     LMap,
     LTileLayer,
-    Sidebar,
-    DumpstersPopup,
-    ContainersPopup,
-    RecyclesPopup
+    Sidebar
   },
   data() {
     return {
@@ -136,12 +125,12 @@ export default {
           map.removeLayer(this.groupUltMarkers);
           map.addLayer(this.groupRecycleMarkers);
           break;
-        //default:
-        //  map.addLayer(this.groupTruckMarkers);
-        //  map.addLayer(this.groupRfTagMarkers);
-        //  map.addLayer(this.groupUltMarkers);
-        //  map.addLayer(this.groupRecycleMarkers);
-        //  break;
+        default:
+          map.addLayer(this.groupTruckMarkers);
+          map.addLayer(this.groupRfTagMarkers);
+          map.addLayer(this.groupUltMarkers);
+          map.addLayer(this.groupRecycleMarkers);
+          break;
       }
     },
 
@@ -162,14 +151,13 @@ export default {
     },
 
     attachMarkers(map){
-      const popupOptions = {
-          'maxWidth': '500',
-          'width' : '250',
-          'height' : '300',
-          'className': 'tagPopup'
-      };
-
       this.rfTags.forEach(data => {
+        const popupOptions = {
+            'maxWidth': '500',
+            'width' : '250',
+            'height' : '300',
+            'className': 'tagPopup'
+        };
         var redMarker = L.ExtraMarkers.icon({
             icon: 'fa-dumpster',
             markerColor: 'green-dark',
@@ -179,9 +167,29 @@ export default {
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
         //var formattedDate = utilsHelper.dateFormat(data.last_event);
-        var formattedDate = moment(data.last_event).format('DD.MM.YYYY hh:mm:ss');
-        var popupContent = this.$refs.dumpstersPopup;
-        marker.bindPopup(popupContent.$el, popupOptions).on('click', function(e) {
+        var formattedDate = this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss');
+        var popupContent = `
+        <div class="videoCard">
+            <video class="tagVideo" controls autoplay>
+                <source  src="https://media.giphy.com/media/LcGFscTzOn9xm/giphy.mp4" type="video/mp4" autoplay loop>
+                secure connection could not be established
+            </video>
+            <div style="height:24px">
+              <span class="badge badge-light-success" style="float:left">
+                Toplandı
+              </span>
+              <span class="badge badge-light-danger" style="float:right">
+                Toplanmadı
+              </span>
+            </div>
+            <strong>Son Okunma Tarihi</strong>
+            <hr/>
+            <div class="hour">${formattedDate.split(' ')[1]}</div>
+            <div class="date">${formattedDate.split(' ')[0]}</div>
+            </div>
+        </div>
+        `
+        marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
           map.setView(e.target.getLatLng(),5);
         });
         this.rfTagsMarkers.push(marker);
@@ -204,10 +212,6 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
-        var popupContent = this.$refs.containersPopup;
-        marker.bindPopup(popupContent.$el, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
-        });
         this.ultsMarkers.push(marker);
       })
       this.recycles.forEach(data => {
@@ -218,10 +222,6 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
-        var popupContent = this.$refs.recyclesPopup;
-        marker.bindPopup(popupContent.$el, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
-        });
         this.recyclesMarkers.push(marker);
       })
       this.groupRfTagMarkers = L.layerGroup(this.rfTagsMarkers).addTo(map);
@@ -237,6 +237,7 @@ export default {
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css);
 .vue2leaflet-map{
   &.leaflet-container{
+    font-family: inherit;
     height: 100vh;
     width: 100vw;
   }
