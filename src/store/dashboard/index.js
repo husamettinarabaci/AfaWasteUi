@@ -2,6 +2,7 @@ export default {
     namespaced: true,
     state: {
         map: null,
+        markers: [],
         sidebar: {
             currentTab: '',
             object: null
@@ -19,6 +20,10 @@ export default {
     mutations: {
         setMap: (state, map) => {
             state.map = map;
+        },
+
+        addMarker: (state, marker) => {
+            state.markers.push(marker);
         },
 
         setCurrentTab: (state, tab) => {

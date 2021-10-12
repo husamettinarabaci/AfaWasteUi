@@ -166,6 +166,7 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no'], data, marker});
         //var formattedDate = utilsHelper.dateFormat(data.last_event);
         var formattedDate = this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss');
         var popupContent = `
@@ -202,6 +203,7 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['truck_name'], data, marker});
         this.trucksMarkers.push(marker);
       })
       this.ults.forEach(data => {
@@ -212,6 +214,7 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_id'], data, marker});
         this.ultsMarkers.push(marker);
       })
       this.recycles.forEach(data => {
@@ -222,6 +225,7 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        this.$store.commit('dashboard/addMarker', {type: 'recycle', icon: 'RefreshCwIcon', searchableFields: ['recycle_id'], data, marker});
         this.recyclesMarkers.push(marker);
       })
       this.groupRfTagMarkers = L.layerGroup(this.rfTagsMarkers).addTo(map);
