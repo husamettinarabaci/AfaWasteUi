@@ -53,11 +53,11 @@
                                 </span>
                                 <span>{{ ult.data.ult_id }}</span>
                                 <b-progress
-                                    :key="computeVariant(ult.data.solidity_ratio)"
+                                    :key="computeVariant(ult.data.filled_rate)"
                                     animated
-                                    :value="ult.data.solidity_ratio"
-                                    :variant="computeVariant(ult.data.solidity_ratio)"
-                                    :class="'progressBar progress-bar-' + computeVariant(ult.data.solidity_ratio)"
+                                    :value="ult.data.filled_rate"
+                                    :variant="computeVariant(ult.data.filled_rate)"
+                                    :class="'progressBar progress-bar-' + computeVariant(ult.data.filled_rate)"
                                 />
                             </b-list-group-item>
                         </transition-group>
@@ -112,21 +112,22 @@ export default {
             let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
             switch(this.filteredType){
                 case 'empty':
-                    return all.filter(ult => {return ult.data.solidity_ratio < 25})
-                    break;
+                    return all.filter(ult => {return ult.data.filled_rate < 25})
                 case 'little':
-                    return all.filter(ult => {return (ult.data.solidity_ratio >= 25) && (ult.data.solidity_ratio < 50)})
-                    break;
+                    return all.filter(ult => {return (ult.data.filled_rate >= 25) && (ult.data.filled_rate < 50)})
                 case 'medium':
-                    return all.filter(ult => {return (ult.data.solidity_ratio >= 50) && (ult.data.solidity_ratio < 75)})
-                    break;
+                    return all.filter(ult => {return (ult.data.filled_rate >= 50) && (ult.data.filled_rate < 75)})
                 case 'full':
-                    return all.filter(ult => {return (ult.data.solidity_ratio >= 75) && (ult.data.solidity_ratio < 100)})
-                    break;
+                    return all.filter(ult => {return (ult.data.filled_rate >= 75) && (ult.data.filled_rate < 100)})
                 default:
                     return all;
             }
-            return all;
+        }
+    },
+
+    watch: {
+        '$store.state.dashboard.sidebar.currentTab': function(newVal, oldVal){
+            this.filteredType = '';            
         }
     },
 
@@ -179,6 +180,8 @@ export default {
         margin-bottom: .35rem;
     }
     .ultsList {
+        max-height: calc(100vh - 18.25rem);
+        overflow-y: auto;
         padding: 0 5px;
     }
     .ultsList .ultsCol {
@@ -256,5 +259,8 @@ export default {
         /*background: rgba(82,177,82);*/
         /*animation:battery-power-4 2s 0s infinite;*/
         border-radius:0 3px 3px 0;
+    }
+    .bg-success, .bg-info, .bg-warning, .bg-danger {
+        transition: all ease .2s; 
     }
 </style>

@@ -2,25 +2,21 @@
     <div class="dumpstersContent">
         <b-row class="match-height">
             <b-col md="6" xl="6" class="cardCol">
-                <b-card
-                    bg-variant="success"
-                    text-variant="white"
-                    :class="{'activeCol': filteredType == ''}"
-                    @click="filterList()"
-                    >
-                    <b-card-title class="text-white">Toplanan</b-card-title>
-                    <b-card-text>text</b-card-text>
+                <b-card bg-variant="danger" text-variant="white">
+                    <b-avatar class="mb-1" variant="light-warning" size="45">
+                        <feather-icon size="21" icon="AwardIcon"/>
+                    </b-avatar>
+                    <b-card-title class="text-white">213</b-card-title>
+                    <b-card-text>Toplanmayan</b-card-text>
                 </b-card>
             </b-col>
             <b-col md="6" xl="6" class="cardCol">
-                <b-card
-                    bg-variant="danger"
-                    text-variant="white"
-                    :class="{'activeCol': filteredType == ''}"
-                    @click="filterList()"
-                    >
-                    <b-card-title class="text-white">Toplanmayan</b-card-title>
-                    <b-card-text>text</b-card-text>
+                <b-card bg-variant="success" text-variant="white">
+                    <b-avatar class="mb-1" variant="light-primary" size="45">
+                        <feather-icon size="21" icon="AwardIcon"/>
+                    </b-avatar>
+                    <b-card-title class="text-white">123</b-card-title>
+                    <b-card-text>Toplanan</b-card-text>
                 </b-card>
             </b-col>
         </b-row>
@@ -58,13 +54,14 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
 
 export default {
     components: {
         BRow,
         BCol,
         BCard,
+        BAvatar,
         BCardText,
         BCardTitle,
         BListGroup,
@@ -92,10 +89,18 @@ export default {
 </script>
 
 <style scoped>
-    .dumpstersContent {
-        padding: 20px 0;
-    }
-    .cardCol, .dumpstersCol {
-        padding: 0 5px;
-    }
+.dumpstersContent {
+    padding: 20px 0;
+}
+.cardCol, .dumpstersCol {
+    padding: 0 5px;
+}
+.cardCol .card-body {
+    text-align: center;
+    cursor: pointer;
+    padding: .5rem;
+}
+.cardCol .card-title {
+    margin-bottom: .3rem;
+}
 </style>
