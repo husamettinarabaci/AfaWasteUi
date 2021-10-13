@@ -1,6 +1,5 @@
 <template>
     <div class="ultsContent">
-        <!-- Stats Card Vertical -->
         <b-row class="match-height">
             <b-col
                 v-for="(data,index) in types"
@@ -10,15 +9,33 @@
                 class="cardCol"
             >
                 <b-card
-                :bg-variant="data.bg"
-                text-variant="white"
+                :bg-variant="filteredType == data.type ? data.bg : ''"
+                :text-variant="filteredType == data.type ? 'white' : ''"
                 @click="filterList(data)"
                 >
-                <b-card-title class="text-white">
-                    {{ data.title }}
-                </b-card-title>
-                <b-card-text>{{ data.text }}</b-card-text>
+                    <b-avatar
+                    class="mb-1"
+                    :variant="`light-${data.bg}`"
+                    size="45"
+                    >
+                        <div class="battery-wrapper1">
+                            <div :class="`battery-part-big level-${data.type} ${filteredType == data.type ? 'active' : ''}`">
+                                <div class="battery-power battery-power-1"></div>
+                                <div class="battery-power battery-power-2"></div>
+                                <div class="battery-power battery-power-3"></div>
+                                <div class="battery-power battery-power-4"></div>
+                            </div>
+                        </div>
+                    </b-avatar>
+                    <b-card-title :class="{'text-white': filteredType == data.type}">123</b-card-title>
+                    <b-card-text>{{ data.text }}</b-card-text>
                 </b-card>
+            </b-col>
+        </b-row>
+
+        <b-row>
+            <b-col xl="12" md="12" class="quoteCol">
+                <strong>* Belirli doluluk oranları aralığındaki toplam konteyner sayısını gösterir.</strong>
             </b-col>
         </b-row>
 
@@ -63,13 +80,14 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress } from 'bootstrap-vue'
 
 export default {
     components: {
         BRow,
         BCol,
         BCard,
+        BAvatar,
         BCardText,
         BCardTitle,
         BListGroup,
@@ -81,10 +99,10 @@ export default {
         return {
             filteredType: '',
             types: [
-                { bg: 'success', title: '0% - 25%', text: 'Boş', type: 'empty'},
-                { bg: 'info', title: '25% - 50%', text: 'Az Dolu', type: 'little'},
-                { bg: 'warning', title: '50% - 75%', text: 'Orta Dolu', type: 'medium'},
-                { bg: 'danger', title: '75% - 100%', text: 'Dolu', type: 'full'}
+                { bg: 'success', text: '0% - 25%', alt: 'Boş', type: 'empty'},
+                { bg: 'info', text: '25% - 50%', alt: 'Az Dolu', type: 'little'},
+                { bg: 'warning', text: '50% - 75%', alt: 'Orta Dolu', type: 'medium'},
+                { bg: 'danger', text: '75% - 100%', alt: 'Dolu', type: 'full'}
             ],
         }
     },
@@ -131,7 +149,11 @@ export default {
         },
 
         getDetails(ult){
+            ult.marker.enablePermanentHighlight();
             ult.marker.fireEvent('click');
+            setTimeout(function(){
+                ult.marker.disablePermanentHighlight();
+            }, 5000)
         }
     }
 }
@@ -143,6 +165,9 @@ export default {
     }
     .cardCol {
         padding: 0 5px;
+    }
+    .cardCol .card {
+        margin-bottom: 0;
     }
     .cardCol .card-body {
         padding: .5rem;
@@ -166,5 +191,70 @@ export default {
         right: 10px;
         top: 50%;
         transform: translate(0, -50%);
+    }
+    .quoteCol {
+        padding: 3px 5px 10px;
+        font-size: 10px;
+        font-style: italic;
+    }
+
+
+    /*Battery*/
+    .battery-wrapper1{
+        /*margin:50px auto 0;*/
+        width:30px;
+        height:15px;
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+    }
+    .battery-part-big{
+        width:30px;
+        height:15px;
+        border:1px solid #ccc;
+        /*background:#5E5E5E;*/
+        background: transparent;
+        border-radius:3px;
+    }
+    .battery-part-big.active {
+        border-color: #fff;
+    }
+    .battery-power{
+        width: 6px;
+        height:11px;
+        /*margin:5px 0 0 5px;*/
+        margin: 1px 0 0 1px;
+        display:inline-block;
+    }
+    .level-empty .battery-power-1 {
+        background: rgba(82,177,82);
+    }
+    .level-empty .battery-power-2, .level-empty .battery-power-3, .level-empty .battery-power-4 {
+        opacity: 0;
+    }
+    .level-little .battery-power-1, .level-little .battery-power-2 {
+        background:rgb(145,232,66);
+        border-radius:3px 0 0 3px;
+    }
+    .level-little .battery-power-3, .level-little .battery-power-4 {
+        opacity: 0;
+    }
+    .level-medium .battery-power-1, .level-medium .battery-power-2, .level-medium .battery-power-3 {
+        background: rgb(255,103,15);
+    }
+    .level-medium .battery-power-4 {
+        opacity: 0;
+    }
+    .level-full .battery-power-1, .level-full .battery-power-2, .level-full .battery-power-3, .level-full .battery-power-4 {
+        background: rgb(255,5,5);
+    }
+    .battery-power-1{
+        /*background: rgb(255,5,5);*/
+        border-radius:3px 0 0 3px;
+        /*animation:battery-power-1 2s 0s infinite;*/
+    }
+    .battery-power-4{
+        /*background: rgba(82,177,82);*/
+        /*animation:battery-power-4 2s 0s infinite;*/
+        border-radius:0 3px 3px 0;
     }
 </style>

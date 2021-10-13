@@ -35,6 +35,7 @@
     "leaflet": "1.6.0",
     "leaflet-extra-markers": "^1.2.1",
     "leaflet-sidebar-v2": "^3.2.3",
+    "leaflet.marker.highlight": "0.0.3",
     "moment": "^2.29.1",
     "portal-vue": "2.1.7",
     "postcss-rtl": "1.7.3",

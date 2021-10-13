@@ -19,6 +19,8 @@ import "leaflet-sidebar-v2"
 import "leaflet-sidebar-v2/css/leaflet-sidebar.css"
 import "leaflet-extra-markers"
 import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
+import "leaflet.marker.highlight";
+import "leaflet.marker.highlight/dist/leaflet.marker.highlight.css";
 
 // Get datas
 import rfTagsData from '../data/rfTags.data';
