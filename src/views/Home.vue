@@ -145,6 +145,11 @@ export default {
       // Add sidebar to vuex state
       this.$store.commit('dashboard/setMap', map)
 
+      //map.on('click', function(e){
+      //  console.log('latitude: ', e.latlng.lat)
+      //  console.log('longitude: ', e.latlng.lng)
+      //})
+
       // Add markers to map
       this.attachMarkers(map);
 
@@ -203,6 +208,9 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        marker.on('click', function(e) {
+          map.setView(e.target.getLatLng(),5);
+        });
         this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['truck_name'], data, marker});
         this.trucksMarkers.push(marker);
       })
@@ -214,6 +222,9 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: redMarker})//.addTo(map);
+        marker.on('click', function(e) {
+          map.setView(e.target.getLatLng(),5);
+        });
         this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_id'], data, marker});
         this.ultsMarkers.push(marker);
       })

@@ -8,7 +8,7 @@
         </b-input-group>
         <b-list-group v-if="showResults">
             <div v-if="results.length">
-                <transition-group name="fade">
+                <transition-group name="fade" tag="div">
                     <b-list-group-item class="d-flex cursor-pointer" v-for="(result, id) in results" :key="id" @click="getDetails(result)">
                         <span class="mr-1">
                             <feather-icon
@@ -16,7 +16,7 @@
                             size="16"
                             />
                         </span>
-                        <span>{{ result.data.container_no }}</span>
+                        <span>{{ displayTitle(result) }}</span>
                     </b-list-group-item>
                 </transition-group>
             </div>
@@ -88,6 +88,14 @@ export default {
                 return addResult ? marker : false;
             })
             this.showResults = true;
+        },
+        
+        displayTitle: function(result){
+            let t = ''
+            result.searchableFields.forEach(field => {
+                t += result.data[field]
+            })
+            return t;
         },
 
         getDetails(row){
