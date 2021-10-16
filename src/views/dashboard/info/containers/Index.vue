@@ -1,6 +1,6 @@
 <template>
     <div>
-        Info containers index page
+        Pie chart goes here... dolu / orta / boş
     </div>
 </template>
 

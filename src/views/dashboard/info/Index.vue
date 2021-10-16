@@ -43,7 +43,9 @@ export default {
 <style scoped>
 .infoContent {
     background-color: rgba(255, 255, 255, 0.95);
-    padding: 100px;
+    padding: 20px;
+    max-width: 400px;
+    word-break: break-all;
     box-shadow: 0 1px 5px rgb(0 0 0 / 65%);
 }
 </style>

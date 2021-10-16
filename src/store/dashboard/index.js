@@ -7,7 +7,8 @@ export default {
             object: null
         },
         info: {
-            current: '' // If blank, the info card is hidden 
+            current: '', // If blank, the info card is hidden 
+            data: '' // Current card's data
         },
         markers: [],
         markerGroups: {}
@@ -36,6 +37,10 @@ export default {
 
         setInfoCurrent: (state, current) => {
             state.info.current = current;
+        },
+
+        setInfoData: (state, data) => {
+            state.info.data = data;
         },
 
         addMarker: (state, marker) => {

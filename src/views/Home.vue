@@ -166,6 +166,7 @@ export default {
       let markerGroups = this.$store.state.dashboard.markerGroups;
       switch(newVal){
         case 'trucks':
+          this.$store.commit('dashboard/setInfoCurrent', '');
           map.addLayer(markerGroups.trucks.truck);
           map.addLayer(markerGroups.trucks.winch);
           map.removeLayer(markerGroups.rfTags.collected);
@@ -177,6 +178,7 @@ export default {
           map.removeLayer(markerGroups.recycles);
           break;
         case 'dumpsters':
+          this.$store.commit('dashboard/setInfoCurrent', '');
           map.removeLayer(markerGroups.trucks.truck);
           map.removeLayer(markerGroups.trucks.winch);
           map.addLayer(markerGroups.rfTags.collected);
@@ -188,6 +190,7 @@ export default {
           map.removeLayer(markerGroups.recycles);
           break;
         case 'containers':
+          this.$store.commit('dashboard/setInfoCurrent', 'Containers');
           map.removeLayer(markerGroups.trucks.truck);
           map.removeLayer(markerGroups.trucks.winch);
           map.removeLayer(markerGroups.rfTags.collected);
@@ -199,6 +202,7 @@ export default {
           map.removeLayer(markerGroups.recycles);
           break;
         case 'recycles':
+          this.$store.commit('dashboard/setInfoCurrent', '');
           map.removeLayer(markerGroups.trucks.truck);
           map.removeLayer(markerGroups.trucks.winch);
           map.removeLayer(markerGroups.rfTags.collected);
@@ -210,6 +214,7 @@ export default {
           map.addLayer(markerGroups.recycles);
           break;
         default:
+          this.$store.commit('dashboard/setInfoCurrent', '');
           map.addLayer(markerGroups.trucks.truck);
           map.addLayer(markerGroups.trucks.winch);
           map.addLayer(markerGroups.rfTags.collected);
@@ -283,6 +288,7 @@ export default {
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
           map.setView(e.target.getLatLng(),5);
           self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
+          self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
           self.$store.commit('dashboard/setInfoCurrent', '');
         })
@@ -333,6 +339,7 @@ export default {
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
           map.setView(e.target.getLatLng(),5);
           self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
+          self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
           self.$store.commit('dashboard/setInfoCurrent', '');
         });
@@ -367,6 +374,7 @@ export default {
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
           map.setView(e.target.getLatLng(),5);
           self.$store.commit('dashboard/setInfoCurrent', 'ContainerDetails');
+          self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
           self.$store.commit('dashboard/setInfoCurrent', '');
         });
@@ -424,6 +432,7 @@ export default {
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
           map.setView(e.target.getLatLng(),5);
           self.$store.commit('dashboard/setInfoCurrent', 'RecycleDetails');
+          self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
           self.$store.commit('dashboard/setInfoCurrent', '');
         });
