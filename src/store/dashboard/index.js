@@ -2,11 +2,15 @@ export default {
     namespaced: true,
     state: {
         map: null,
-        markers: [],
         sidebar: {
             currentTab: '',
             object: null
-        }
+        },
+        info: {
+            current: '' // If blank, the info card is hidden 
+        },
+        markers: [],
+        markerGroups: {}
     },
     getters: {
         getMap: state => {
@@ -22,17 +26,25 @@ export default {
             state.map = map;
         },
 
-        addMarker: (state, marker) => {
-            state.markers.push(marker);
-        },
-
         setCurrentTab: (state, tab) => {
             state.sidebar.currentTab = tab; 
         },
 
         setSidebarObject: (state, object) => {
             state.sidebar.object = object; 
-        }
+        },
+
+        setInfoCurrent: (state, current) => {
+            state.info.current = current;
+        },
+
+        addMarker: (state, marker) => {
+            state.markers.push(marker);
+        },
+
+        setMarkerGroups: (state, markerGroups) => {
+            state.markerGroups = markerGroups
+        },
     },
     actions: {},
 }

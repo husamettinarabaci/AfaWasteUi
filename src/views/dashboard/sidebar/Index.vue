@@ -101,13 +101,13 @@ export default {
                     id: 'dumpsters',
                     icon: 'fa fa-dumpster',
                     content: 'Dumpsters',
-                    title: 'Galvaniz'
+                    title: 'RFID Takip Sistemi'
                 },
                 {
                     id: 'containers',
                     icon: 'fa fa-archive',
                     content: 'Containers',
-                    title: 'Yer altı ve Yer üstü çöpler'
+                    title: 'Doluluk Sensörleri'
                 },
                 {
                     id: 'recycles',

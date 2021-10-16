@@ -20,7 +20,6 @@
                 </b-card>
             </b-col>
         </b-row>
-
         <b-row>
             <b-col xl="12" md="12">
                 <b-list-group class="recycleList">
@@ -33,7 +32,7 @@
                                     size="16"
                                     />
                                 </span>
-                                <span>{{ recycle.type }}</span>
+                                <span>{{ recycle.data.recycle_title }}</span>
                             </b-list-group-item>
                         </transition-group>
                     </div>
@@ -71,7 +70,6 @@ export default {
 
     data(){
         return {
-
         }
     },
 
@@ -80,6 +78,16 @@ export default {
             return this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle')
         }
     },
+
+    methods: {
+        getDetails(ult){
+            ult.marker.enablePermanentHighlight();
+            ult.marker.fireEvent('click');
+            setTimeout(function(){
+                ult.marker.disablePermanentHighlight();
+            }, 5000)
+        }
+    }
 }
 </script>
 
@@ -94,8 +102,11 @@ export default {
 }
 .cardCol .card-body {
     text-align: center;
+    cursor: pointer;
+    padding: .5rem;
 }
 .cardCol .card-title {
     margin-bottom: .3rem;
 }
+
 </style>

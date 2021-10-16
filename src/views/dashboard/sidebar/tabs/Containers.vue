@@ -27,7 +27,7 @@
                             </div>
                         </div>
                     </b-avatar>
-                    <b-card-title :class="{'text-white': filteredType == data.type}">123</b-card-title>
+                    <b-card-title :class="{'text-white': filteredType == data.type}">{{ getCount(data.type) }}</b-card-title>
                     <b-card-text>{{ data.text }}</b-card-text>
                 </b-card>
             </b-col>
@@ -51,8 +51,9 @@
                                     size="16"
                                     />
                                 </span>
-                                <span>{{ ult.data.ult_id }}</span>
+                                <span>{{ ult.data.ult_title }}</span>
                                 <b-progress
+                                    :title="`${ult.data.filled_rate}%`"
                                     :key="computeVariant(ult.data.filled_rate)"
                                     animated
                                     :value="ult.data.filled_rate"
@@ -126,6 +127,44 @@ export default {
     },
 
     watch: {
+        'filteredType': function(newVal, oldVal){
+            let map = this.$store.state.dashboard.map;
+            switch(newVal){
+                case 'empty':
+                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.empty);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.little);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.medium);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    break;
+                case 'little':
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.empty);
+                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.little);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.medium);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    break;
+                case 'medium':
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.empty);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.little);
+                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.medium);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    break;
+                case 'full':
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.empty);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.little);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.medium);
+                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    break;
+                default:
+                    if (this.$store.state.dashboard.sidebar.currentTab == 'containers'){
+                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.empty);
+                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.little);
+                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.medium);
+                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    }
+                    break;
+            }
+        },
+
         '$store.state.dashboard.sidebar.currentTab': function(newVal, oldVal){
             this.filteredType = '';            
         }
@@ -155,6 +194,20 @@ export default {
             setTimeout(function(){
                 ult.marker.disablePermanentHighlight();
             }, 5000)
+        },
+
+        getCount(type){
+            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
+            switch (type){
+                case 'empty':
+                    return all.filter(ult => (ult.data.filled_rate < 25)).length
+                case 'little':
+                    return all.filter(ult => ((ult.data.filled_rate >= 25) && (ult.data.filled_rate < 50))).length
+                case 'medium':
+                    return all.filter(ult => ((ult.data.filled_rate >= 50) && (ult.data.filled_rate < 75))).length
+                case 'full':
+                    return all.filter(ult => ((ult.data.filled_rate >= 75) && (ult.data.filled_rate <= 100))).length
+            }
         }
     }
 }

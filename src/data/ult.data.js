@@ -1,6 +1,7 @@
 module.exports = [
     {
         "ult_id":1,
+        "ult_title": "DS1",
         "latitude":"37.05462912340419",
         "longitude":"27.416038513183594",
         "last_gps_time":"2021-08-03T06:26:59.497Z",
@@ -8,6 +9,7 @@ module.exports = [
     },
     {
         "ult_id":2,
+        "ult_title": "DS2",
         "latitude":"37.04887506029608",
         "longitude":"27.418098449707035",
         "last_gps_time":"2021-08-03T06:25:59.497Z",
@@ -15,6 +17,7 @@ module.exports = [
     },
     {
         "ult_id":3,
+        "ult_title": "DS3",
         "latitude":"37.055177106660814",
         "longitude":"27.447280883789062",
         "last_gps_time":"2021-08-03T06:12:59.497Z",
@@ -22,6 +25,7 @@ module.exports = [
     },
     {
         "ult_id":4,
+        "ult_title": "DS4",
         "latitude":"37.03572127789156",
         "longitude":"27.353382110595707",
         "last_gps_time":"2021-08-03T05:26:59.497Z",
@@ -29,6 +33,7 @@ module.exports = [
     },
     {
         "ult_id":5,
+        "ult_title": "DS5",
         "latitude":"37.047641990013844",
         "longitude":"27.38943099975586",
         "last_gps_time":"2021-08-02T06:26:59.497Z",
@@ -36,6 +41,7 @@ module.exports = [
     },
     {
         "ult_id":6,
+        "ult_title": "DS6",
         "latitude":"37.030513942764784",
         "longitude":"27.409172058105472",
         "last_gps_time":"2021-08-02T06:11:59.497Z",
@@ -43,6 +49,7 @@ module.exports = [
     },
     {
         "ult_id":7,
+        "ult_title": "DS7",
         "latitude":"37.049423085102504",
         "longitude":"27.45895385742188",
         "last_gps_time":"2021-08-01T06:26:59.497Z",
@@ -50,6 +57,7 @@ module.exports = [
     },
     {
         "ult_id":8,
+        "ult_title": "DS8",
         "latitude":"37.02873240404086",
         "longitude":"27.46994018554688",
         "last_gps_time":"2021-07-11T06:26:59.497Z",
@@ -57,6 +65,7 @@ module.exports = [
     },
     {
         "ult_id":9,
+        "ult_title": "DS9",
         "latitude":"37.055177106660814",
         "longitude":"27.447280883789062",
         "last_gps_time":"2021-07-10T06:26:59.497Z",
@@ -64,6 +73,7 @@ module.exports = [
     },
     {
         "ult_id":10,
+        "ult_title": "DS10",
         "latitude":"37.018453480073944",
         "longitude":"27.33552932739258",
         "last_gps_time":"2021-07-09T06:26:59.497Z",
@@ -71,6 +81,7 @@ module.exports = [
     },
     {
         "ult_id":11,
+        "ult_title": "DS11",
         "latitude":"37.01776816902706",
         "longitude":"27.490539550781254",
         "last_gps_time":"2021-07-07T06:26:59.497Z",
@@ -78,6 +89,7 @@ module.exports = [
     },
     {
         "ult_id":12,
+        "ult_title": "DS12",
         "latitude":"37.04175037773337",
         "longitude":"27.330207824707035",
         "last_gps_time":"2021-07-05T06:26:59.497Z",

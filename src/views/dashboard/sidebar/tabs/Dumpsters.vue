@@ -3,25 +3,25 @@
         <b-row class="match-height">
             <b-col md="6" xl="6" class="cardCol">
                 <b-card 
-                :bg-variant="filteredType == 'notFinished' ? 'danger' : ''" 
-                :text-variant="filteredType == 'notFinished' ? 'white' : ''" 
-                @click="filteredType == 'notFinished' ? (filteredType = '') : (filteredType = 'notFinished')">
+                :bg-variant="filteredType == 'notCollected' ? 'danger' : ''" 
+                :text-variant="filteredType == 'notCollected' ? 'white' : ''" 
+                @click="filteredType == 'notCollected' ? (filteredType = '') : (filteredType = 'notCollected')">
                     <b-avatar class="mb-1" variant="light-warning" size="45">
                         <feather-icon size="21" icon="AlertTriangleIcon"/>
                     </b-avatar>
-                    <b-card-title :class="{'text-white': filteredType == 'notFinished'}">213</b-card-title>
+                    <b-card-title :class="{'text-white': filteredType == 'notCollected'}">{{ getCount('notCollected') }}</b-card-title>
                     <b-card-text>Toplanmayan</b-card-text>
                 </b-card>
             </b-col>
             <b-col md="6" xl="6" class="cardCol">
                 <b-card 
-                :bg-variant="filteredType == 'finished' ? 'success' : ''" 
-                :text-variant="filteredType == 'finished' ? 'white' : ''" 
-                @click="filteredType == 'finished' ? (filteredType = '') : (filteredType = 'finished')">
+                :bg-variant="filteredType == 'collected' ? 'success' : ''" 
+                :text-variant="filteredType == 'collected' ? 'white' : ''" 
+                @click="filteredType == 'collected' ? (filteredType = '') : (filteredType = 'collected')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
                         <feather-icon size="21" icon="AwardIcon"/>
                     </b-avatar>
-                    <b-card-title :class="{'text-white': filteredType == 'finished'}">123</b-card-title>
+                    <b-card-title :class="{'text-white': filteredType == 'collected'}">{{ getCount('collected') }}</b-card-title>
                     <b-card-text>Toplanan</b-card-text>
                 </b-card>
             </b-col>
@@ -38,7 +38,7 @@
                                     size="16"
                                     />
                                 </span>
-                                <span>{{ dumpster.data.container_no }}</span>
+                                <span>{{ dumpster.data.rftag_title }}</span>
                                 <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.last_statu == 'R' ? 'danger' : 'success')">
                                     <feather-icon
                                     :icon="dumpster.data.last_statu == 'R' ? 'AlertTriangleIcon' : 'AwardIcon'"
@@ -92,7 +92,7 @@ export default {
             let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
             if (this.filteredType.length){
                 return markers.filter(marker => {
-                    if (this.filteredType == 'notFinished'){
+                    if (this.filteredType == 'notCollected'){
                         return marker.data.last_statu == 'R'
                     }
                     else {
@@ -105,14 +105,44 @@ export default {
     },
 
     watch: {
+        'filteredType': function(newVal, oldVal){
+            let map = this.$store.state.dashboard.map;
+            switch(newVal){
+                case 'collected':
+                    map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.collected);
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.rfTags.notCollected);
+                    break;
+                case 'notCollected':
+                    map.removeLayer(this.$store.state.dashboard.markerGroups.rfTags.collected);
+                    map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.notCollected);
+                    break;
+                default:
+                    if (this.$store.state.dashboard.sidebar.currentTab == 'dumpsters'){
+                        map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.collected);
+                        map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.notCollected);
+                    }
+                    break;
+            }
+        },
+
         '$store.state.dashboard.sidebar.currentTab': function(newVal, oldVal){
-            this.filteredType = '';            
+            this.filteredType = '';        
         }
     },
 
     methods: {
         getDetails(dumpster){
             dumpster.marker.fireEvent('click');
+        },
+
+        getCount(type){
+            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
+            if (type == 'notCollected'){
+                return markers.filter(dumpster => dumpster.data.last_statu == 'R').length
+            }
+            else {
+                return markers.filter(dumpster => dumpster.data.last_statu != 'R').length
+            }
         }
     }
 }
@@ -138,5 +168,8 @@ export default {
     right: 10px;
     top: 50%;
     transform: translate(0, -50%);
+}
+.bg-danger, .bg-success {
+    transition: all ease .2s;
 }
 </style>

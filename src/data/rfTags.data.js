@@ -4,6 +4,7 @@ module.exports = {
    tags: [
       {
          "rftag_id":13,
+         "rftag_title": "RF1",
          "rfhash":"AFA09012018AFA4811900765",
          "container_no":"NO1900765",
          "latitude":"37.05841100000",
@@ -16,10 +17,12 @@ module.exports = {
          "last_truck_time":"2021-08-03T10:53:39.000Z",
          "last_truck_error_time":"2021-08-04T12:41:14.000Z",
          "last_truck_stop_time":"2021-08-03T10:45:56.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       },
       {
          "rftag_id":15,
+         "rftag_title": "RF2",
          "rfhash":"AFA09012018AFA4811900750",
          "container_no":"NO1900750",
          "latitude":"37.04092825594592",
@@ -32,10 +35,12 @@ module.exports = {
          "last_truck_time":"2021-09-01T21:39:17.371Z",
          "last_truck_error_time":"2021-09-01T21:39:17.371Z",
          "last_truck_stop_time":"2021-08-03T10:51:08.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       },
       {
          "rftag_id":16,
+         "rftag_title": "RF3",
          "rfhash":"AFA09012018AFA4811900774",
          "container_no":"NO1900774",
          "latitude":"37.03983207971427",
@@ -48,10 +53,12 @@ module.exports = {
          "last_truck_time":"2021-09-01T21:39:17.377Z",
          "last_truck_error_time":"2021-09-01T21:39:17.377Z",
          "last_truck_stop_time":"2021-08-03T10:51:14.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       },
       {
          "rftag_id":11,
+         "rftag_title": "RF4",
          "rfhash":"AFA09012018AFA4811200391",
          "container_no":"NO1200391",
          "latitude":"37.04846403909448",
@@ -64,10 +71,12 @@ module.exports = {
          "last_truck_time":"2021-08-03T09:41:33.590Z",
          "last_truck_error_time":"2021-08-03T09:41:33.590Z",
          "last_truck_stop_time":"2021-09-01T21:39:42.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "notCollected"
       },
       {
          "rftag_id":18,
+         "rftag_title": "RF5",
          "rfhash":"AFA09012018AFA4811966892",
          "container_no":"NO1966892",
          "latitude":"37.02969169931554",
@@ -80,10 +89,12 @@ module.exports = {
          "last_truck_time":"2021-09-10T22:05:28.249Z",
          "last_truck_error_time":"2021-09-10T22:05:28.249Z",
          "last_truck_stop_time":"2021-09-10T22:05:25.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "notCollected"
       },
       {
          "rftag_id":21,
+         "rftag_title": "RF6",
          "rfhash":"AFA09012018AFA0611000504",
          "container_no":"NO1000504",
          "latitude":"37.03243247619548",
@@ -96,10 +107,12 @@ module.exports = {
          "last_truck_time":"2021-09-15T08:23:33.523Z",
          "last_truck_error_time":"2021-09-15T08:23:33.523Z",
          "last_truck_stop_time":"2021-09-15T08:23:33.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "notCollected"
       },
       {
          "rftag_id":14,
+         "rftag_title": "RF7",
          "rfhash":"AFA09012018AFA4811900704",
          "container_no":"NO1900704",
          "latitude":"37.02475805169014",
@@ -112,10 +125,12 @@ module.exports = {
          "last_truck_time":"2021-09-01T21:39:17.240Z",
          "last_truck_error_time":"2021-09-01T21:39:17.240Z",
          "last_truck_stop_time":"2021-09-15T08:23:28.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       },
       {
          "rftag_id":20,
+         "rftag_title": "RF8",
          "rfhash":"AFA09012018AFA4811900815",
          "container_no":"NO1900815",
          "latitude":"37.02338753714756",
@@ -128,10 +143,12 @@ module.exports = {
          "last_truck_time":"2021-09-15T08:23:28.500Z",
          "last_truck_error_time":"2021-09-15T08:23:28.500Z",
          "last_truck_stop_time":"2021-09-15T08:23:28.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "notCollected"
       },
       {
          "rftag_id":12,
+         "rftag_title": "RF9",
          "rfhash":"AFA09012018AFA4811900797",
          "container_no":"NO1900797",
          "latitude":"37.02366164203408",
@@ -144,10 +161,12 @@ module.exports = {
          "last_truck_time":"2021-08-03T09:42:34.368Z",
          "last_truck_error_time":"2021-08-03T09:42:34.368Z",
          "last_truck_stop_time":"2021-09-15T08:23:32.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       },
       {
          "rftag_id":19,
+         "rftag_title": "RF10",
          "rfhash":"AFA09012018AFA4811900728",
          "container_no":"NO1900728",
          "latitude":"37.041613358053695",
@@ -160,10 +179,12 @@ module.exports = {
          "last_truck_time":"2021-09-13T06:32:51.495Z",
          "last_truck_error_time":"2021-09-13T06:32:51.495Z",
          "last_truck_stop_time":"2021-09-13T06:32:50.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "notCollected"
       },
       {
          "rftag_id":10,
+         "rftag_title": "RF11",
          "rfhash":"AFA09012018AFA4811900731",
          "container_no":"NO1900731",
          "latitude":"37.05476611958932",
@@ -176,10 +197,12 @@ module.exports = {
          "last_truck_time":"2021-08-03T08:21:58.000Z",
          "last_truck_error_time":"2021-08-04T10:11:14.000Z",
          "last_truck_stop_time":"2021-08-03T10:51:09.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       },
       {
          "rftag_id":17,
+         "rftag_title": "RF12",
          "rfhash":"AFA09012018AFA4811900854",
          "container_no":"NO1900854",
          "latitude":"37.0596978175324",
@@ -192,7 +215,8 @@ module.exports = {
          "last_truck_time":"2021-09-10T15:39:31.407Z",
          "last_truck_error_time":"2021-09-10T15:39:31.407Z",
          "last_truck_stop_time":"2021-09-15T06:22:15.000Z",
-         "last_in_statu":"R"
+         "last_in_statu":"R",
+         "status": "collected"
       }
    ],
    messages: function(){
