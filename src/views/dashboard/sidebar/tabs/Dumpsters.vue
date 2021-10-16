@@ -2,20 +2,26 @@
     <div class="dumpstersContent">
         <b-row class="match-height">
             <b-col md="6" xl="6" class="cardCol">
-                <b-card bg-variant="danger" text-variant="white">
+                <b-card 
+                :bg-variant="filteredType == 'notFinished' ? 'danger' : ''" 
+                :text-variant="filteredType == 'notFinished' ? 'white' : ''" 
+                @click="filteredType == 'notFinished' ? (filteredType = '') : (filteredType = 'notFinished')">
                     <b-avatar class="mb-1" variant="light-warning" size="45">
-                        <feather-icon size="21" icon="AwardIcon"/>
+                        <feather-icon size="21" icon="AlertTriangleIcon"/>
                     </b-avatar>
-                    <b-card-title class="text-white">213</b-card-title>
+                    <b-card-title :class="{'text-white': filteredType == 'notFinished'}">213</b-card-title>
                     <b-card-text>Toplanmayan</b-card-text>
                 </b-card>
             </b-col>
             <b-col md="6" xl="6" class="cardCol">
-                <b-card bg-variant="success" text-variant="white">
+                <b-card 
+                :bg-variant="filteredType == 'finished' ? 'success' : ''" 
+                :text-variant="filteredType == 'finished' ? 'white' : ''" 
+                @click="filteredType == 'finished' ? (filteredType = '') : (filteredType = 'finished')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
                         <feather-icon size="21" icon="AwardIcon"/>
                     </b-avatar>
-                    <b-card-title class="text-white">123</b-card-title>
+                    <b-card-title :class="{'text-white': filteredType == 'finished'}">123</b-card-title>
                     <b-card-text>Toplanan</b-card-text>
                 </b-card>
             </b-col>
@@ -33,6 +39,12 @@
                                     />
                                 </span>
                                 <span>{{ dumpster.data.container_no }}</span>
+                                <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.last_statu == 'R' ? 'danger' : 'success')">
+                                    <feather-icon
+                                    :icon="dumpster.data.last_statu == 'R' ? 'AlertTriangleIcon' : 'AwardIcon'"
+                                    size="16"
+                                    />
+                                </b-badge>
                             </b-list-group-item>
                         </transition-group>
                     </div>
@@ -54,7 +66,7 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BAvatar, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
 
 export default {
     components: {
@@ -62,6 +74,7 @@ export default {
         BCol,
         BCard,
         BAvatar,
+        BBadge,
         BCardText,
         BCardTitle,
         BListGroup,
@@ -76,7 +89,24 @@ export default {
 
     computed: {
         dumpsters: function(){
-            return this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag')
+            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
+            if (this.filteredType.length){
+                return markers.filter(marker => {
+                    if (this.filteredType == 'notFinished'){
+                        return marker.data.last_statu == 'R'
+                    }
+                    else {
+                        return marker.data.last_statu != 'R'
+                    }
+                })
+            }
+            return markers;
+        }
+    },
+
+    watch: {
+        '$store.state.dashboard.sidebar.currentTab': function(newVal, oldVal){
+            this.filteredType = '';            
         }
     },
 
@@ -102,5 +132,11 @@ export default {
 }
 .cardCol .card-title {
     margin-bottom: .3rem;
+}
+.dumpsterBadge {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 </style>
