@@ -51,16 +51,17 @@
         id="containersInfoModal"
         centered
         size="lg"
-        title="Detay Bilgi"
+        title="Geçmiş Doluluk Oranları"
         hide-footer
         >
-            <p>Content goes here..</p>
+            <app-echart-line :option-data="option" />
         </b-modal>
     </div>
 </template>
 
 <script>
-import { BCardText, BMediaBody, BMedia, BMediaAside, BAvatar, BModal } from 'bootstrap-vue'
+import { BCardText, BMediaBody, BMedia, BMediaAside, BAvatar, BModal } from 'bootstrap-vue';
+import AppEchartLine from '@core/components/charts/echart/AppEchartLine.vue'
 
 export default {
     components: {
@@ -69,12 +70,16 @@ export default {
         BMedia,
         BMediaAside,
         BAvatar,
-        BModal
+        BModal,
+        AppEchartLine
     },
 
     data(){
         return {
-
+            option: {
+                xAxisData: ['7/12', '8/12', '9/12', '10/12', '11/12', '12/12', '13/12', '14/12', '15/12', '16/12', '17/12', '18/12', '19/12', '20/12'],
+                series: ['290', '200', '210', '190', '250', '220', '80', '90', '200', '150', '160', '100', '140', '100', '30'],
+            },
         }
     },
 
