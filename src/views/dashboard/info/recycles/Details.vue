@@ -7,7 +7,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Plastik Sayısı</h4>
-            <b-card-text class="mb-0">35</b-card-text>
+            <b-card-text class="mb-0">{{ details.plastic_count }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -16,7 +16,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Cam Sayısı</h4>
-            <b-card-text class="mb-0">12</b-card-text>
+            <b-card-text class="mb-0">{{ details.glass_count }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -25,7 +25,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Metal Sayısı</h4>
-            <b-card-text class="mb-0">9</b-card-text>
+            <b-card-text class="mb-0">{{ details.metal_count }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -34,7 +34,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Konum</h4>
-            <b-card-text class="mb-0">Detay Konum Cd.</b-card-text>
+            <b-card-text class="mb-0">{{ details.location }}</b-card-text>
         </b-media>
     </div>
 </template>

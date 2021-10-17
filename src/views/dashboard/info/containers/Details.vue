@@ -7,7 +7,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Isı Oranı</h4>
-            <b-card-text class="mb-0">35%</b-card-text>
+            <b-card-text class="mb-0">{{ details.heat_rate }}%</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -16,7 +16,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Konteyner Tipi</h4>
-            <b-card-text class="mb-0">Yer Üstü / 3750</b-card-text>
+            <b-card-text class="mb-0">{{ details.type }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -25,7 +25,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Dolma Hızı Puanı</h4>
-            <b-card-text class="mb-0">6</b-card-text>
+            <b-card-text class="mb-0">{{ details.fill_speed_score }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -34,7 +34,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Konum</h4>
-            <b-card-text class="mb-0">Detay Konum Cd.</b-card-text>
+            <b-card-text class="mb-0">{{ details.location }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -54,7 +54,7 @@
         title="Geçmiş Doluluk Oranları"
         hide-footer
         >
-            <app-echart-line :option-data="option" />
+            <app-echart-line :option-data="details.history" />
         </b-modal>
     </div>
 </template>
@@ -76,10 +76,6 @@ export default {
 
     data(){
         return {
-            option: {
-                xAxisData: ['7/12', '8/12', '9/12', '10/12', '11/12', '12/12', '13/12', '14/12', '15/12', '16/12', '17/12', '18/12', '19/12', '20/12'],
-                series: ['290', '200', '210', '190', '250', '220', '80', '90', '200', '150', '160', '100', '140', '100', '30'],
-            },
         }
     },
 

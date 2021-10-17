@@ -10,7 +10,7 @@
                 Durum
             </h4>
             <b-card-text class="mb-0">
-                Aktif / Park Halinde
+                {{ details.status == 'active' ? 'Aktif' : 'Park Halinde' }}
             </b-card-text>
         </b-media>
         <b-media vertical-align="center">
@@ -23,7 +23,7 @@
                 Günlük Mesafe
             </h4>
             <b-card-text class="mb-0">
-                38 KM
+                {{ details.daily_distance }} M
             </b-card-text>
         </b-media>
         <b-media vertical-align="center">
@@ -36,7 +36,7 @@
                 Günlük Toplanılan Konteyner Sayısı
             </h4>
             <b-card-text class="mb-0">
-                284
+                {{ details.collected_container_count }}
             </b-card-text>
         </b-media>
         <b-media vertical-align="center">
@@ -49,7 +49,7 @@
                 Verimlilik Oranı
             </h4>
             <b-card-text class="mb-0">
-                32%
+                {{ details.productivity_rate }}%
             </b-card-text>
         </b-media>
         <b-media vertical-align="center">
@@ -59,10 +59,10 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">
-                Mesai Kalan Süresi
+                Mesai Bitişi
             </h4>
             <b-card-text class="mb-0">
-                7 Saat
+                {{ details.status == 'park' ? 'Mesai bitti' : $moment(details.end_of_shift).fromNow() }}
             </b-card-text>
         </b-media>
     </div>

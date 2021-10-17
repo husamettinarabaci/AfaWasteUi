@@ -7,7 +7,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Konum</h4>
-            <b-card-text class="mb-0">Detay Konum Mh.</b-card-text>
+            <b-card-text class="mb-0">{{ details.location }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -16,7 +16,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Toplanma Sıklığı</h4>
-            <b-card-text class="mb-0">38 KM</b-card-text>
+            <b-card-text class="mb-0">{{ details.collection_frequency }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -25,7 +25,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Uyarı</h4>
-            <b-card-text class="mb-0">2 Gündür toplanmıyor / Yok</b-card-text>
+            <b-card-text class="mb-0">{{ details.warning.length ? details.warning : 'Yok' }}</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -34,7 +34,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Kamyon</h4>
-            <b-card-text class="mb-0">07 asd 123</b-card-text>
+            <b-card-text class="mb-0">{{ details.truck_plate_no }}</b-card-text>
         </b-media>
     </div>
 </template>
