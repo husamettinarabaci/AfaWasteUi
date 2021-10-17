@@ -1,28 +1,56 @@
 <template>
     <div>
-        <table>
-            <tr>
-                <td>Konum</td>
-                <td>Detay Konum</td>
-            </tr>
-            <tr>
-                <td>Toplanma Sıklığı</td>
-                <td>38 KM</td>
-            </tr>
-            <tr>
-                <td>Uyarı</td>
-                <td>2 Gündür toplanmıyor / Yok</td>
-            </tr>
-            <tr>
-                <td>Kamyon</td>
-                <td @click="showTruck">07 asd 123</td>
-            </tr>
-        </table>
+        <b-media vertical-align="center">
+            <template #aside>
+                <b-avatar rounded size="42" variant="light-primary">
+                    <font-awesome-icon icon="map-marked-alt"/>
+                </b-avatar>
+            </template>
+            <h4 class="media-heading">Konum</h4>
+            <b-card-text class="mb-0">Detay Konum Mh.</b-card-text>
+        </b-media>
+        <b-media vertical-align="center">
+            <template #aside>
+                <b-avatar rounded size="42" variant="light-primary">
+                    <font-awesome-icon icon="chart-line"/>
+                </b-avatar>
+            </template>
+            <h4 class="media-heading">Toplanma Sıklığı</h4>
+            <b-card-text class="mb-0">38 KM</b-card-text>
+        </b-media>
+        <b-media vertical-align="center">
+            <template #aside>
+                <b-avatar rounded size="42" variant="light-primary">
+                    <font-awesome-icon icon="exclamation-triangle"/>
+                </b-avatar>
+            </template>
+            <h4 class="media-heading">Uyarı</h4>
+            <b-card-text class="mb-0">2 Gündür toplanmıyor / Yok</b-card-text>
+        </b-media>
+        <b-media vertical-align="center">
+            <template #aside>
+                <b-avatar rounded size="42" variant="light-primary">
+                    <font-awesome-icon icon="truck"/>
+                </b-avatar>
+            </template>
+            <h4 class="media-heading">Kamyon</h4>
+            <b-card-text class="mb-0">07 asd 123</b-card-text>
+        </b-media>
     </div>
 </template>
 
 <script>
+import {BCardText, BMediaBody, BMedia, BMediaAside, BAvatar} from 'bootstrap-vue';
+
 export default {
+    components: {
+        BCardText,
+        BMediaBody,
+        BMedia,
+        BMediaAside,
+        BAvatar
+    },
+
     data(){
         return {
 

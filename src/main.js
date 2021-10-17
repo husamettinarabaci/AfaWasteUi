@@ -21,10 +21,43 @@ Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { 
+  faUserSecret,
+  faInfoCircle,
+  faRoad,
+  faChartPie,
+  faTachometerAlt,
+  faClock,
+  faMapMarkedAlt,
+  faChartLine,
+  faExclamationTriangle,
+  faTruck,
+  faDumpsterFire,
+  faDumpster,
+  faTrashRestore,
+  faCalendarCheck,
+  faWineBottle
+
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faUserSecret)
+library.add(
+  faUserSecret, 
+  faInfoCircle,
+  faRoad,
+  faChartPie,
+  faTachometerAlt,
+  faClock,
+  faMapMarkedAlt,
+  faChartLine,
+  faExclamationTriangle,
+  faTruck,
+  faDumpsterFire,
+  faDumpster,
+  faTrashRestore,
+  faCalendarCheck,
+  faWineBottle
+)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
