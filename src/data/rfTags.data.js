@@ -23,7 +23,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 1",
          "collection_frequency": "30",
          "warning": "",
-         "truck_plate_no": "07 MVS 34"
+         "truck_plate_no": "07 MVS 34",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/48be907b-2f08-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":15,
@@ -46,7 +47,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 2",
          "collection_frequency": "12",
          "warning": "2 gündür toplanmadı",
-         "truck_plate_no": "07 MVS 38"
+         "truck_plate_no": "07 MVS 38",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/90b84088-2f12-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":16,
@@ -69,7 +71,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 3",
          "collection_frequency": "66",
          "warning": "1 gündür toplanmadı",
-         "truck_plate_no": "07 MVS 34"
+         "truck_plate_no": "07 MVS 34",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/d0d38a06-2f14-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":11,
@@ -92,7 +95,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 4",
          "collection_frequency": "87",
          "warning": "",
-         "truck_plate_no": "07 MVS 35"
+         "truck_plate_no": "07 MVS 35",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/1e63dc1d-2f12-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":18,
@@ -116,7 +120,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 5",
          "collection_frequency": "44",
          "warning": "",
-         "truck_plate_no": "07 MVS 36"
+         "truck_plate_no": "07 MVS 36",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/ab0dd707-2f11-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":21,
@@ -139,7 +144,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 6",
          "collection_frequency": "37",
          "warning": "",
-         "truck_plate_no": "07 MVS 33"
+         "truck_plate_no": "07 MVS 33",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/523a5943-2f11-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":14,
@@ -162,7 +168,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 7",
          "collection_frequency": "63",
          "warning": "",
-         "truck_plate_no": "07 MVS 35"
+         "truck_plate_no": "07 MVS 35",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/076b2966-2f11-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":20,
@@ -185,7 +192,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 8",
          "collection_frequency": "67",
          "warning": "4 gündür toplanmadı",
-         "truck_plate_no": "07 MVS 38"
+         "truck_plate_no": "07 MVS 38",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/9aa3049f-2f10-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":12,
@@ -208,7 +216,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 9",
          "collection_frequency": "32",
          "warning": "1 haftadır toplanmadı",
-         "truck_plate_no": "07 MVS 34"
+         "truck_plate_no": "07 MVS 34",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/0fede2de-2f10-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":19,
@@ -231,7 +240,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 10",
          "collection_frequency": "95",
          "warning": "",
-         "truck_plate_no": "07 MVS 35"
+         "truck_plate_no": "07 MVS 35",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/3081a519-2f10-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":10,
@@ -254,7 +264,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 11",
          "collection_frequency": "56",
          "warning": "",
-         "truck_plate_no": "07 MVS 33"
+         "truck_plate_no": "07 MVS 33",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/48be907b-2f08-11ec-af20-b827eb0aadac.mp4"
       },
       {
          "rftag_id":17,
@@ -277,7 +288,8 @@ module.exports = {
          "location": "Test Cd. Örnek Mh. No: 12",
          "collection_frequency": "27",
          "warning": "",
-         "truck_plate_no": "07 MVS 34"
+         "truck_plate_no": "07 MVS 34",
+         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/48be907b-2f08-11ec-af20-b827eb0aadac.mp4"
       }
    ],
    messages: function(){

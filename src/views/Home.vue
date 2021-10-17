@@ -264,25 +264,23 @@ export default {
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
         var popupContent = `
-        <div class="videoCard">
-          <table>
-            <tr>
-              <td>Tip</td>
-              <td>${data.type == 'winch' ? 'Vinç' : 'Kamyon'}</td>
-            </tr>
-            <tr>
-              <td>Plaka No</td>
-              <td>${data.plate_no}</td>
-            </tr>
-            <tr>
-              <td>Şoför</td>
-              <td>${data.driver_name}</td>
-            </tr>
-            <tr>
-              <td>Günlük toplanan konteyner sayısı</td>
-              <td>${data.collected_container_count}</td>
-            </tr>
-          </table>
+        <div class="card">
+          <div class="card-body">
+            <table>
+              <tr>
+                <td class="text-bold">TİP</td>
+                <td>${data.type == 'winch' ? 'Vinç' : 'Kamyon'}</td>
+              </tr>
+              <tr>
+                <td class="text-bold">PLAKA NO</td>
+                <td>${data.plate_no}</td>
+              </tr>
+              <tr>
+                <td class="text-bold">ŞOFÖR</td>
+                <td>${data.driver_name}</td>
+              </tr>
+            </table>
+          </div>
         </div>
         `
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
@@ -312,26 +310,31 @@ export default {
             prefix: 'fa'
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
-        //var formattedDate = utilsHelper.dateFormat(data.last_event);
-        var formattedDate = this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss');
         var popupContent = `
-        <div class="videoCard">
+        <div class="card videoCard">
             <video class="tagVideo" controls autoplay>
-                <source  src="https://media.giphy.com/media/LcGFscTzOn9xm/giphy.mp4" type="video/mp4" autoplay loop>
+                <source src="${data.video_url}" type="video/mp4" autoplay loop>
                 secure connection could not be established
             </video>
-            <div style="height:24px">
-              <span class="badge badge-light-success" style="float:left">
-                Toplandı
-              </span>
-              <span class="badge badge-light-danger" style="float:right">
-                Toplanmadı
-              </span>
-            </div>
-            <strong>Son Okunma Tarihi</strong>
-            <hr/>
-            <div class="hour">${formattedDate.split(' ')[1]}</div>
-            <div class="date">${formattedDate.split(' ')[0]}</div>
+            <div class="card-body">
+              <table>
+                <tr>
+                  <td class="text-bold">DURUM</td>
+                  <td>
+                    <span class="badge badge-light-${data.status == 'collected' ? 'success' : 'danger'}" style="float:left">
+                      ${data.status == 'collected' ? 'Toplandı' : 'Toplanmadı'}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">SON TOPLANMA TARİHİ</td>
+                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
+                </tr>
+                <tr>
+                  <td class="text-bold">SON OKUNMA TARİHİ</td>
+                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
+                </tr>
+              </table>
             </div>
         </div>
         `
@@ -362,13 +365,19 @@ export default {
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
         var popupContent = `
-        <div class="videoCard">
-          <table>
-            <tr>
-              <td>Title</td>
-              <td>${data.ult_title}</td>
-            </tr>
-          </table>
+        <div class="card">
+          <div class="card-body">
+            <table>
+              <tr>
+                <td class="text-bold">İsim</td>
+                <td>${data.ult_title}</td>
+              </tr>
+              <tr>
+                <td class="text-bold">Doluluk</td>
+                <td>${data.filled_rate}%</td>
+              </tr>
+            </table>
+          </div>
         </div>
         `
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
@@ -409,24 +418,15 @@ export default {
         });
         var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
         var popupContent = `
-        <div class="videoCard">
-            <video class="tagVideo" controls autoplay>
-                <source  src="https://media.giphy.com/media/LcGFscTzOn9xm/giphy.mp4" type="video/mp4" autoplay loop>
-                secure connection could not be established
-            </video>
-            <div style="height:24px">
-              <span class="badge badge-light-success" style="float:left">
-                Toplandı
-              </span>
-              <span class="badge badge-light-danger" style="float:right">
-                Toplanmadı
-              </span>
-            </div>
-            <strong>Son Okunma Tarihi</strong>
-            <hr/>
-            <div class="hour">qwwqe</div>
-            <div class="date">qwdwq</div>
-            </div>
+        <div class="card">
+          <div class="card-body">
+            <table>
+              <tr>
+                <td class="text-bold">İsim</td>
+                <td>${data.recycle_title}</td>
+              </tr>
+            </table>
+          </div>
         </div>
         `
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
@@ -473,33 +473,32 @@ export default {
 }
 
 .mapPopup {
-    /*
-    width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 0px;*/
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  min-width: 250px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.mapPopup .card {
+  margin-bottom: 0;
+}
+.mapPopup .card table {
+  width: 100%;
+}
+.mapPopup .text-bold {
+  font-weight: bold;
 }
 
-.mapPopup .leaflet-popup-content-wrapper {
-    width: 250px;
-    height: 250px;
-    padding: 0;
+.dumpsterPopup .leaflet-popup-content-wrapper {
+  width: 350px;
+  padding: 0;
 }
 
 .mapPopup .leaflet-popup-content {
-    margin: 0;
+  margin: 0;
 }
 
 .mapPopup video.tagVideo {
     width: 100%;
     border-radius: 5px 5px 0 0;
     margin-bottom: 5px;
-}
-
-.mapPopup .videoCard {
-    text-align: center;
 }
 
 .mapPopup .videoCard strong {

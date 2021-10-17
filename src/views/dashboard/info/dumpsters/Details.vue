@@ -34,13 +34,21 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Kamyon</h4>
-            <b-card-text class="mb-0">{{ details.truck_plate_no }}</b-card-text>
+            <b-card-text class="mb-0">
+                <b-badge variant="light-info" @click="showTruck">
+                    <feather-icon
+                        icon="TruckIcon"
+                        class="mr-25"
+                    />
+                    <span>{{ details.truck_plate_no }}</span>
+                </b-badge>
+            </b-card-text>
         </b-media>
     </div>
 </template>
 
 <script>
-import {BCardText, BMediaBody, BMedia, BMediaAside, BAvatar} from 'bootstrap-vue';
+import {BCardText, BMediaBody, BMedia, BMediaAside, BAvatar, BBadge} from 'bootstrap-vue';
 
 export default {
     components: {
@@ -48,7 +56,8 @@ export default {
         BMediaBody,
         BMedia,
         BMediaAside,
-        BAvatar
+        BAvatar,
+        BBadge
     },
 
     data(){
@@ -65,12 +74,22 @@ export default {
 
     methods: {
         showTruck(){
-            console.log('going to truck')
+            let trucks = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
+            let filtered = trucks.filter(truck => truck.data.plate_no == this.details.truck_plate_no);
+            if (filtered.length){
+                filtered[0].marker.fireEvent('click');
+            }
+            else {
+                console.log('bulunamadı')
+            }
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    .badge.badge-light-info {
+        margin-top: 5px;
+        cursor: pointer;
+    }
 </style>
