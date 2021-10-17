@@ -13,9 +13,16 @@
 
             <!-- bottom aligned tabs -->
             <ul role="tablist">
+                <!--
                 <li @click="showInfo">
                     <a data-toggle="modal">
                         <i class="fa fa-info"></i>
+                    </a>
+                </li>
+                -->
+                <li>
+                    <a>
+                        <img class="customerLogo" src="https://seeklogo.com/images/B/bodrum-belediyesi-logo-82326D761F-seeklogo.com.png" alt="Bodrum Logo">
                     </a>
                 </li>
             </ul>
@@ -145,4 +152,9 @@ export default {
 
 <style lang="scss">
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css);
+
+.customerLogo {
+    width: 35px;
+    height: 35px;
+}
 </style>

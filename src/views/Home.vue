@@ -357,9 +357,22 @@ export default {
             'height' : '300',
             'className': 'mapPopup containerPopup'
         };
+        var markerColor;
+        if (data.filled_rate < 25){
+          markerColor = 'green-light';
+        }
+        else if ((data.filled_rate >= 25) && (data.filled_rate < 50)){
+          markerColor = 'green-dark';
+        }
+        else if ((data.filled_rate >= 50) && (data.filled_rate < 75)){
+          markerColor = 'orange';
+        }
+        else if ((data.filled_rate >= 75) && (data.filled_rate <= 100)){
+          markerColor = 'red';
+        }
         var markerIcon = L.ExtraMarkers.icon({
             icon: 'fa-archive',
-            markerColor: 'violet',
+            markerColor,
             shape: 'star',
             prefix: 'fa'
         });

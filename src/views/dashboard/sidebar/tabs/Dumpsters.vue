@@ -39,9 +39,9 @@
                                     />
                                 </span>
                                 <span>{{ dumpster.data.rftag_title }}</span>
-                                <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.last_statu == 'R' ? 'danger' : 'success')">
+                                <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.status == 'collected' ? 'success' : 'danger')">
                                     <feather-icon
-                                    :icon="dumpster.data.last_statu == 'R' ? 'AlertTriangleIcon' : 'AwardIcon'"
+                                    :icon="dumpster.data.status == 'collected' ? 'AwardIcon' : 'AlertTriangleIcon'"
                                     size="16"
                                     />
                                 </b-badge>
@@ -91,14 +91,7 @@ export default {
         dumpsters: function(){
             let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
             if (this.filteredType.length){
-                return markers.filter(marker => {
-                    if (this.filteredType == 'notCollected'){
-                        return marker.data.last_statu == 'R'
-                    }
-                    else {
-                        return marker.data.last_statu != 'R'
-                    }
-                })
+                return markers.filter(marker => marker.data.status == this.filteredType);
             }
             return markers;
         }
@@ -137,11 +130,11 @@ export default {
 
         getCount(type){
             let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
-            if (type == 'notCollected'){
-                return markers.filter(dumpster => dumpster.data.last_statu == 'R').length
+            if (type == 'collected'){
+                return markers.filter(dumpster => dumpster.data.status == 'collected').length
             }
             else {
-                return markers.filter(dumpster => dumpster.data.last_statu != 'R').length
+                return markers.filter(dumpster => dumpster.data.status == 'notCollected').length
             }
         }
     }
