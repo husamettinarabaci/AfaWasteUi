@@ -1,11 +1,12 @@
 <template>
     <div @click="hideSidebar">
+        <h4 class="card-title">Günlük Doluluk Oranı</h4>
         <div class="pie-text text-center">
-      <h2 class="font-weight-bolder">
-        {{ $store.state.dashboard.markers.filter(marker => marker.type == 'ult').length }}
-      </h2>
-      <span class="font-weight-bold">Toplam</span>
-    </div>
+            <h2 class="font-weight-bolder">
+                {{ $store.state.dashboard.markers.filter(marker => marker.type == 'ult').length }}
+            </h2>
+            <span class="font-weight-bold">Toplam</span>
+        </div>
         <app-echart-doughnut :series="series" />
     </div>
 </template>
@@ -72,7 +73,7 @@ export default {
     margin: auto;
     left: 0;
     right: 0;
-    top: 44%;
+    top: 50%;
     bottom: 0;
   }
   }

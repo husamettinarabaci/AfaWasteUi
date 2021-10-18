@@ -6,8 +6,8 @@
                     <font-awesome-icon icon="dumpster-fire"/>
                 </b-avatar>
             </template>
-            <h4 class="media-heading">Isı Oranı</h4>
-            <b-card-text class="mb-0">{{ details.heat_rate }}%</b-card-text>
+            <h4 class="media-heading">Sıcaklık Değeri</h4>
+            <b-card-text class="mb-0">{{ details.heat_rate }}&#8451;</b-card-text>
         </b-media>
         <b-media vertical-align="center">
             <template #aside>
@@ -87,7 +87,8 @@ export default {
 
     methods: {
         showModal(){
-            this.$bvModal.show('containersInfoModal')
+            this.$bvModal.show('containersInfoModal');
+            this.$store.state.dashboard.sidebar.object.close();
         }
     }
 }

@@ -178,7 +178,7 @@ export default {
           map.removeLayer(markerGroups.recycles);
           break;
         case 'dumpsters':
-          this.$store.commit('dashboard/setInfoCurrent', '');
+          this.$store.commit('dashboard/setInfoCurrent', 'Dumpsters');
           map.removeLayer(markerGroups.trucks.truck);
           map.removeLayer(markerGroups.trucks.winch);
           map.addLayer(markerGroups.rfTags.collected);
@@ -202,7 +202,7 @@ export default {
           map.removeLayer(markerGroups.recycles);
           break;
         case 'recycles':
-          this.$store.commit('dashboard/setInfoCurrent', '');
+          this.$store.commit('dashboard/setInfoCurrent', 'Recycles');
           map.removeLayer(markerGroups.trucks.truck);
           map.removeLayer(markerGroups.trucks.winch);
           map.removeLayer(markerGroups.rfTags.collected);
@@ -258,7 +258,7 @@ export default {
         };
         var markerIcon = L.ExtraMarkers.icon({
             icon: 'fa-truck',
-            markerColor: 'orange',
+            markerColor: data.type == 'truck' ? 'orange' : 'orange-dark',
             shape: 'square',
             prefix: 'fa'
         });
@@ -379,7 +379,7 @@ export default {
           markerColor = 'green-dark';
         }
         else if ((data.filled_rate >= 50) && (data.filled_rate < 75)){
-          markerColor = 'orange';
+          markerColor = 'yellow';
         }
         else if ((data.filled_rate >= 75) && (data.filled_rate <= 100)){
           markerColor = 'red';
@@ -396,12 +396,14 @@ export default {
           <div class="card-body">
             <table>
               <tr>
-                <td class="text-bold">İsim</td>
+                <td class="text-bold">Konteyner ID</td>
                 <td>${data.ult_title}</td>
               </tr>
               <tr>
-                <td class="text-bold">Doluluk</td>
-                <td>${data.filled_rate}%</td>
+                <td class="text-bold">Doluluk Oranı</td>
+                <td>
+                  <span class="badge badge-light-${this.computeVariant(data.filled_rate)}">${data.filled_rate}%</span>
+                </td>
               </tr>
             </table>
           </div>
@@ -456,7 +458,7 @@ export default {
           <div class="card-body">
             <table>
               <tr>
-                <td class="text-bold">İsim</td>
+                <td class="text-bold">Konteyner ID</td>
                 <td>${data.recycle_title}</td>
               </tr>
             </table>
@@ -498,7 +500,14 @@ export default {
 
       this.$store.commit('dashboard/setMarkerGroups', this.markerGroups);
       
-    }
+    },
+
+    computeVariant(percent){
+        if (percent < 25) return 'success';
+        else if ((percent >= 25) && (percent < 50)) return 'info';
+        else if ((percent >= 50) && (percent < 75)) return 'warning';
+        else if ((percent >= 75) && (percent <= 100)) return 'danger';
+    },
   }
 }
 </script>

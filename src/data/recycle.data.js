@@ -8,7 +8,7 @@ module.exports = [
         "recycle_title": "GD1",
         "plastic_count": "31",
         "glass_count": "23",
-        "metal_count": "21",
+        "metal_count": "0",
         "location": "Test Cd. Örnek Mh. No:45"
     },
     {
@@ -19,7 +19,7 @@ module.exports = [
 
         "recycle_title": "GD2",
         "plastic_count": "59",
-        "glass_count": "65",
+        "glass_count": "0",
         "metal_count": "39",
         "location": "Test Cd. Örnek Mh. No:12"
     },
@@ -30,7 +30,7 @@ module.exports = [
         "last_gps_time":"2021-08-03T06:26:59.497Z",
 
         "recycle_title": "GD3",
-        "plastic_count": "82",
+        "plastic_count": "0",
         "glass_count": "46",
         "metal_count": "19",
         "location": "Test Cd. Örnek Mh. No:18"

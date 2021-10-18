@@ -36,7 +36,8 @@ import {
   faDumpster,
   faTrashRestore,
   faCalendarCheck,
-  faWineBottle
+  faWineBottle,
+  faTree
 
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -56,7 +57,8 @@ library.add(
   faDumpster,
   faTrashRestore,
   faCalendarCheck,
-  faWineBottle
+  faWineBottle,
+  faTree
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

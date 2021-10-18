@@ -1,27 +1,45 @@
 <template>
     <div class="recyclesContent">
         <b-row class="match-height">
-            <b-col md="6" xl="6" class="cardCol">
-                <b-card bg-variant="primary" text-variant="white">
-                    <b-avatar class="mb-1" variant="light-warning" size="45">
-                        <feather-icon size="21" icon="AwardIcon"/>
+            <b-col md="4" xl="4" class="cardCol">
+                <b-card 
+                :bg-variant="filteredType == 'plastic' ? 'warning' : ''" 
+                :text-variant="filteredType == 'plastic' ? 'white' : ''" 
+                @click="filteredType == 'plastic' ? (filteredType = '') : (filteredType = 'plastic')">
+                    <b-avatar class="mb-1" variant="light-primary" size="45">
+                        <font-awesome-icon icon="wine-bottle"/>
                     </b-avatar>
-                    <b-card-title class="text-white">213</b-card-title>
-                    <b-card-text>Toplanan Şişe Sayısı</b-card-text>
+                    <b-card-title :class="{'text-white': filteredType == 'plastic'}">{{ getCount('plastic') }}</b-card-title>
+                    <b-card-text>Plastik</b-card-text>
                 </b-card>
             </b-col>
-            <b-col md="6" xl="6" class="cardCol">
-                <b-card bg-variant="success" text-variant="white">
+            <b-col md="4" xl="4" class="cardCol">
+                <b-card 
+                :bg-variant="filteredType == 'glass' ? 'success' : ''" 
+                :text-variant="filteredType == 'glass' ? 'white' : ''" 
+                @click="filteredType == 'glass' ? (filteredType = '') : (filteredType = 'glass')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
-                        <feather-icon size="21" icon="AwardIcon"/>
+                        <font-awesome-icon icon="wine-bottle"/>
                     </b-avatar>
-                    <b-card-title class="text-white">123</b-card-title>
-                    <b-card-text>Kurtarılan ağaç sayısı</b-card-text>
+                    <b-card-title :class="{'text-white': filteredType == 'glass'}">{{ getCount('glass') }}</b-card-title>
+                    <b-card-text>Cam</b-card-text>
+                </b-card>
+            </b-col>
+            <b-col md="4" xl="4" class="cardCol">
+                <b-card 
+                :bg-variant="filteredType == 'metal' ? 'info' : ''" 
+                :text-variant="filteredType == 'metal' ? 'white' : ''" 
+                @click="filteredType == 'metal' ? (filteredType = '') : (filteredType = 'metal')">
+                    <b-avatar class="mb-1" variant="light-primary" size="45">
+                        <font-awesome-icon icon="wine-bottle"/>
+                    </b-avatar>
+                    <b-card-title :class="{'text-white': filteredType == 'metal'}">{{ getCount('metal') }}</b-card-title>
+                    <b-card-text>Metal</b-card-text>
                 </b-card>
             </b-col>
         </b-row>
         <b-row>
-            <b-col xl="12" md="12">
+            <b-col xl="12" md="12" class="recyclesCol">
                 <b-list-group class="recycleList">
                     <div v-if="recycles.length">
                         <transition-group name="fade" tag="div">
@@ -50,6 +68,17 @@
                 </b-list-group>
             </b-col>
         </b-row>
+        <b-row>
+            <b-col md="12" xl="12" class="cardCol infoCol">
+                <b-card bg-variant="success" text-variant="white">
+                    <b-avatar class="mb-1 treeIcon" size="45" variant="light-dark">
+                        <font-awesome-icon icon="tree"/>
+                    </b-avatar>
+                    <b-card-title class="text-white">123</b-card-title>
+                    <b-card-text>Kurtarılan ağaç sayısı</b-card-text>
+                </b-card>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
@@ -70,12 +99,17 @@ export default {
 
     data(){
         return {
+            filteredType: ''
         }
     },
 
     computed: {
         recycles: function(){
-            return this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle')
+            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            if (this.filteredType.length){
+                return markers.filter(marker => parseInt(marker.data[`${this.filteredType}_count`]) > 0);
+            }
+            return markers;
         }
     },
 
@@ -86,6 +120,26 @@ export default {
             setTimeout(function(){
                 ult.marker.disablePermanentHighlight();
             }, 5000)
+        },
+
+        getCount(type){
+            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            return all.filter(marker => parseInt(marker.data[`${type}_count`]) > 0).length;
+            //var count = 0;
+            //all.forEach(recycle => {
+            //    switch(type){
+            //        case 'plastic':
+            //            count += parseInt(recycle.data.plastic_count);
+            //            break;
+            //        case 'glass':
+            //            count += parseInt(recycle.data.glass_count);
+            //            break;
+            //        case 'metal':
+            //            count += parseInt(recycle.data.metal_count);
+            //            break;
+            //    }
+            //});
+            //return count;
         }
     }
 }
@@ -94,6 +148,9 @@ export default {
 <style scoped>
 .recyclesContent {
     padding: 20px 0;
+}
+.cardCol, .recyclesCol {
+    padding: 0 5px;
 }
 .quoteCol {
     padding: 3px 5px 10px;
@@ -107,6 +164,12 @@ export default {
 }
 .cardCol .card-title {
     margin-bottom: .3rem;
+}
+.infoCol {
+    margin-top: 15px;
+}
+.treeIcon {
+    color: #fff;
 }
 
 </style>
