@@ -19,7 +19,7 @@
                 :text-variant="filteredType == 'collected' ? 'white' : ''" 
                 @click="filteredType == 'collected' ? (filteredType = '') : (filteredType = 'collected')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
-                        <feather-icon size="21" icon="AwardIcon"/>
+                        <feather-icon size="21" icon="CheckIcon"/>
                     </b-avatar>
                     <b-card-title :class="{'text-white': filteredType == 'collected'}">{{ getCount('collected') }}</b-card-title>
                     <b-card-text>Toplanan</b-card-text>
@@ -33,15 +33,12 @@
                         <transition-group name="fade" tag="div">
                             <b-list-group-item class="d-flex cursor-pointer" v-for="(dumpster, id) in dumpsters" :key="id" @click="getDetails(dumpster)">
                                 <span class="mr-1">
-                                    <feather-icon
-                                    :icon="dumpster.icon"
-                                    size="16"
-                                    />
+                                    <font-awesome-icon icon="dumpster"/>
                                 </span>
                                 <span>{{ dumpster.data.rftag_title }}</span>
                                 <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.status == 'collected' ? 'success' : 'danger')">
                                     <feather-icon
-                                    :icon="dumpster.data.status == 'collected' ? 'AwardIcon' : 'AlertTriangleIcon'"
+                                    :icon="dumpster.data.status == 'collected' ? 'CheckIcon' : 'AlertTriangleIcon'"
                                     size="16"
                                     />
                                 </b-badge>

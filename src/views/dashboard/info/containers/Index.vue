@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @click="hideSidebar">
         <div class="pie-text text-center">
       <h2 class="font-weight-bolder">
         {{ $store.state.dashboard.markers.filter(marker => marker.type == 'ult').length }}
@@ -52,6 +52,12 @@ export default {
             obj.data.push({value: all.filter(ult => ((ult.data.filled_rate >= 50) && (ult.data.filled_rate < 75))).length, name: 'Orta Dolu'})
             obj.data.push({value: all.filter(ult => ((ult.data.filled_rate >= 75) && (ult.data.filled_rate <= 100))).length, name: 'Dolu'})
             return [obj];
+        }
+    },
+
+    methods: {
+        hideSidebar(){
+            this.$store.state.dashboard.sidebar.object.close()
         }
     }
 }

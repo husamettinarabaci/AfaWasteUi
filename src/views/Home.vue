@@ -214,7 +214,7 @@ export default {
           map.addLayer(markerGroups.recycles);
           break;
         default:
-          this.$store.commit('dashboard/setInfoCurrent', '');
+          //this.$store.commit('dashboard/setInfoCurrent', '');
           map.addLayer(markerGroups.trucks.truck);
           map.addLayer(markerGroups.trucks.winch);
           map.addLayer(markerGroups.rfTags.collected);
@@ -288,7 +288,14 @@ export default {
           self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
           self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
-          self.$store.commit('dashboard/setInfoCurrent', '');
+          if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
+            self.$store.commit('dashboard/setInfoCurrent', '');
+          }
+          else {
+            if (self.$store.state.dashboard.sidebar.currentTab == 'trucks'){
+              self.$store.commit('dashboard/setInfoCurrent', '');
+            }
+          }
         })
         this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
         this.markers.trucks[data.type].push(marker);
@@ -344,7 +351,14 @@ export default {
           self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
           self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
-          self.$store.commit('dashboard/setInfoCurrent', '');
+          if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
+            self.$store.commit('dashboard/setInfoCurrent', '');
+          }
+          else {
+            if (self.$store.state.dashboard.sidebar.currentTab == 'dumpsters'){
+              self.$store.commit('dashboard/setInfoCurrent', '');
+            }
+          }
         });
         this.markers.rfTags[data.status].push(marker);
       });
@@ -398,7 +412,14 @@ export default {
           self.$store.commit('dashboard/setInfoCurrent', 'ContainerDetails');
           self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
-          self.$store.commit('dashboard/setInfoCurrent', '');
+          if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
+            self.$store.commit('dashboard/setInfoCurrent', '');
+          }
+          else {
+            if (self.$store.state.dashboard.sidebar.currentTab == 'containers'){
+              self.$store.commit('dashboard/setInfoCurrent', '');
+            }
+          }
         });
         this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_title'], data, marker});
         if (data.filled_rate < 25){
@@ -447,7 +468,14 @@ export default {
           self.$store.commit('dashboard/setInfoCurrent', 'RecycleDetails');
           self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
-          self.$store.commit('dashboard/setInfoCurrent', '');
+          if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
+            self.$store.commit('dashboard/setInfoCurrent', '');
+          }
+          else {
+            if (self.$store.state.dashboard.sidebar.currentTab == 'recycles'){
+              self.$store.commit('dashboard/setInfoCurrent', '');
+            }
+          }
         });
         this.$store.commit('dashboard/addMarker', {type: 'recycle', icon: 'RefreshCwIcon', searchableFields: ['recycle_id'], data, marker});
         this.markers.recycles.push(marker);

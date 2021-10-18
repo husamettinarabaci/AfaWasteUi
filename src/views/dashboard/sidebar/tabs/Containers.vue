@@ -28,7 +28,9 @@
                         </div>
                     </b-avatar>
                     <b-card-title :class="{'text-white': filteredType == data.type}">{{ getCount(data.type) }}</b-card-title>
-                    <b-card-text>{{ data.text }}</b-card-text>
+                    <b-card-text :class="{'text-white': filteredType == data.type}">
+                        <b-badge :variant="filteredType == data.type ? 'light-dark' : `light-${data.bg}`">{{ data.text }}</b-badge>
+                    </b-card-text>
                 </b-card>
             </b-col>
         </b-row>
@@ -81,7 +83,7 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BAvatar, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress } from 'bootstrap-vue'
 
 export default {
     components: {
@@ -89,6 +91,7 @@ export default {
         BCol,
         BCard,
         BAvatar,
+        BBadge,
         BCardText,
         BCardTitle,
         BListGroup,
@@ -252,6 +255,9 @@ export default {
         padding: 3px 5px 10px;
         font-size: 10px;
         font-style: italic;
+    }
+    .text-white .badge {
+        color: #fff !important;
     }
 
 
