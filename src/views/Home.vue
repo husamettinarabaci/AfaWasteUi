@@ -35,6 +35,15 @@ import trucksData from '../data/trucks.data';
 import ultData from '../data/ult.data';
 import recycleData from '../data/recycle.data';
 
+// Icons
+import TruckIcon from '../assets/images/icon/afatek-icon-05.png';
+import WinchIcon from '../assets/images/icon/afatek-icon-04.png';
+
+import ContainerEmptyIcon from '../assets/images/icon/afatek-icon-06.png';
+import ContainerLittleIcon from '../assets/images/icon/afatek-icon-07.png';
+import ContainerMediumIcon from '../assets/images/icon/afatek-icon-08.png';
+import ContainerFullIcon from '../assets/images/icon/afatek-icon-09.png';
+
 
 export default {
   components: {
@@ -257,7 +266,8 @@ export default {
             'className': 'mapPopup truckPopup'
         };
         var markerIcon = L.ExtraMarkers.icon({
-            icon: 'fa-truck',
+            //icon: 'fa-truck',
+            innerHTML: `<img src="${data.type == 'truck' ? TruckIcon : WinchIcon}"/>`,
             markerColor: data.type == 'truck' ? 'orange' : 'orange-dark',
             shape: 'square',
             prefix: 'fa'
@@ -371,21 +381,26 @@ export default {
             'height' : '300',
             'className': 'mapPopup containerPopup'
         };
-        var markerColor;
+        var markerColor, markerHTML;
         if (data.filled_rate < 25){
           markerColor = 'green-light';
+          markerIcon = ContainerEmptyIcon;
         }
         else if ((data.filled_rate >= 25) && (data.filled_rate < 50)){
           markerColor = 'green-dark';
+          markerIcon = ContainerLittleIcon;
         }
         else if ((data.filled_rate >= 50) && (data.filled_rate < 75)){
           markerColor = 'yellow';
+          markerIcon = ContainerMediumIcon;
         }
         else if ((data.filled_rate >= 75) && (data.filled_rate <= 100)){
           markerColor = 'red';
+          markerIcon = ContainerFullIcon;
         }
         var markerIcon = L.ExtraMarkers.icon({
-            icon: 'fa-archive',
+            //icon: 'fa-archive',
+            innerHTML: `<img src="${markerIcon}"/>`,
             markerColor,
             shape: 'star',
             prefix: 'fa'
@@ -564,5 +579,11 @@ export default {
 .mapPopup .videoCard .hour {
     font-size: 2rem;
     font-weight: bold;
+}
+.leaflet-marker-icon img {
+  width: 30px;
+  height: 30px;
+  margin-left: 3px;
+  margin-top: 2px;
 }
 </style>

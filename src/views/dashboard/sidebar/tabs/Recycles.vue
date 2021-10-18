@@ -7,7 +7,7 @@
                 :text-variant="filteredType == 'plastic' ? 'white' : ''" 
                 @click="filteredType == 'plastic' ? (filteredType = '') : (filteredType = 'plastic')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
-                        <font-awesome-icon icon="wine-bottle"/>
+                        <img :src="filteredType == 'plastic' ? icons.plasticWhite : icons.plastic" alt="">
                     </b-avatar>
                     <b-card-title :class="{'text-white': filteredType == 'plastic'}">{{ getCount('plastic') }}</b-card-title>
                     <b-card-text>Plastik</b-card-text>
@@ -19,7 +19,7 @@
                 :text-variant="filteredType == 'glass' ? 'white' : ''" 
                 @click="filteredType == 'glass' ? (filteredType = '') : (filteredType = 'glass')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
-                        <font-awesome-icon icon="wine-bottle"/>
+                        <img :src="filteredType == 'glass' ? icons.glassWhite : icons.glass" alt="">
                     </b-avatar>
                     <b-card-title :class="{'text-white': filteredType == 'glass'}">{{ getCount('glass') }}</b-card-title>
                     <b-card-text>Cam</b-card-text>
@@ -31,7 +31,7 @@
                 :text-variant="filteredType == 'metal' ? 'white' : ''" 
                 @click="filteredType == 'metal' ? (filteredType = '') : (filteredType = 'metal')">
                     <b-avatar class="mb-1" variant="light-primary" size="45">
-                        <font-awesome-icon icon="wine-bottle"/>
+                        <img :src="filteredType == 'metal' ? icons.metalWhite : icons.metal" alt="">
                     </b-avatar>
                     <b-card-title :class="{'text-white': filteredType == 'metal'}">{{ getCount('metal') }}</b-card-title>
                     <b-card-text>Metal</b-card-text>
@@ -85,6 +85,14 @@
 <script>
 import { BRow, BCol, BCard, BAvatar, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
 
+// Icons
+import PlasticIcon from '../../../../assets/images/icon/afatek-icon-12.png';
+import GlassIcon from '../../../../assets/images/icon/afatek-icon-10.png';
+import MetalIcon from '../../../../assets/images/icon/afatek-icon-11.png';
+import PlasticIconWhite from '../../../../assets/images/icon/afatek-icon-03.png';
+import GlassIconWhite from '../../../../assets/images/icon/afatek-icon-01.png';
+import MetalIconWhite from '../../../../assets/images/icon/afatek-icon-02.png';
+
 export default {
     components: {
         BRow,
@@ -99,6 +107,14 @@ export default {
 
     data(){
         return {
+            icons: {
+                plastic: PlasticIcon,
+                plasticWhite: PlasticIconWhite,
+                glass: GlassIcon,
+                glassWhite: GlassIconWhite,
+                metal: MetalIcon,
+                metalWhite: MetalIconWhite
+            },
             filteredType: ''
         }
     },
@@ -170,6 +186,10 @@ export default {
 }
 .treeIcon {
     color: #fff;
+}
+.b-avatar-custom img {
+  width: 40px;
+  height: 40px;
 }
 
 </style>

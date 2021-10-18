@@ -6,7 +6,8 @@
             <ul role="tablist">
                 <li v-for="tab in tabs" :key="tab.id" :data-tab="tab.id" :ref="'tab-' + tab.id" @click="tabChanged(tab)">
                     <a :href="'#' + tab.id" role="tab">
-                        <i :class="tab.icon"></i>
+                        <i v-if="tab.icon.length" :class="tab.icon"></i>
+                        <img class="iconImg" v-else :src="currentTab == tab.id ? tab.imgWhite : tab.img"/>
                     </a>
                 </li>
             </ul>
@@ -64,6 +65,12 @@ import Dumpsters from './tabs/Dumpsters';
 import Containers from './tabs/Containers';
 import Recycles from './tabs/Recycles';
 
+// Icons
+import TruckIcon from '../../../assets/images/icon/afatek-icon-14.png';
+import ContainerIcon from '../../../assets/images/icon/afatek-icon-15.png';
+import TruckIconWhite from '../../../assets/images/icon/afatek-icon-05.png';
+import ContainerIconWhite from '../../../assets/images/icon/afatek-icon-06.png';
+
 
 export default {
     components: {
@@ -100,7 +107,10 @@ export default {
                 },
                 {
                     id: 'trucks',
-                    icon: 'fa fa-truck',
+                    //icon: 'fa fa-truck',
+                    icon: '',
+                    img: TruckIcon,
+                    imgWhite: TruckIconWhite,
                     content: 'Trucks',
                     title: 'Kamyonlar'
                 },
@@ -112,7 +122,10 @@ export default {
                 },
                 {
                     id: 'containers',
-                    icon: 'fa fa-archive',
+                    //icon: 'fa fa-archive',
+                    icon: '',
+                    img: ContainerIcon,
+                    imgWhite: ContainerIconWhite,
                     content: 'Containers',
                     title: 'Doluluk Sensörleri'
                 },
@@ -123,6 +136,12 @@ export default {
                     title: 'Geri Dönüşüm Cihazları'
                 }
             ],
+        }
+    },
+
+    computed: {
+        currentTab: function(){
+            return this.$store.state.dashboard.sidebar.currentTab;
         }
     },
 
@@ -156,5 +175,10 @@ export default {
 .customerLogo {
     width: 35px;
     height: 35px;
+}
+.iconImg {
+    width: 30px;
+    height: 30px;
+    margin-left: 2px;
 }
 </style>

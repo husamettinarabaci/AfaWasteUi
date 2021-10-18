@@ -18,14 +18,7 @@
                     :variant="`light-${data.bg}`"
                     size="45"
                     >
-                        <div class="battery-wrapper1">
-                            <div :class="`battery-part-big level-${data.type} ${filteredType == data.type ? 'active' : ''}`">
-                                <div class="battery-power battery-power-1"></div>
-                                <div class="battery-power battery-power-2"></div>
-                                <div class="battery-power battery-power-3"></div>
-                                <div class="battery-power battery-power-4"></div>
-                            </div>
-                        </div>
+                        <img :src="filteredType == data.type ? data.imgWhite : data.img" alt="">
                     </b-avatar>
                     <b-card-title :class="{'text-white': filteredType == data.type}">{{ getCount(data.type) }}</b-card-title>
                     <b-card-text :class="{'text-white': filteredType == data.type}">
@@ -85,6 +78,16 @@
 <script>
 import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress } from 'bootstrap-vue'
 
+// Icons
+import EmptyIcon from '../../../../assets/images/icon/afatek-icon-15.png';
+import LittleIcon from '../../../../assets/images/icon/afatek-icon-16.png';
+import MediumIcon from '../../../../assets/images/icon/afatek-icon-17.png';
+import FullIcon from '../../../../assets/images/icon/afatek-icon-18.png';
+import EmptyIconWhite from '../../../../assets/images/icon/afatek-icon-06.png';
+import LittleIconWhite from '../../../../assets/images/icon/afatek-icon-07.png';
+import MediumIconWhite from '../../../../assets/images/icon/afatek-icon-08.png';
+import FullIconWhite from '../../../../assets/images/icon/afatek-icon-09.png';
+
 export default {
     components: {
         BRow,
@@ -103,10 +106,38 @@ export default {
         return {
             filteredType: '',
             types: [
-                { bg: 'success', text: '0% - 25%', alt: 'Boş', type: 'empty'},
-                { bg: 'info', text: '25% - 50%', alt: 'Az Dolu', type: 'little'},
-                { bg: 'warning', text: '50% - 75%', alt: 'Orta Dolu', type: 'medium'},
-                { bg: 'danger', text: '75% - 100%', alt: 'Dolu', type: 'full'}
+                { 
+                    bg: 'success', 
+                    text: '0% - 25%', 
+                    alt: 'Boş', 
+                    type: 'empty',
+                    img: EmptyIcon,
+                    imgWhite: EmptyIconWhite
+                },
+                { 
+                    bg: 'info', 
+                    text: '25% - 50%', 
+                    alt: 'Az Dolu', 
+                    type: 'little',
+                    img: LittleIcon,
+                    imgWhite: LittleIconWhite
+                },
+                { 
+                    bg: 'warning', 
+                    text: '50% - 75%', 
+                    alt: 'Orta Dolu', 
+                    type: 'medium',
+                    img: MediumIcon,
+                    imgWhite: MediumIconWhite
+                },
+                { 
+                    bg: 'danger', 
+                    text: '75% - 100%', 
+                    alt: 'Dolu', 
+                    type: 'full',
+                    img: FullIcon,
+                    imgWhite: FullIconWhite
+                }
             ],
         }
     },
@@ -259,66 +290,11 @@ export default {
     .text-white .badge {
         color: #fff !important;
     }
+    .b-avatar-custom img {
+        width: 40px;
+        height: 40px;
+    }
 
-
-    /*Battery*/
-    .battery-wrapper1{
-        /*margin:50px auto 0;*/
-        width:30px;
-        height:15px;
-        display:grid;
-        grid-template-columns:repeat(2, 1fr);
-    }
-    .battery-part-big{
-        width:30px;
-        height:15px;
-        border:1px solid #ccc;
-        /*background:#5E5E5E;*/
-        background: transparent;
-        border-radius:3px;
-    }
-    .battery-part-big.active {
-        border-color: #fff;
-    }
-    .battery-power{
-        width: 6px;
-        height:11px;
-        /*margin:5px 0 0 5px;*/
-        margin: 1px 0 0 1px;
-        display:inline-block;
-    }
-    .level-empty .battery-power-1 {
-        background: rgba(82,177,82);
-    }
-    .level-empty .battery-power-2, .level-empty .battery-power-3, .level-empty .battery-power-4 {
-        opacity: 0;
-    }
-    .level-little .battery-power-1, .level-little .battery-power-2 {
-        background:rgb(145,232,66);
-        border-radius:3px 0 0 3px;
-    }
-    .level-little .battery-power-3, .level-little .battery-power-4 {
-        opacity: 0;
-    }
-    .level-medium .battery-power-1, .level-medium .battery-power-2, .level-medium .battery-power-3 {
-        background: rgb(255,103,15);
-    }
-    .level-medium .battery-power-4 {
-        opacity: 0;
-    }
-    .level-full .battery-power-1, .level-full .battery-power-2, .level-full .battery-power-3, .level-full .battery-power-4 {
-        background: rgb(255,5,5);
-    }
-    .battery-power-1{
-        /*background: rgb(255,5,5);*/
-        border-radius:3px 0 0 3px;
-        /*animation:battery-power-1 2s 0s infinite;*/
-    }
-    .battery-power-4{
-        /*background: rgba(82,177,82);*/
-        /*animation:battery-power-4 2s 0s infinite;*/
-        border-radius:0 3px 3px 0;
-    }
     .bg-success, .bg-info, .bg-warning, .bg-danger {
         transition: all ease .2s; 
     }
