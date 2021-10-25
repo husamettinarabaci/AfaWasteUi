@@ -26,8 +26,8 @@ import "leaflet.marker.highlight";
 import "leaflet.marker.highlight/dist/leaflet.marker.highlight.css";
 
 // Map Layers
-import Sidebar from './dashboard/sidebar/Index';
-import Info from './dashboard/info/Index';
+import Sidebar from './map/sidebar/Index';
+import Info from './map/info/Index';
 
 // Get datas
 import rfTagsData from '../data/rfTags.data';
