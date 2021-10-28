@@ -7,6 +7,12 @@
       <navbar :toggle-vertical-menu-active="toggleVerticalMenuActive" />
     </template>
 
+    <template #footer>
+      <div class="footer-text">
+        Afatek &copy; {{ $moment().year() }}
+      </div>
+    </template>
+
     <!-- <app-customizer
       v-if="showCustomizer"
       slot="customizer"
@@ -33,3 +39,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+  .footer-text {
+    text-align: center;
+  }
+</style>
