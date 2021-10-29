@@ -1,12 +1,21 @@
 <template>
-    <div>
-        Containers
-    </div>
+    <b-row>
+        <b-col lg="12">
+            <list/>
+        </b-col>
+    </b-row>
 </template>
 
 <script>
-export default {
+import {BRow, BCol} from 'bootstrap-vue';
+import List from '@/components/panel/containers/List.vue';
 
+export default {
+    components: {
+        BRow,
+        BCol,
+        List
+    }
 }
 </script>
 
