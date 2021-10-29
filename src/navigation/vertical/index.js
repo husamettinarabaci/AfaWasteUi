@@ -5,6 +5,9 @@ export default [
     icon: 'HomeIcon',
   },
   {
+    header: 'Details',
+  },
+  {
     title: 'Containers',
     route: 'containers',
     icon: 'HomeIcon',
@@ -13,6 +16,9 @@ export default [
     title: 'Trucks',
     route: 'trucks',
     icon: 'TruckIcon',
+  },
+  {
+    header: 'CRUD',
   },
   {
     title: 'Users',
@@ -35,6 +41,9 @@ export default [
         route: 'reportsList',
       }
     ],
+  },
+  {
+    header: 'System',
   },
   {
     title: 'Settings',
