@@ -33,9 +33,12 @@
                 </b-card>
             </b-col>
         </b-row>
-        <b-row>
-            <b-col lg="12">
-                <list/>
+        <b-row class="match-height">
+            <b-col lg="6">
+                <container-list/>
+            </b-col>
+            <b-col lg="6">
+                <container-map :devices="filteredContainers"/>
             </b-col>
         </b-row>
     </div>
@@ -43,7 +46,9 @@
 
 <script>
 import {BRow, BCol, BCard, BCardBody, BFormDatepicker, BButtonGroup, BButton} from 'bootstrap-vue';
-import List from '@/components/panel/containers/List.vue';
+import ContainerList from '@/components/panel/devices/containers/ContainerList.vue';
+import ContainerMap from '@/components/panel/devices/containers/ContainerMap.vue';
+import rfTagsData from '@/data/rfTags.data';
 
 export default {
     components: {
@@ -54,7 +59,8 @@ export default {
         BFormDatepicker,
         BButtonGroup, 
         BButton,
-        List
+        ContainerList,
+        ContainerMap
     },
 
     data(){
@@ -65,17 +71,21 @@ export default {
     },
 
     computed: {
-
+        filteredContainers: function(){
+            return rfTagsData.tags.filter(tag => tag.status == this.filteredStatus);
+        }
     },
 
     watch: {
         'currentDate': function(newVal, oldVal){
             let date = new Date(newVal);
-            console.log('currentDate: ', date.toISOString())
         }
     }
 }
 </script>
 
 <style scoped>
+.dropdown-menu.show {
+    z-index: 999;
+}
 </style>

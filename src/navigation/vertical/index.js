@@ -5,7 +5,7 @@ export default [
     icon: 'HomeIcon',
   },
   {
-    header: 'Details',
+    header: 'Devices',
   },
   {
     title: 'Containers',
@@ -18,7 +18,17 @@ export default [
     icon: 'TruckIcon',
   },
   {
-    header: 'CRUD',
+    header: 'Management',
+  },
+  {
+    title: 'Container List',
+    route: 'containersManagement',
+    icon: 'HomeIcon',
+  },
+  {
+    title: 'Truck List',
+    route: 'trucksManagement',
+    icon: 'TruckIcon',
   },
   {
     title: 'Users',

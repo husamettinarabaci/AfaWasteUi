@@ -24,6 +24,22 @@ export default [
         }
     },
     {
+        path: '/containers/management',
+        name: 'containersManagement',
+        component: () => import('@/views/panel/ContainersManagement'),
+        meta: {
+            layout: 'default'
+        }
+    },
+    {
+        path: '/trucks/management',
+        name: 'trucksManagement',
+        component: () => import('@/views/panel/TrucksManagement'),
+        meta: {
+            layout: 'default'
+        }
+    },
+    {
         path: '/users/list',
         name: 'usersList',
         component: () => import('@/views/panel/users/List'),
