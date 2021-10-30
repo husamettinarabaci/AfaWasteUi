@@ -5,7 +5,7 @@
             <b-row>
                 <!-- Per Page -->
                 <b-col cols="12" md="6" class="d-flex align-items-center justify-content-start mb-1 mb-md-0">
-                    <label>Entries</label>
+                    <label>Göster</label>
                     <v-select
                         v-model="perPage"
                         :options="perPageOptions"
@@ -20,7 +20,7 @@
                         <b-form-input
                         v-model="searchQuery"
                         class="d-inline-block mr-1"
-                        placeholder="Search..."
+                        placeholder="Ara..."
                         />
                     </div>
                 </b-col>

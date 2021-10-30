@@ -39,6 +39,7 @@ export default {
     data(){
         return {
             map: null,
+            items: [],
             markers: [],
             markersLayer: null,
             url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
@@ -54,10 +55,17 @@ export default {
 
     watch: {
         'devices': function(newVal, oldVal){
+            this.items = newVal;
             this.markers = [];
-            this.markersLayer.clearLayers();
+            if (this.markersLayer){
+                this.markersLayer.clearLayers();
+            }
             this.attachMarkers(this.map)
         }
+    },
+
+    created(){
+        this.items = this.devices;
     },
 
     methods: {
@@ -67,7 +75,7 @@ export default {
         },
 
         attachMarkers(map){
-            this.devices.forEach(device => {
+            this.items.forEach(device => {
                 const popupOptions = {
                     'maxWidth': '500',
                     'width' : '250',

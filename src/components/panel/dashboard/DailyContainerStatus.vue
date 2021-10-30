@@ -22,7 +22,7 @@
             size="16"
             :class="stock.color"
             />
-            <span class="font-weight-bold ml-75 mr-25">{{ stock.device }}</span>
+            <span class="font-weight-bold ml-75 mr-25 cursor-pointer" @click="$router.push({name: 'containers', params: {status: stock.status}})">{{ stock.device }}</span>
             <span>- {{ stock.percentage }}%</span>
         </div>
         <div>
@@ -111,10 +111,20 @@ export default {
             },
             stockData: [
                 {
-                device: 'Toplanan', symbol: 'MonitorIcon', color: 'text-success', percentage: 80, upDown: 2,
+                    device: 'Toplanan', 
+                    symbol: 'MonitorIcon', 
+                    color: 'text-success', 
+                    percentage: 80, 
+                    upDown: 2,
+                    status: 'collected',
                 },
                 {
-                device: 'Toplanmayan', symbol: 'TabletIcon', color: 'text-danger', percentage: 10, upDown: 8,
+                    device: 'Toplanmayan', 
+                    symbol: 'TabletIcon', 
+                    color: 'text-danger', 
+                    percentage: 10, 
+                    upDown: 8,
+                    status: 'notCollected',
                 },
             ],
         }

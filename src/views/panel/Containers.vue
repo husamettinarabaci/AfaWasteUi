@@ -6,7 +6,8 @@
                     <b-card-body>
                         <b-row>
                             <b-col lg="6">
-                                Toplanan Konteynerlar - {{ $moment(currentDate).format('Do MMMM dddd') }}
+                                <strong>{{ filteredStatus == 'collected' ? 'Toplanan' : 'Toplanmayan'}}</strong>
+                                Konteynerlar - {{ $moment(currentDate).format('Do MMMM dddd') }}
                             </b-col>
                             <b-col lg="6">
                                 <b-row>
@@ -79,6 +80,13 @@ export default {
     watch: {
         'currentDate': function(newVal, oldVal){
             let date = new Date(newVal);
+            console.log('date changing to: ', date.toISOString())
+        }
+    },
+
+    created(){
+        if (this.$route.params.status){
+            this.filteredStatus = this.$route.params.status;
         }
     }
 }
