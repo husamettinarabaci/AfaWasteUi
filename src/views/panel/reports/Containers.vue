@@ -1,6 +1,6 @@
 <template>
     <div>
-        Report lists
+        Admin - Konteyner Raporları
     </div>
 </template>
 

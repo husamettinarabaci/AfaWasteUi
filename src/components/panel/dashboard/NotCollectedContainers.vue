@@ -3,7 +3,7 @@
         <b-card-header>
             <div>
                 <b-card-title class="mb-1">
-                Son 7 Günde Toplanmayan Konteynerlar
+                En Az 7 Gün Toplanmayan Konteynerlar
                 </b-card-title>
             </div>
         </b-card-header>
@@ -11,38 +11,28 @@
         <!-- chart -->
         <b-card-body>
             <b-table
-                small
-                :fields="fields"
-                :items="items"
-                responsive="sm"
-                >
-                <!-- A virtual column -->
-                <template #cell(index)="data">
-                    {{ data.index + 1 }}
+            small
+            :fields="fields"
+            :items="sortedItems"
+            responsive="sm"
+            >
+                <!-- Column: Container No -->
+                <template #cell(container_no)="data">
+                    <router-link :to="{name: 'containersDetails', params: {query: data.value}}">
+                        {{ data.value }}
+                    </router-link>
                 </template>
 
-                <!-- A custom formatted column -->
-                <template #cell(name)="data">
-                    {{ data.value.first+' - '+ data.value.last }}
-                </template>
-
-                <template #cell(order_status)="data">
-                    <b-badge
-                    pill
-                    :variant="data.value.variant"
-                    >
-                    {{ data.value.status }}
-                    </b-badge>
-                </template>
-
-                <!-- A virtual composite column -->
-                <template #cell(price)="data">
-                    {{ '$'+data.value }}
-                </template>
-
-                <!-- Optional default data cell scoped slot -->
-                <template #cell()="data">
+                <!-- Column: Title -->
+                <template #cell(rftag_title)="data">
                     {{ data.value }}
+                </template>
+
+                <!-- Column: Container No -->
+                <template #cell(last_event)="data">
+                    <b-badge pill variant="light-danger" :title="data.value">
+                        {{ $moment(data.value).fromNow() }}
+                    </b-badge>
                 </template>
             </b-table>
         </b-card-body>
@@ -51,6 +41,7 @@
 
 <script>
 import { BCard, BCardHeader, BCardTitle, BCardText, BCardBody, BTable, BBadge } from 'bootstrap-vue'
+import rfTagsData from '@/data/rfTags.data';
 
 export default {
     components: {
@@ -65,50 +56,20 @@ export default {
 
     data(){
         return {
-
+            items: rfTagsData.tags.filter(tag => tag.status == 'notCollected'),
             fields: [
-                // A virtual column that doesn't exist in items
-                'index',
-                // A column that needs custom formatting
-                { key: 'name', label: 'Name' },
-                'Category',
-                // A regular column
-                { key: 'order_status', label: 'Order Status' },
-                // A virtual column made up from two fields
-                { key: 'price', label: 'Price' },
+                {key: 'container_no', label: 'Konteyner NO'},
+                {key: 'rftag_title', label: 'Title'},
+                {key: 'last_event', label: 'Son Toplanma'}
             ],
-            items: [
-                {
-                name: { first: 'Fitbit', last: 'Activity Tracker' },
-                Category: 'Fitness',
-                order_status: { status: 'Delivered', variant: 'light-success' },
-                price: 99.99,
-                },
-                {
-                name: { first: 'Fitbit ', last: 'Flex Wireless Activity' },
-                Category: 'Fitness',
-                order_status: { status: 'Pending', variant: 'light-primary' },
-                price: 89.85,
-                },
-                {
-                name: { first: 'Fitbit', last: 'Sleep Tracker Wristband' },
-                Category: 'Fitness',
-                order_status: { status: 'Delivered', variant: 'light-success' },
-                price: 65.25,
-                },
-                {
-                name: { first: 'Fitbit', last: 'Sleep Wristband' },
-                Category: 'Fitness',
-                order_status: { status: 'On Hold', variant: 'light-warning' },
-                price: 75.55,
-                },
-                {
-                name: { first: 'Fitbit', last: 'Clip for Zip Wireless Activity Trackers' },
-                Category: 'Fitness',
-                order_status: { status: 'Canceled', variant: 'light-danger' },
-                price: 105.55,
-                },
-            ],
+        }
+    },
+
+    computed: {
+        sortedItems: function(){
+            return this.items.sort((a,b) => {
+                return new Date(a.last_event) - new Date(b.last_event);
+            });
         }
     }
 }

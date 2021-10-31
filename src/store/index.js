@@ -7,6 +7,7 @@ import appConfig from './app-config'
 import verticalMenu from './vertical-menu'
 
 import dashboard from './dashboard'
+import panel from './panel'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     app,
     appConfig,
     verticalMenu,
-    dashboard
+    dashboard,
+    panel
   },
   strict: process.env.DEV,
 })

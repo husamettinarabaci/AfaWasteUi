@@ -24,6 +24,30 @@ export default [
         }
     },
     {
+        path: '/containers/details',
+        name: 'containersDetails',
+        component: () => import('@/views/panel/details/Container'),
+        meta: {
+            layout: 'default'
+        }
+    },
+    {
+        path: '/containers/reports',
+        name: 'containersReports',
+        component: () => import('@/views/panel/reports/Containers'),
+        meta: {
+            layout: 'default'
+        }
+    },
+    {
+        path: '/containers/daily-reports',
+        name: 'containersDailyReports',
+        component: () => import('@/views/panel/reports/ContainersDailyReports'),
+        meta: {
+            layout: 'default'
+        }
+    },
+    {
         path: '/containers/management',
         name: 'containersManagement',
         component: () => import('@/views/panel/ContainersManagement'),
@@ -43,14 +67,6 @@ export default [
         path: '/users/list',
         name: 'usersList',
         component: () => import('@/views/panel/users/List'),
-        meta: {
-            layout: 'default'
-        }
-    },
-    {
-        path: '/reports/list',
-        name: 'reportsList',
-        component: () => import('@/views/panel/reports/List'),
         meta: {
             layout: 'default'
         }

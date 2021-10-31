@@ -39,21 +39,21 @@
         :sort-desc.sync="isSortDirDesc"
         class="position-relative"
         >
-            <!-- Column: Container No -->
-            <template #cell(container_no)="data">
-                {{ data.value }}
+            <!-- Column: collected_at -->
+            <template #cell(collected_at)="data">
+                {{ $moment(data.value).format('Do MMMM YYYY - HH:mm') }}
             </template>
 
-            <!-- Column: Title -->
-            <template #cell(rftag_title)="data">
-                {{ data.value }}
-            </template>
-
-            <!-- Column: Container No -->
-            <template #cell(status)="data">
-                <b-badge pill :variant="`light-${data.value == 'collected' ? 'success' : 'danger'}`">
-                    {{ data.value == 'collected' ? 'Toplandı' : 'Toplanmadı' }}
+            <!-- Column: truck_plate_no -->
+            <template #cell(truck_plate_no)="data">
+                <b-badge pill variant="light-primary">
+                    {{ data.value }}
                 </b-badge>
+            </template>
+
+            <!-- Column: truck_driver_name -->
+            <template #cell(truck_driver_name)="data">
+                {{ data.value }}
             </template>
         </b-table>
         <div class="mx-2 mb-2">
@@ -105,13 +105,13 @@
 </template>
 
 <script>
-import { BCard, BRow, BCol, BFormInput, BTable, BBadge, BPagination } from 'bootstrap-vue'
+import { BCard, BRow, BCol, BFormInput, BTable, BBadge, BPagination } from 'bootstrap-vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
 export default {
-    props: ['devices'],
-
+    props: ['container'],
+    
     components: {
         BCard,
         BRow,
@@ -131,9 +131,9 @@ export default {
             perPageOptions: [5, 10, 15, 20, 25, 50],
             searchQuery: '',
             fields: [
-                {key: 'container_no', label: 'Konteyner NO'},
-                {key: 'rftag_title', label: 'Title'},
-                {key: 'status', label: 'Son Durum'}
+                {key: 'collected_at', label: 'Tarih Saat'},
+                {key: 'truck_plate_no', label: 'Plaka'},
+                {key: 'truck_driver_name', label: 'Şoför'}
             ],
             sortBy: 'rftag_title',
             isSortDirDesc: true,
@@ -144,22 +144,15 @@ export default {
     computed: {
         filteredItems: function(){
             if (this.searchQuery){
-                return this.items.filter(item => item.container_no.includes(this.searchQuery))
+                return this.items.filter(item => item.truck_plate_no.includes(this.searchQuery))
             }
             return this.items;
         }
     },
 
-    watch: {
-        'devices': function(newVal, oldVal){
-            this.items = newVal;
-            this.totalItems = newVal.length;
-        }
-    },
-
     created(){
-        this.items = this.devices;
-        this.totalItems = this.devices.length;
+        this.items = this.container.history;
+        this.totalItems = this.container.history.length;
     }
 }
 </script>

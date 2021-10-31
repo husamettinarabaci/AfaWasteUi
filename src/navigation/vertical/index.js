@@ -1,3 +1,5 @@
+
+
 export default [
   {
     title: 'Dashboard',
@@ -16,6 +18,19 @@ export default [
     title: 'Trucks',
     route: 'trucks',
     icon: 'TruckIcon',
+  },
+  {
+    header: 'Reports'
+  },
+  {
+    title: 'Daily',
+    route: 'containersDailyReports',
+    icon: 'HomeIcon'
+  },
+  {
+    title: 'All',
+    route: 'containersReports',
+    icon: 'HomeIcon'
   },
   {
     header: 'Management',
@@ -39,16 +54,6 @@ export default [
       {
         title: 'Users',
         route: 'usersList',
-      }
-    ],
-  },
-  {
-    title: 'Reports',
-    icon: 'UserIcon',
-    children: [
-      {
-        title: 'Report List',
-        route: 'reportsList',
       }
     ],
   },
