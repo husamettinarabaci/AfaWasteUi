@@ -9,7 +9,7 @@
       <l-tile-layer :url="url" />
       <sidebar/>
       <l-control v-if="showInfo" position="topright">
-        <info/>
+        <info @showTrucks="showTrucks"/>
       </l-control>
     </l-map>
   </div>
@@ -523,6 +523,11 @@ export default {
         else if ((percent >= 50) && (percent < 75)) return 'warning';
         else if ((percent >= 75) && (percent <= 100)) return 'danger';
     },
+
+    showTrucks(){
+      //this.$store.commit('dashboard/setCurrentTab', 'trucks');
+      //this.$store.state.dashboard.sidebar.object._tabitems[2].click();
+    }
   }
 }
 </script>

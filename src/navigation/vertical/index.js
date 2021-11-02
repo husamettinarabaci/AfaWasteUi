@@ -1,6 +1,4 @@
-
-
-export default [
+let items =  [
   {
     title: 'Dashboard',
     route: 'dashboard',
@@ -66,3 +64,5 @@ export default [
     icon: 'SettingsIcon',
   }
 ]
+
+export default items;

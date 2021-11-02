@@ -77,6 +77,7 @@ export default {
             let trucks = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
             let filtered = trucks.filter(truck => truck.data.plate_no == this.details.truck_plate_no);
             if (filtered.length){
+                this.$emit('showTrucks');
                 filtered[0].marker.fireEvent('click');
             }
             else {

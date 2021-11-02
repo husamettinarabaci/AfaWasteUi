@@ -32,6 +32,14 @@ export default [
         }
     },
     {
+        path: '/trucks/details',
+        name: 'trucksDetails',
+        component: () => import('@/views/panel/details/Truck'),
+        meta: {
+            layout: 'default'
+        }
+    },
+    {
         path: '/containers/reports',
         name: 'containersReports',
         component: () => import('@/views/panel/reports/Containers'),

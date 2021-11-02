@@ -1,6 +1,6 @@
 <template>
     <b-card class="infoContent">
-        <component :is="layout"/>
+        <component :is="layout" @showTrucks="$emit('showTrucks')"/>
     </b-card>
 </template>
 
