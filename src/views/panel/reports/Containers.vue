@@ -27,6 +27,9 @@ export default {
         return {
             devices: rfTagsData.tags
         }
+    },
+
+    methods: {
     }
 }
 </script>

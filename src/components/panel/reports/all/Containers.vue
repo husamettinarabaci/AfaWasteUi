@@ -111,6 +111,7 @@
 import { BCard, BRow, BCol, BFormInput, BTable, BBadge, BPagination } from 'bootstrap-vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
+import axios from 'axios';
 
 export default {
     props: ['devices'],
@@ -164,6 +165,9 @@ export default {
     created(){
         this.items = this.devices;
         this.totalItems = this.devices.length;
+    },
+
+    methods: {
     }
 }
 </script>
