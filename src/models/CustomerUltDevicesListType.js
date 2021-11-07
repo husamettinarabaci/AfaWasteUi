@@ -4,6 +4,6 @@ export default class CustomerUltDevicesListType {
         this.Devices = [];             // UltDeviceType
     }
     static from(json){
-        Object.assign(new CustomerUltDevicesListType(), json);
+        return Object.assign(new CustomerUltDevicesListType(), json);
     }
   }

@@ -4,6 +4,6 @@ export default class CustomerTagsListType {
         this.Tags = [];             // TagType
     }
     static from(json){
-        Object.assign(new CustomerTagsListType(), json);
+        return Object.assign(new CustomerTagsListType(), json);
     }
   }

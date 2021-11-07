@@ -31,6 +31,13 @@ import GeneralSummary from '@/components/panel/dashboard/GeneralSummary.vue';
 import DailyContainerStatus from '@/components/panel/dashboard/DailyContainerStatus.vue';
 import WeeklyContainerStatus from '@/components/panel/dashboard/WeeklyContainerStatus.vue';
 import NotCollectedContainers from '@/components/panel/dashboard/NotCollectedContainers.vue';
+import WebApi from '@/services/webapi.service';
+import ResultType from '@/models/ResultType';
+import CustomerRfidDevicesListType from '@/models/CustomerRfidDevicesListType';
+import CustomerRecyDevicesListType from '@/models/CustomerRecyDevicesListType';
+import CustomerUltDevicesListType from '@/models/CustomerUltDevicesListType';
+import CustomerTagsListType from '@/models/CustomerTagsListType';
+import Enums from '@/config/system.enums';
 
 export default {
     components: {
@@ -44,10 +51,53 @@ export default {
 
     data() {
         return {
-
+            
         }
     },
+
+    created(){
+        WebApi.getCustomer().then(response => {
+            let res = ResultType.from(response.data);
+            if (res.Result == Enums.RESULT_OK){
+                this.$store.commit('panel/setCustomer', JSON.parse(res.Retval));
+            }
+        })
+
+        WebApi.getDevices(Enums.DEVICETYPE_RFID).then(response => {
+            let res = ResultType.from(response.data);
+            if (res.Result == Enums.RESULT_OK){
+                let d = CustomerRfidDevicesListType.from(JSON.parse(res.Retval));
+                this.$store.commit('panel/setRfidDevices', d.Devices);
+            }
+        })
+
+        WebApi.getDevices(Enums.DEVICETYPE_RECY).then(response => {
+            let res = ResultType.from(response.data);
+            if (res.Result == Enums.RESULT_OK){
+                let d = CustomerRecyDevicesListType.from(JSON.parse(res.Retval));
+                this.$store.commit('panel/setRecyDevices', d.Devices);
+            }
+        })
+
+        WebApi.getDevices(Enums.DEVICETYPE_ULT).then(response => {
+            let res = ResultType.from(response.data);
+            if (res.Result == Enums.RESULT_OK){
+                let d = CustomerUltDevicesListType.from(JSON.parse(res.Retval));
+                this.$store.commit('panel/setUltDevices', d.Devices);
+            }
+        })
+
+        WebApi.getTags().then(response => {
+            let res = ResultType.from(response.data);
+            if (res.Result == Enums.RESULT_OK){
+                let d = CustomerTagsListType.from(JSON.parse(res.Retval));
+                console.log('tags: ', d)
+                this.$store.commit('panel/setTags', d.Tags);
+            }
+        })
+    }
 }
+
 </script>
 
 <style>

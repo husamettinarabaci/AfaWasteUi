@@ -5,6 +5,6 @@ export default class CustomerRecyDevicesListType {
       this.Devices = null; // RecyDeviceType
     }
       static from(json){
-          Object.assign(new CustomerRecyDevicesListType(), json);
+          return Object.assign(new CustomerRecyDevicesListType(), json);
       }
 }
