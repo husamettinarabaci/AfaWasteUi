@@ -8,6 +8,6 @@ export default class UltDeviceSensType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceSensType(), json);
+        return Object.assign(new UltDeviceSensType(), json);
     }
 }

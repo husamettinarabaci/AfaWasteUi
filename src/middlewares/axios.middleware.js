@@ -10,8 +10,13 @@ axios.interceptors.request.use(config => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    config.headers.ContentType = 'application/x-www-form-urlencoded';
-    config.data = qs.stringify(config.data);
+    config.headers = {
+      ...config.headers,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+    if (config.data){
+      config.data = qs.stringify(config.data);
+    }
     return config;
 });
 
@@ -26,3 +31,5 @@ axios.interceptors.response.use(response => {
   }
   return Promise.reject(error);
 });
+
+export default axios;

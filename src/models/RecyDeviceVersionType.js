@@ -13,6 +13,6 @@ export default class RecyDeviceVersionType {
     }
 
     static from(json){
-        Object.assign(new RecyDeviceVersionType(), json);
+        return Object.assign(new RecyDeviceVersionType(), json);
     }
 }

@@ -19,6 +19,6 @@ export default class VersionType {
     }
 
     static from(json){
-        Object.assign(new VersionType(), json);
+        return Object.assign(new VersionType(), json);
     }
 }

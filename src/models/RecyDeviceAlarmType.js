@@ -8,6 +8,6 @@ export default class RecyDeviceAlarmType {
         this.NewData = nul;     // bool
     }
     static from(json){
-        Object.assign(new RecyDeviceAlarmType(), json);
+        return Object.assign(new RecyDeviceAlarmType(), json);
     }
   }

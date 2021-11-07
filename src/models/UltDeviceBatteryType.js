@@ -8,6 +8,6 @@ export default class UltDeviceBatteryType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceBatteryType(), json);
+        return Object.assign(new UltDeviceBatteryType(), json);
     }
 }

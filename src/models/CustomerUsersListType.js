@@ -4,6 +4,6 @@ export default class CustomerUsersListType {
         this.Users = [];             // UserTYpe
     }
     static from(json){
-        Object.assign(new CustomerUsersListType(), json);
+        return Object.assign(new CustomerUsersListType(), json);
     }
   }

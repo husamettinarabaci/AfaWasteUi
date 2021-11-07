@@ -1,11 +1,14 @@
 export default {
+        // ResultType
         RESULT_FAIL: "FAIL",
         RESULT_OK  : "OK",
         RESULT_NOT : "NOT",
 
+        // Status Type
         STATU_ACTIVE : "ACTIVE",
         STATU_PASSIVE: "PASSIVE",
 
+        // Request body details
         HTTP_HEADER    : "HEADER",
         HTTP_DATA      : "DATA",
         HTTP_CHECKTYPE : "CHECKTYPE",
@@ -15,6 +18,7 @@ export default {
         HTTP_DATATYPE  : "DATATYPE",
         HTTP_READERTYPE: "READERTYPE",
 
+        
         LOGGER_CONTAINER: "CONTAINER",
         LOGGER_LOGTYPE  : "LOGTYPE",
         LOGGER_FUNC     : "FUNC",
@@ -63,11 +67,12 @@ export default {
         RFID_APPTYPE_THERM   : "THERM",
         RFID_APPTYPE_SYSTEM  : "SYSTEM",
 
-        CONTINER_FULLNESS_STATU_NONE : "NONE",
-        CONTINER_FULLNESS_STATU_EMPTY: "EMPTY",
-        CONTINER_FULLNESS_STATU_HALF : "HALF",
-        CONTINER_FULLNESS_STATU_FULL : "FULL",
-        CONTINER_FULLNESS_STATU_ERROR: "ERROR",
+
+        CONTAINER_FULLNESS_STATU_NONE : "NONE",
+        CONTAINER_FULLNESS_STATU_EMPTY: "EMPTY",
+        CONTAINER_FULLNESS_STATU_LITTLE : "LITTLE",
+        CONTAINER_FULLNESS_STATU_MEDIUM : "MEDIUM",
+        CONTAINER_FULLNESS_STATU_ERROR: "ERROR",
 
         TAG_STATU_NONE : "NONE",
         TAG_STATU_ERROR: "ERROR",

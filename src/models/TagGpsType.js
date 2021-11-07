@@ -8,6 +8,6 @@ export default class TagGpsType {
     }
 
     static from(json){
-        Object.assign(new TagGpsType(), json);
+        return Object.assign(new TagGpsType(), json);
     }
 }

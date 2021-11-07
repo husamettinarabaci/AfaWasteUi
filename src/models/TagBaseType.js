@@ -7,6 +7,6 @@ export default class TagBaseType {
     }
 
     static from(json){
-        Object.assign(new TagBaseType(), json);
+        return Object.assign(new TagBaseType(), json);
     }
 }

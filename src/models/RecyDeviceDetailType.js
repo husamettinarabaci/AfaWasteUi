@@ -11,6 +11,6 @@ export default class RecyDeviceDetailType {
         this.NewData = null;           //bool
     }
     static from(json){
-        Object.assign(new RecyDeviceDetailType(), json);
+        return Object.assign(new RecyDeviceDetailType(), json);
     }
   }

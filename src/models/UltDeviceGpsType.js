@@ -8,6 +8,6 @@ export default class UltDeviceGpsType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceGpsType(), json);
+        return Object.assign(new UltDeviceGpsType(), json);
     }
 }

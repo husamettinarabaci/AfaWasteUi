@@ -8,6 +8,6 @@ export default class RecyDeviceThermType {
     }
 
     static from(json){
-        Object.assign(new RecyDeviceThermType(), json);
+        return Object.assign(new RecyDeviceThermType(), json);
     }
 }

@@ -11,6 +11,6 @@ export default class RfidDeviceVersionType {
         this.NewData = null;            //bool
     }
     static from(json){
-        Object.assign(new RfidDeviceVersionType(), json);
+        return Object.assign(new RfidDeviceVersionType(), json);
     }
   }

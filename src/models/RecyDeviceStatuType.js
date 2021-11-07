@@ -35,6 +35,6 @@ export default class RecyDeviceStatuType {
         this.NewData = null;               //bool
     }
     static from(json){
-        Object.assign(new RecyDeviceStatuType(), json);
+        return Object.assign(new RecyDeviceStatuType(), json);
     }
   }

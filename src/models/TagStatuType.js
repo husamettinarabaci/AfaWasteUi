@@ -9,6 +9,6 @@ export default class TagStatuType {
     }
 
     static from(json){
-        Object.assign(new TagStatuType(), json);
+        return Object.assign(new TagStatuType(), json);
     }
 }

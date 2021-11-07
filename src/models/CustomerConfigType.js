@@ -7,6 +7,6 @@ export default class CustomerConfigType {
 	this.CreateTime = null;      // string
   }
     static from(json){
-        Object.assign(new CustomerConfigType(), json);
+        return Object.assign(new CustomerConfigType(), json);
     }
 }

@@ -7,6 +7,6 @@ export default class TagReaderType {
     }
 
     static from(json){
-        Object.assign(new TagReaderType(), json);
+        return Object.assign(new TagReaderType(), json);
     }
 }

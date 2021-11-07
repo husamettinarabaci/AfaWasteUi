@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/middlewares/axios.middleware';
 import {apiUrl, webApiUrl} from '@/config/app.config';
 import HttpClientHeaderType from '@/models/HttpClientHeaderType';
 import Enums from '@/config/system.enums';
@@ -20,11 +20,7 @@ export default class WebApi {
         httpClientHeaderType.DeviceType = deviceType;
         let obj = {}
         obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
-        return axios.post(apiUrl + webApiUrl + '/getDevices', querystring.stringify(obj), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
+        return axios.post(apiUrl + webApiUrl + '/getDevices', obj)
             .then(response => {
                 return response;
             })
@@ -34,8 +30,26 @@ export default class WebApi {
     }
 
     static getTags(){
-        
+
         return axios.post(apiUrl + webApiUrl + '/getTags')
+            .then(response => {
+                return response;
+            })
+            .catch(error => {
+                return error;
+            });
+    }
+
+    static getConfig(dataType){
+        let httpClientHeaderType = new HttpClientHeaderType();
+        httpClientHeaderType.DataType = dataType;
+        let obj = {}
+        obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
+        return axios.post(apiUrl + webApiUrl + '/getConfig', querystring.stringify(obj), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
             .then(response => {
                 return response;
             })

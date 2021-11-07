@@ -7,6 +7,6 @@ export default class RfidDeviceBaseType {
     }
 
     static from(json){
-        Object.assign(new RfidDeviceBaseType(), json);
+        return Object.assign(new RfidDeviceBaseType(), json);
     }
 }

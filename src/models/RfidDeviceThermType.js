@@ -7,6 +7,6 @@ export default class RfidDeviceThermType {
         this.NewData = null;     //bool
     }
     static from(json){
-        Object.assign(new RfidDeviceThermType(), json);
+        return Object.assign(new RfidDeviceThermType(), json);
     }
   }

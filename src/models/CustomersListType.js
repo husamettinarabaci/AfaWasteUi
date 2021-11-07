@@ -3,6 +3,6 @@ export default class CustomerListType {
         this.Customers = null;      // CustomerType
     }
     static from(json){
-        Object.assign(new CustomerListType(), json);
+        return Object.assign(new CustomerListType(), json);
     }
   }

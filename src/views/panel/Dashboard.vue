@@ -56,6 +56,7 @@ export default {
     },
 
     created(){
+        /*
         WebApi.getCustomer().then(response => {
             let res = ResultType.from(response.data);
             if (res.Result == Enums.RESULT_OK){
@@ -95,6 +96,8 @@ export default {
                 this.$store.commit('panel/setTags', d.Tags);
             }
         })
+        */
+        
     }
 }
 

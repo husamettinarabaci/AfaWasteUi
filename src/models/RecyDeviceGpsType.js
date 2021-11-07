@@ -7,6 +7,6 @@ export default class RecyDeviceGpsType {
         this.NewData = null;    //bool
     }
     static from(json){
-        Object.assign(new RecyDeviceGpsType(), json);
+        return Object.assign(new RecyDeviceGpsType(), json);
     }
   }

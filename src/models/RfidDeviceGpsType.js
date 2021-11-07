@@ -9,6 +9,6 @@ export default class RfidDeviceGpsType {
     }
 
     static from(json){
-        Object.assign(new RfidDeviceGpsType(), json);
+        return Object.assign(new RfidDeviceGpsType(), json);
     }
 }

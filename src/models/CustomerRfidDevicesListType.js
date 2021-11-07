@@ -4,6 +4,6 @@ export default class CustomerRfidDevicesListType {
       this.Devices = null; // RfidDeviceType
     }
       static from(json){
-          return Object.assign(new CustomerRfidDevicesListType(), json);
+        return Object.assign(new CustomerRfidDevicesListType(), json);
       }
   }

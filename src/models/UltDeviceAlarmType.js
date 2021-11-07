@@ -9,6 +9,6 @@ export default class UltDeviceAlarmType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceAlarmType(), json);
+        return Object.assign(new UltDeviceAlarmType(), json);
     }
 }

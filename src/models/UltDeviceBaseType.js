@@ -10,6 +10,6 @@ export default class UltDeviceBaseType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceBaseType(), json);
+        return Object.assign(new UltDeviceBaseType(), json);
     }
 }

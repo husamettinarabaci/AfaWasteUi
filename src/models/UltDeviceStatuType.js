@@ -8,6 +8,6 @@ export default class UltDeviceStatuType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceStatuType(), json);
+        return Object.assign(new UltDeviceStatuType(), json);
     }
 }

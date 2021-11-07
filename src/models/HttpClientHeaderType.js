@@ -12,6 +12,6 @@ export default class HttpClientHeaderType {
         this.Token = null;      //string
     }
     static from(json){
-        Object.assign(new HttpClientHeaderType(), json);
+        return Object.assign(new HttpClientHeaderType(), json);
     }
   }

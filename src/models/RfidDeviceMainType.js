@@ -8,6 +8,6 @@ export default class RfidDeviceMainType {
     }
 
     static from(json){
-        Object.assign(new RfidDeviceMainType(), json);
+        return Object.assign(new RfidDeviceMainType(), json);
     }
 }

@@ -11,6 +11,6 @@ export default class UserType {
     }
 
     static from(json){
-        Object.assign(new UserType(), json);
+        return Object.assign(new UserType(), json);
     }
 }

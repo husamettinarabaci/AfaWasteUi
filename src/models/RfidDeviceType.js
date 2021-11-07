@@ -11,6 +11,6 @@ export default class RfidDeviceType {
         this.DeviceDetail = null;  //RfidDeviceDetailType
     }
     static from(json){
-        Object.assign(new RfidDeviceType(), json);
+        return Object.assign(new RfidDeviceType(), json);
     }
   }

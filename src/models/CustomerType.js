@@ -11,6 +11,6 @@ export default class CustomerType {
     }
 
     static from(json){
-        Object.assign(new CustomerType(), json);
+        return Object.assign(new CustomerType(), json);
     }
 }

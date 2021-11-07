@@ -12,6 +12,6 @@ export default class RecyDeviceType {
     }
 
     static from(json){
-        Object.assign(new RecyDeviceType(), json);
+        return Object.assign(new RecyDeviceType(), json);
     }
 }

@@ -7,6 +7,6 @@ export default class RecyDeviceMainType {
         this.CreateTime = null;   //string
     }
     static from(json){
-        Object.assign(new RecyDeviceMainType(), json);
+        return Object.assign(new RecyDeviceMainType(), json);
     }
   }

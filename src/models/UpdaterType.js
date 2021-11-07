@@ -8,6 +8,6 @@ export default class UpdaterType {
     }
 
     static from(json){
-        Object.assign(new UpdaterType(), json);
+        return Object.assign(new UpdaterType(), json);
     }
 }

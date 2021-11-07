@@ -8,6 +8,6 @@ export default class UltDeviceThermType {
     }
 
     static from(json){
-        Object.assign(new UltDeviceThermType(), json);
+        return Object.assign(new UltDeviceThermType(), json);
     }
 }

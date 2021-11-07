@@ -6,6 +6,6 @@ export default class AdminConfigType {
     }
 
     static from(json){
-        Object.assign(new AdminConfigType(), json);
+        return Object.assign(new AdminConfigType(), json);
     }
 }

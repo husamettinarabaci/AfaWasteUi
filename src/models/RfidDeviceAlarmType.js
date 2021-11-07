@@ -9,6 +9,6 @@ export default class RfidDeviceAlarmType {
     }
 
     static from(json){
-        Object.assign(new RfidDeviceAlarmType(), json);
+        return Object.assign(new RfidDeviceAlarmType(), json);
     }
 }

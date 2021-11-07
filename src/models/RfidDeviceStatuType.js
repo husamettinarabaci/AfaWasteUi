@@ -36,6 +36,6 @@ export default class RfidDeviceStatuType {
     }
 
     static from(json){
-        Object.assign(new RfidDeviceStatuType(), json);
+        return Object.assign(new RfidDeviceStatuType(), json);
     }
 }
