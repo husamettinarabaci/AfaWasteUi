@@ -197,4 +197,6 @@ export default {
         RESULT_ERROR_TAG_NOTFOUND                    : "TAG_NOTFOUND",
         RESULT_ERROR_TAG_CUSTOMER_NOTFOUND           : "TAG_CUSTOMER_NOTFOUND",
         RESULT_ERROR_APP_STARTED                     : "APP_STARTED",
+
+        REDIS_CUSTOMER_CHANNEL                       : "ch-customer-",
 }

@@ -90,7 +90,7 @@ export default {
         */
         WebApi.getTags().then(response => {
             let tags = response.Tags;
-            console.log('tags: ', tags);
+            //console.log('tags: ', tags);
             this.$store.commit('panel/setTags', tags);
         })
         
