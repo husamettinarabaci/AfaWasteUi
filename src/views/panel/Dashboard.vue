@@ -87,16 +87,13 @@ export default {
                 this.$store.commit('panel/setUltDevices', d.Devices);
             }
         })
-
-        WebApi.getTags().then(response => {
-            let res = ResultType.from(response.data);
-            if (res.Result == Enums.RESULT_OK){
-                let d = CustomerTagsListType.from(JSON.parse(res.Retval));
-                console.log('tags: ', d)
-                this.$store.commit('panel/setTags', d.Tags);
-            }
-        })
         */
+        WebApi.getTags().then(response => {
+            let tags = response.Tags;
+            console.log('tags: ', tags);
+            this.$store.commit('panel/setTags', tags);
+        })
+        
         
     }
 }

@@ -20,50 +20,6 @@ import '@/libs/toastification'
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { 
-  faUserSecret,
-  faInfoCircle,
-  faRoad,
-  faChartPie,
-  faTachometerAlt,
-  faClock,
-  faMapMarkedAlt,
-  faChartLine,
-  faExclamationTriangle,
-  faTruck,
-  faDumpsterFire,
-  faDumpster,
-  faTrashRestore,
-  faCalendarCheck,
-  faWineBottle,
-  faTree
-
-} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-library.add(
-  faUserSecret, 
-  faInfoCircle,
-  faRoad,
-  faChartPie,
-  faTachometerAlt,
-  faClock,
-  faMapMarkedAlt,
-  faChartLine,
-  faExclamationTriangle,
-  faTruck,
-  faDumpsterFire,
-  faDumpster,
-  faTrashRestore,
-  faCalendarCheck,
-  faWineBottle,
-  faTree
-)
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-
-
 // Composition API
 Vue.use(VueCompositionAPI)
 
