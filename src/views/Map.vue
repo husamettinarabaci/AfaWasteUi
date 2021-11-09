@@ -107,6 +107,10 @@ export default {
   computed: {
     showInfo: function(){
       return this.$store.state.dashboard.info.current.length;
+    },
+
+    socket: function(){
+      return this.$store.getters['socket/getSocket'];
     }
   },
 
@@ -237,6 +241,12 @@ export default {
       }
     },
 
+  },
+
+  created(){
+    this.socket.onmessage = function(event) {
+        console.log(JSON.parse(event.data));
+    }
   },
 
   methods: {

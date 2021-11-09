@@ -8,6 +8,7 @@ import verticalMenu from './vertical-menu'
 
 import dashboard from './dashboard'
 import panel from './panel'
+import socket from './socket'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     appConfig,
     verticalMenu,
     dashboard,
-    panel
+    panel,
+    socket
   },
   strict: process.env.DEV,
 })

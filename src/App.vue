@@ -26,6 +26,7 @@ import store from '@/store'
 const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
 const LayoutHorizontal = () => import('@/layouts/horizontal/LayoutHorizontal.vue')
 const LayoutFull = () => import('@/layouts/full/LayoutFull.vue')
+import {socketUrl} from '@/config/app.config';
 
 export default {
   components: {
@@ -68,6 +69,17 @@ export default {
     const { isRTL } = $themeConfig.layout
     document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr')
   },
+
+  created(){
+    let socket = new WebSocket(socketUrl);
+
+    this.$store.commit('socket/setSocket', socket);
+
+    socket.onopen = function() {
+        console.log('successfully connected')
+    }
+  },
+
   setup() {
     const { skin, skinClasses } = useAppConfig()
 

@@ -12,6 +12,10 @@ import moment from 'moment';
 moment.locale('tr');
 Vue.prototype.$moment = moment;
 
+import "../node_modules/@aws-amplify/ui-components";
+import Amplify from "aws-amplify";
+import awsconfig from "@/aws";
+
 // 3rd party plugins
 import '@/libs/portal-vue'
 import '@/libs/toastification'
@@ -31,6 +35,7 @@ require('@/assets/scss/style.scss')
 
 // Run bootstrap script
 import '@/bootstrap';
+import { ConsoleLogger } from '@aws-amplify/core'
 
 Vue.config.productionTip = false
 

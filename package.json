@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@aws-amplify/ui-components": "^1.9.2",
     "@casl/ability": "4.1.6",
     "@casl/vue": "1.1.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -24,6 +25,7 @@
     "@vueuse/core": "4.0.0",
     "animate.css": "4.1.1",
     "apexcharts": "3.23.0",
+    "aws-amplify": "^4.3.4",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.19.0",
     "bootstrap": "4.6.0",
