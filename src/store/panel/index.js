@@ -6,8 +6,8 @@ export default {
         customer: null,
         devices: {
             rfid: [],
-            recy: [],
-            ult: []
+            ult: [],
+            recy: []
         },
         tags: []
     },
@@ -24,12 +24,12 @@ export default {
             state.devices.rfid = rfidDevices;
         },
 
-        setRecyDevices(state, recyDevices) {
-            state.devices.recy = recyDevices;
-        },
-
         setUltDevices(state, ultDevices) {
             state.devices.ult = ultDevices;
+        },
+
+        setRecyDevices(state, recyDevices) {
+            state.devices.recy = recyDevices;
         },
 
         setTags(state, tags) {

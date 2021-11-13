@@ -24,7 +24,7 @@ module.exports = {
          "collection_frequency": "30",
          "warning": "",
          "truck_plate_no": "07 MVS 34",
-         "video_url": "http://bodrum.afatek.com.tr/cam_data/BACK/48be907b-2f08-11ec-af20-b827eb0aadac.mp4"
+         "video_url": "https://afatek-waste-videos-s3.s3.eu-central-1.amazonaws.com/WAIT_CAM/0044bd72-4173-11ec-bd3c-b827eb64f0f2.mp4",
       },
       {
          "rftag_id":15,

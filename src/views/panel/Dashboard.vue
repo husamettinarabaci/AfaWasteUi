@@ -88,12 +88,12 @@ export default {
             }
         })
         */
-        WebApi.getTags().then(response => {
-            let tags = response.Tags;
-            //console.log('tags: ', tags);
-            this.$store.commit('panel/setTags', tags);
-        })
-        
+        //WebApi.getTags().then(response => {
+        //    let tags = response.Tags;
+        //    //console.log('tags: ', tags);
+        //    this.$store.commit('panel/setTags', tags);
+        //})
+
         
     }
 }

@@ -10,9 +10,6 @@ export default class WebApi {
             .then(response => {
                 return response;
             })
-            .catch(error => {
-                return error;
-            });
     }
     
     static getDevices(deviceType){
@@ -24,9 +21,6 @@ export default class WebApi {
             .then(response => {
                 return response;
             })
-            .catch(error => {
-                return error;
-            });
     }
 
     static getTags(){
@@ -35,9 +29,6 @@ export default class WebApi {
             .then(response => {
                 return response;
             })
-            .catch(error => {
-                return error;
-            });
     }
 
     static getConfig(dataType){
@@ -53,8 +44,5 @@ export default class WebApi {
             .then(response => {
                 return response;
             })
-            .catch(error => {
-                return error;
-            });
     }
 }

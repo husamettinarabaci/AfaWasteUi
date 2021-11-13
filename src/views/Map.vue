@@ -35,6 +35,9 @@ import trucksData from '../data/trucks.data';
 import ultData from '../data/ult.data';
 import recycleData from '../data/recycle.data';
 
+// Enums
+import Enums from '@/config/system.enums';
+
 // Icons
 import TruckIcon from '../assets/images/icon/afatek-icon-05.png';
 import WinchIcon from '../assets/images/icon/afatek-icon-04.png';
@@ -241,34 +244,82 @@ export default {
       }
     },
 
-  },
-
-  created(){
-    this.socket.onmessage = function(event) {
-        console.log(JSON.parse(event.data));
-    }
-  },
-
-  methods: {
-    mapReady(map){
-      // Add sidebar to vuex state
-      this.$store.commit('dashboard/setMap', map)
-
-      //map.on('click', function(e){
-      //  console.log('latitude: ', e.latlng.lat)
-      //  console.log('longitude: ', e.latlng.lng)
-      //})
-
-      // Add markers to map
-      this.attachMarkers(map);
-
+    '$store.state.panel.tags': function(newVal, oldVal){
+      let map = this.$store.state.dashboard.map;
+      let self = this;
+      console.log('newVal: ', newVal.slice(0,5))
+      // Init trucks
+      
+      // Init rfTags - Dumpsters
+      newVal.slice(0,50).forEach(data => {
+        const popupOptions = {
+            'maxWidth': '500',
+            'width' : '250',
+            'height' : '300',
+            'className': 'mapPopup dumpsterPopup'
+        };
+        var markerIcon = L.ExtraMarkers.icon({
+            icon: 'fa-dumpster',
+            markerColor: data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'green-dark' : 'red-dark',
+            shape: 'circle',
+            prefix: 'fa'
+        });
+        var marker = L.marker([data.Latitude, data.Longitude], {icon: markerIcon, data});
+        var popupContent = `
+        <div class="card videoCard">
+            <video class="tagVideo" controls autoplay>
+                <source src="${data.video_url}" type="video/mp4" autoplay loop>
+                secure connection could not be established
+            </video>
+            <div class="card-body">
+              <table>
+                <tr>
+                  <td class="text-bold">DURUM</td>
+                  <td>
+                    <span class="badge badge-light-${data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'success' : 'danger'}" style="float:left">
+                      ${data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'Toplandı' : 'Toplanmadı'}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-bold">SON TOPLANMA TARİHİ</td>
+                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
+                </tr>
+                <tr>
+                  <td class="text-bold">SON OKUNMA TARİHİ</td>
+                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
+                </tr>
+              </table>
+            </div>
+        </div>
+        `
+        //this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no', 'rftag_title'], data, marker});
+        marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
+          map.setView(e.target.getLatLng(),5);
+          self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
+          self.$store.commit('dashboard/setInfoData', data);
+        }).on('popupclose', function(e){
+          if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
+            self.$store.commit('dashboard/setInfoCurrent', '');
+          }
+          else {
+            if (self.$store.state.dashboard.sidebar.currentTab == 'dumpsters'){
+              self.$store.commit('dashboard/setInfoCurrent', '');
+            }
+          }
+        });
+        this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
+      });
+      
+      this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
+      this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
     },
 
-    attachMarkers(map){
+    '$store.state.panel.devices.rfid': function(newVal, oldVal){
+      let map = this.$store.state.dashboard.map;
       let self = this;
-
       // Init trucks
-      this.trucks.forEach(data => {
+      newVal.slice(0,15).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -277,27 +328,28 @@ export default {
         };
         var markerIcon = L.ExtraMarkers.icon({
             //icon: 'fa-truck',
-            innerHTML: `<img src="${data.type == 'truck' ? TruckIcon : WinchIcon}"/>`,
+            //innerHTML: `<img src="${data.type == 'truck' ? TruckIcon : WinchIcon}"/>`,
+            innerHTML: `<img src="${TruckIcon}"/>`,
             markerColor: data.type == 'truck' ? 'orange' : 'orange-dark',
             shape: 'square',
             prefix: 'fa'
         });
-        var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
+        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon, data});
         var popupContent = `
         <div class="card">
           <div class="card-body">
             <table>
               <tr>
                 <td class="text-bold">TİP</td>
-                <td>${data.type == 'winch' ? 'Vinç' : 'Kamyon'}</td>
+                <td>Kamyon</td>
               </tr>
               <tr>
                 <td class="text-bold">PLAKA NO</td>
-                <td>${data.plate_no}</td>
+                <td>${data.DeviceDetail.PlateNo}</td>
               </tr>
               <tr>
                 <td class="text-bold">ŞOFÖR</td>
-                <td>${data.driver_name}</td>
+                <td>${data.DeviceDetail.DriverName}</td>
               </tr>
             </table>
           </div>
@@ -317,74 +369,21 @@ export default {
             }
           }
         })
-        this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
-        this.markers.trucks[data.type].push(marker);
+        //this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
+        this.markers.trucks.truck.push(marker);
         //this.trucksMarkers.push(marker);
       })
-      
-      // Init rfTags - Dumpsters
-      this.rfTags.forEach(data => {
-        const popupOptions = {
-            'maxWidth': '500',
-            'width' : '250',
-            'height' : '300',
-            'className': 'mapPopup dumpsterPopup'
-        };
-        var markerIcon = L.ExtraMarkers.icon({
-            icon: 'fa-dumpster',
-            markerColor: data.status == 'collected' ? 'green-dark' : 'red-dark',
-            shape: 'circle',
-            prefix: 'fa'
-        });
-        var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
-        var popupContent = `
-        <div class="card videoCard">
-            <video class="tagVideo" controls autoplay>
-                <source src="${data.video_url}" type="video/mp4" autoplay loop>
-                secure connection could not be established
-            </video>
-            <div class="card-body">
-              <table>
-                <tr>
-                  <td class="text-bold">DURUM</td>
-                  <td>
-                    <span class="badge badge-light-${data.status == 'collected' ? 'success' : 'danger'}" style="float:left">
-                      ${data.status == 'collected' ? 'Toplandı' : 'Toplanmadı'}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-bold">SON TOPLANMA TARİHİ</td>
-                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
-                </tr>
-                <tr>
-                  <td class="text-bold">SON OKUNMA TARİHİ</td>
-                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
-                </tr>
-              </table>
-            </div>
-        </div>
-        `
-        this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no', 'rftag_title'], data, marker});
-        marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
-          self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
-          self.$store.commit('dashboard/setInfoData', data);
-        }).on('popupclose', function(e){
-          if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
-            self.$store.commit('dashboard/setInfoCurrent', '');
-          }
-          else {
-            if (self.$store.state.dashboard.sidebar.currentTab == 'dumpsters'){
-              self.$store.commit('dashboard/setInfoCurrent', '');
-            }
-          }
-        });
-        this.markers.rfTags[data.status].push(marker);
-      });
-      
+      this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
+      this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+    },
+
+    '$store.state.panel.devices.ult': function(newVal, oldVal){
+      let map = this.$store.state.dashboard.map;
+      let self = this;
+      return;
+
       // Init ults - Containers
-      this.ults.forEach(data => {
+      newVal.slice(0,5).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -463,8 +462,19 @@ export default {
         }
       })
       
+
+      this.markerGroups.ults.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
+      this.markerGroups.ults.little = L.layerGroup(this.markers.ults.little).addTo(map);
+      this.markerGroups.ults.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
+      this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
+    },
+
+    '$store.state.panel.devices.recy': function(newVal, oldVal){
+      let map = this.$store.state.dashboard.map;
+      let self = this;
+
       // Init recycles
-      this.recycles.forEach(data => {
+      newVal.slice(0,5).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -508,22 +518,59 @@ export default {
         this.markers.recycles.push(marker);
       })
       
-
-      this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
-      this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
-
-      this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
-      this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
-
-      this.markerGroups.ults.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
-      this.markerGroups.ults.little = L.layerGroup(this.markers.ults.little).addTo(map);
-      this.markerGroups.ults.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
-      this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
-
       this.markerGroups.recycles = L.layerGroup(this.markers.recycles).addTo(map);
+    }
+  },
+
+  created(){
+    let self = this;
+    this.socket.onmessage = function(event) {
+      let data = JSON.parse(event.data);
+      if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
+        let device = JSON.parse(data.Retval);
+        let filteredDeviceMarker = self.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
+        if (filteredDeviceMarker.length){
+          var newLatLng = new L.LatLng(device.Latitude, device.Longitude);
+          filteredDeviceMarker[0].setLatLng(newLatLng);
+        }
+      }
+      //console.log('data: ', data)
+    }
+  },
+
+  methods: {
+    mapReady(map){
+      // Add sidebar to vuex state
+      this.$store.commit('dashboard/setMap', map)
+
+      map.on('click', function(e){
+        console.log('latitude: ', e.latlng.lat)
+        console.log('longitude: ', e.latlng.lng)
+      })
+
+      // Add markers to map
+      this.attachMarkers(map);
+
+    },
+
+    attachMarkers(map){
+      let self = this;
+
+      //this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
+      //this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+
+      //this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
+      //this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
+
+      //this.markerGroups.ults.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
+      //this.markerGroups.ults.little = L.layerGroup(this.markers.ults.little).addTo(map);
+      //this.markerGroups.ults.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
+      //this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
+
+      //this.markerGroups.recycles = L.layerGroup(this.markers.recycles).addTo(map);
 
 
-      this.$store.commit('dashboard/setMarkerGroups', this.markerGroups);
+      //this.$store.commit('dashboard/setMarkerGroups', this.markerGroups);
       
     },
 
