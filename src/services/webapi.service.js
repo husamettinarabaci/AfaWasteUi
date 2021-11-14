@@ -24,11 +24,19 @@ export default class WebApi {
     }
 
     static getTags(){
-
         return axios.post(apiUrl + webApiUrl + '/getTags')
-            .then(response => {
-                return response;
-            })
+        .then(response => {
+            return response;
+        })
+    }
+
+    static getTag(data){
+        let obj = {}
+        obj[Enums.HTTP_DATA] = JSON.stringify(data);
+        return axios.post(apiUrl + webApiUrl + '/getTag', obj)
+        .then(response => {
+            return response;
+        })
     }
 
     static getConfig(dataType){

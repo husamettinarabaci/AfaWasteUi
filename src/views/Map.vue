@@ -35,8 +35,12 @@ import trucksData from '../data/trucks.data';
 import ultData from '../data/ult.data';
 import recycleData from '../data/recycle.data';
 
-// Enums
+// Config
 import Enums from '@/config/system.enums';
+import { s3Url } from '@/config/app.config';
+
+// Services
+import WebApi from '@/services/webapi.service';
 
 // Icons
 import TruckIcon from '../assets/images/icon/afatek-icon-05.png';
@@ -103,7 +107,7 @@ export default {
           full: null
         },
         recycles: null
-      },
+      }
     }
   },
 
@@ -282,11 +286,11 @@ export default {
                 </tr>
                 <tr>
                   <td class="text-bold">SON TOPLANMA TARİHİ</td>
-                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
+                  <td>-</td>
                 </tr>
                 <tr>
                   <td class="text-bold">SON OKUNMA TARİHİ</td>
-                  <td>${this.$moment(data.last_event).format('DD.MM.YYYY hh:mm:ss')}</td>
+                  <td>-</td>
                 </tr>
               </table>
             </div>
@@ -294,9 +298,41 @@ export default {
         `
         //this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no', 'rftag_title'], data, marker});
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
-          self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
-          self.$store.commit('dashboard/setInfoData', data);
+          //map.setView(e.target.getLatLng(),5);
+          WebApi.getTag(data).then(response => {
+            console.log('response: ', response)
+            self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
+            self.$store.commit('dashboard/setInfoData', response);
+            const content = `
+                <div class="card videoCard">
+                  <video class="tagVideo" controls autoplay>
+                      <source src="${s3Url}${response.TagReader.UID}.mp4" type="video/mp4" autoplay loop>
+                      secure connection could not be established
+                  </video>
+                  <div class="card-body">
+                    <table>
+                      <tr>
+                        <td class="text-bold">DURUM</td>
+                        <td>
+                          <span class="badge badge-light-${data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'success' : 'danger'}" style="float:left">
+                            ${data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'Toplandı' : 'Toplanmadı'}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-bold">SON TOPLANMA TARİHİ</td>
+                        <td>${self.$moment(data.TagStatu.CheckTime).format('DD.MM.YYYY hh:mm:ss')}</td>
+                      </tr>
+                      <tr>
+                        <td class="text-bold">SON OKUNMA TARİHİ</td>
+                        <td>${self.$moment(data.TagStatu.CheckTime).format('DD.MM.YYYY hh:mm:ss')}</td>
+                      </tr>
+                    </table>
+                  </div>
+              </div>
+            `
+            marker.setPopupContent(content)
+          })
         }).on('popupclose', function(e){
           if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
             self.$store.commit('dashboard/setInfoCurrent', '');
