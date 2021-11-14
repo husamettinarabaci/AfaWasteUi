@@ -89,20 +89,20 @@ export default {
       },
       markerGroups: {
         trucks: {
-          truck: [],
-          winch: []
+          truck: null,
+          winch: null
         },
         rfTags: {
-          collected: [],
-          notCollected: []
+          collected: null,
+          notCollected: null
         },
         ults: {
-          empty: [],
-          little: [],
-          medium: [],
-          full: []
+          empty: null,
+          little: null,
+          medium: null,
+          full: null
         },
-        recycles: []
+        recycles: null
       },
     }
   },
@@ -127,22 +127,22 @@ export default {
         self.$store.commit('dashboard/setCurrentTab', activeTab);
         switch(activeTab){
           case 'trucks':
-            map.removeLayer(markerGroups.rfTags.collected);
-            map.removeLayer(markerGroups.rfTags.notCollected);
-            map.removeLayer(markerGroups.ults.empty);
-            map.removeLayer(markerGroups.ults.little);
-            map.removeLayer(markerGroups.ults.medium);
-            map.removeLayer(markerGroups.ults.full);
-            map.removeLayer(markerGroups.recycles);
+            if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
+            if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
+            if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
+            if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
+            if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
+            if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
+            if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
             break;
           case 'dumpsters':
-            map.removeLayer(markerGroups.trucks.truck);
-            map.removeLayer(markerGroups.trucks.winch);
-            map.removeLayer(markerGroups.ults.empty);
-            map.removeLayer(markerGroups.ults.little);
-            map.removeLayer(markerGroups.ults.medium);
-            map.removeLayer(markerGroups.ults.full);
-            map.removeLayer(markerGroups.recycles);
+            if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
+            if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
+            if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
+            if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
+            if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
+            if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
+            if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
             break;
           case 'containers':
             map.removeLayer(markerGroups.trucks.truck);
@@ -183,27 +183,27 @@ export default {
       switch(newVal){
         case 'trucks':
           this.$store.commit('dashboard/setInfoCurrent', '');
-          map.addLayer(markerGroups.trucks.truck);
-          map.addLayer(markerGroups.trucks.winch);
-          map.removeLayer(markerGroups.rfTags.collected);
-          map.removeLayer(markerGroups.rfTags.notCollected);
-          map.removeLayer(markerGroups.ults.empty);
-          map.removeLayer(markerGroups.ults.little);
-          map.removeLayer(markerGroups.ults.medium);
-          map.removeLayer(markerGroups.ults.full);
-          map.removeLayer(markerGroups.recycles);
+          if (markerGroups.trucks.truck) map.addLayer(markerGroups.trucks.truck);
+          if (markerGroups.trucks.winch) map.addLayer(markerGroups.trucks.winch);
+          if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
+          if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
+          if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
+          if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
+          if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
+          if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
+          if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
           break;
         case 'dumpsters':
           this.$store.commit('dashboard/setInfoCurrent', 'Dumpsters');
-          map.removeLayer(markerGroups.trucks.truck);
-          map.removeLayer(markerGroups.trucks.winch);
-          map.addLayer(markerGroups.rfTags.collected);
-          map.addLayer(markerGroups.rfTags.notCollected);
-          map.removeLayer(markerGroups.ults.empty);
-          map.removeLayer(markerGroups.ults.little);
-          map.removeLayer(markerGroups.ults.medium);
-          map.removeLayer(markerGroups.ults.full);
-          map.removeLayer(markerGroups.recycles);
+          if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
+          if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
+          if (markerGroups.rfTags.collected) map.addLayer(markerGroups.rfTags.collected);
+          if (markerGroups.rfTags.notCollected) map.addLayer(markerGroups.rfTags.notCollected);
+          if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
+          if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
+          if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
+          if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
+          if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
           break;
         case 'containers':
           this.$store.commit('dashboard/setInfoCurrent', 'Containers');
@@ -247,7 +247,6 @@ export default {
     '$store.state.panel.tags': function(newVal, oldVal){
       let map = this.$store.state.dashboard.map;
       let self = this;
-      console.log('newVal: ', newVal.slice(0,5))
       // Init trucks
       
       // Init rfTags - Dumpsters
@@ -309,10 +308,13 @@ export default {
           }
         });
         this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
+        this.$store.commit('dashboard/addMarker', {type: 'tag', icon: 'Trash2Icon', data, marker});
       });
       
       this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
       this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
+      
+      this.$store.commit('dashboard/addMarkerGroup', {type: 'rfTags', markerGroup: this.markerGroups.rfTags});
     },
 
     '$store.state.panel.devices.rfid': function(newVal, oldVal){
@@ -375,12 +377,13 @@ export default {
       })
       this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
       this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+
+      this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.trucks});
     },
 
     '$store.state.panel.devices.ult': function(newVal, oldVal){
       let map = this.$store.state.dashboard.map;
       let self = this;
-      return;
 
       // Init ults - Containers
       newVal.slice(0,5).forEach(data => {

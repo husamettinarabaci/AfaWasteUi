@@ -11,7 +11,23 @@ export default {
             data: '' // Current card's data
         },
         markers: [],
-        markerGroups: {}
+        markerGroups: {
+            rfTags: {
+                collected: null,
+                notCollected: null
+            },
+            trucks: {
+                truck: null,
+                winch: null
+            },
+            ults: {
+                empty: null,
+                little: null,
+                medium: null,
+                full: null,
+            },
+            recycles: null
+        }
     },
     getters: {
         getMap: state => {
@@ -47,8 +63,8 @@ export default {
             state.markers.push(marker);
         },
 
-        setMarkerGroups: (state, markerGroups) => {
-            state.markerGroups = markerGroups
+        addMarkerGroup: (state, {type, markerGroup}) => {
+            state.markerGroups[type] = markerGroup
         },
     },
     actions: {},

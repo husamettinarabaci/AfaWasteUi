@@ -35,10 +35,10 @@
                                 <span class="mr-1">
                                     <font-awesome-icon icon="dumpster"/>
                                 </span>
-                                <span>{{ dumpster.data.rftag_title }}</span>
-                                <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.status == 'collected' ? 'success' : 'danger')">
+                                <span>{{ dumpster.data.TagId }}</span>
+                                <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.ContainerStatu == collectedStatus ? 'success' : 'danger')">
                                     <feather-icon
-                                    :icon="dumpster.data.status == 'collected' ? 'CheckIcon' : 'AlertTriangleIcon'"
+                                    :icon="dumpster.data.ContainerStatu == collectedStatus ? 'CheckIcon' : 'AlertTriangleIcon'"
                                     size="16"
                                     />
                                 </b-badge>
@@ -64,6 +64,7 @@
 
 <script>
 import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import Enums from '@/config/system.enums';
 
 export default {
     components: {
@@ -80,15 +81,20 @@ export default {
 
     data(){
         return {
-            filteredType: ''
+            filteredType: '',
+            collectedStatus: Enums.CONTAINER_FULLNESS_STATU_EMPTY,
+            notCollectedStatus: Enums.CONTAINER_FULLNESS_STATU_FULL
         }
     },
 
     computed: {
         dumpsters: function(){
-            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
+            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
             if (this.filteredType.length){
-                return markers.filter(marker => marker.data.status == this.filteredType);
+                return markers.filter(marker => {
+                    let filtered = this.filteredType == 'collected' ? Enums.CONTAINER_FULLNESS_STATU_EMPTY : Enums.CONTAINER_FULLNESS_STATU_FULL;
+                    if (marker.data.ContainerStatu == filtered) return marker;
+                });
             }
             return markers;
         }
@@ -126,12 +132,12 @@ export default {
         },
 
         getCount(type){
-            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
+            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
             if (type == 'collected'){
-                return markers.filter(dumpster => dumpster.data.status == 'collected').length
+                return markers.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY).length
             }
             else {
-                return markers.filter(dumpster => dumpster.data.status == 'notCollected').length
+                return markers.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL).length
             }
         }
     }
