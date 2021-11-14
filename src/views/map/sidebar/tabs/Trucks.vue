@@ -38,7 +38,7 @@
                             size="16"
                             />
                         </span>
-                        <span>{{ truck.data.plate_no }}</span>
+                        <span>{{ truck.data.DeviceDetail.PlateNo }}</span>
                         <b-badge class="truckBadge" variant="light-info">
                             <feather-icon
                             icon="ArrowRightIcon"
@@ -105,7 +105,11 @@ export default {
     trucks: function(){
       let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
         if (this.filteredType.length){
-          return markers.filter(marker => marker.data.type == this.filteredType);
+          return markers.filter(marker => {
+            if (this.filteredType == 'truck'){
+              return marker;
+            }
+          });
         }
         return markers;
     }
@@ -145,7 +149,7 @@ export default {
     getCount(type){
         let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
         if (type == 'truck'){
-          return markers.filter(truck => truck.data.type == 'truck').length
+          return markers.filter(truck => truck.type == 'truck').length
         }
         else {
           return markers.filter(truck => truck.data.type == 'winch').length

@@ -254,7 +254,7 @@ export default {
       // Init trucks
       
       // Init rfTags - Dumpsters
-      newVal.slice(0,50).forEach(data => {
+      newVal.slice(0,15).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -407,6 +407,7 @@ export default {
             }
           }
         })
+        this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', data, marker});
         //this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
         this.markers.trucks.truck.push(marker);
         //this.trucksMarkers.push(marker);
