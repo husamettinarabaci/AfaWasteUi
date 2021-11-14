@@ -29,6 +29,7 @@
             <h4 class="media-heading">Uyarı</h4>
             <b-card-text class="mb-0">{{ details.warning ? details.warning : 'Yok' }}</b-card-text>
         </b-media>
+        <!--
         <b-media vertical-align="center">
             <template #aside>
                 <b-avatar rounded size="42" variant="light-primary">
@@ -49,6 +50,7 @@
                 </div>
             </b-card-text>
         </b-media>
+        -->
     </div>
 </template>
 
@@ -84,10 +86,22 @@ export default {
 
     methods: {
         showTruck(id){
+            let markers = this.$store.state.dashboard.markerGroups.trucks.truck;
             let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck' && marker.data.DeviceId == id);
             if (filtered.length){
-                this.$emit('showTrucks');
-                filtered[0].marker.fireEvent('click');
+                let marker = filtered[0].marker;
+                let visibleLayer = markers.getVisibleParent(marker);
+                if (visibleLayer instanceof L.MarkerCluster){
+                    markers.fire('click', {
+                        layer: visibleLayer,
+                        latlng: marker.getLatLng()
+                    });
+                }
+                else {
+                    marker.fire('click');
+                }
+                //this.$emit('showTrucks');
+                //filtered[0].marker.fireEvent('click');
             }
             else {
                 console.log('bulunamadı')

@@ -276,7 +276,8 @@ export default {
           });
         }
       });
-      newVal.slice(0, 50).filter(d => ![2173,1576, 1711, 2466].includes(d.TagId)).forEach(data => {
+      
+      newVal.slice(0,50).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
