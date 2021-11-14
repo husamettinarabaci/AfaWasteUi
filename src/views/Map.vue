@@ -24,6 +24,9 @@ import "leaflet-extra-markers"
 import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
 import "leaflet.marker.highlight";
 import "leaflet.marker.highlight/dist/leaflet.marker.highlight.css";
+import "leaflet.markercluster"
+import "leaflet.markercluster/dist/MarkerCluster.css"
+
 
 // Map Layers
 import Sidebar from './map/sidebar/Index';
@@ -254,7 +257,19 @@ export default {
       // Init trucks
       
       // Init rfTags - Dumpsters
-      newVal.slice(0,15).forEach(data => {
+      let collectedMarkers = L.markerClusterGroup({
+        iconCreateFunction: function(cluster) {
+          return L.divIcon({
+            html: '<div class="marker-cluster marker-cluster-collected">' + cluster.getChildCount() + '</div>',
+            className: 'marker-cluster marker-cluster-collected',
+            iconSize: L.point(40, 40)
+          });
+        }
+      });
+      let notCollectedMarkers = L.markerClusterGroup({
+          maxClusterRadius: 40,
+      });
+      newVal.slice(0,250).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -343,10 +358,18 @@ export default {
             }
           }
         });
+        if (data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY){
+          collectedMarkers.addLayer(marker);
+        }
+        else {
+          notCollectedMarkers.addLayer(marker);
+        }
         this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
         this.$store.commit('dashboard/addMarker', {type: 'tag', icon: 'Trash2Icon', data, marker});
       });
       
+      map.addLayer(collectedMarkers);
+      map.addLayer(notCollectedMarkers);
       this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
       this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
       
