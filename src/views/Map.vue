@@ -26,6 +26,7 @@ import "leaflet.marker.highlight";
 import "leaflet.marker.highlight/dist/leaflet.marker.highlight.css";
 import "leaflet.markercluster"
 import "leaflet.markercluster/dist/MarkerCluster.css"
+import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 
 
 // Map Layers
@@ -257,19 +258,25 @@ export default {
       // Init trucks
       
       // Init rfTags - Dumpsters
-      let collectedMarkers = L.markerClusterGroup({
+      this.markerGroups.rfTags.collected = L.markerClusterGroup({
         iconCreateFunction: function(cluster) {
           return L.divIcon({
-            html: '<div class="marker-cluster marker-cluster-collected">' + cluster.getChildCount() + '</div>',
+            html: '<div class="marker-cluster-dumpsters-collected"><span>' + cluster.getChildCount() + '</span></div>',
             className: 'marker-cluster marker-cluster-collected',
             iconSize: L.point(40, 40)
           });
         }
       });
-      let notCollectedMarkers = L.markerClusterGroup({
-          maxClusterRadius: 40,
+      this.markerGroups.rfTags.notCollected = L.markerClusterGroup({
+        iconCreateFunction: function(cluster) {
+          return L.divIcon({
+            html: '<div class="marker-cluster-dumpsters-notCollected"><span>' + cluster.getChildCount() + '</span></div>',
+            className: 'marker-cluster marker-cluster-notCollected',
+            iconSize: L.point(40, 40)
+          });
+        }
       });
-      newVal.slice(0,50).filter(d => ![2173,1576, 1711, 2466].includes(d.TagId)).forEach(data => {
+      newVal.slice(0, 50).filter(d => ![2173,1576, 1711, 2466].includes(d.TagId)).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -312,7 +319,8 @@ export default {
         </div>
         `
         //this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no', 'rftag_title'], data, marker});
-        marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
+        marker.bindPopup(popupContent, popupOptions)
+        .on('click', function(e) {
           map.setView(e.target.getLatLng());
           WebApi.getTag(data).then(response => {
             console.log('response: ', response)
@@ -352,7 +360,8 @@ export default {
             `
             marker.setPopupContent(content)
           })
-        }).on('popupclose', function(e){
+        })
+        .on('popupclose', function(e){
           if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
             self.$store.commit('dashboard/setInfoCurrent', '');
           }
@@ -363,19 +372,19 @@ export default {
           }
         });
         if (data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY){
-          collectedMarkers.addLayer(marker);
+          this.markerGroups.rfTags.collected.addLayer(marker);
         }
         else {
-          notCollectedMarkers.addLayer(marker);
+          this.markerGroups.rfTags.notCollected.addLayer(marker);
         }
         this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
         this.$store.commit('dashboard/addMarker', {type: 'tag', icon: 'Trash2Icon', data, marker});
       });
       
-      map.addLayer(collectedMarkers);
-      map.addLayer(notCollectedMarkers);
-      this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
-      this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
+      map.addLayer(this.markerGroups.rfTags.collected);
+      map.addLayer(this.markerGroups.rfTags.notCollected);
+      //this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
+      //this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
       
       this.$store.commit('dashboard/addMarkerGroup', {type: 'rfTags', markerGroup: this.markerGroups.rfTags});
     },
@@ -383,6 +392,17 @@ export default {
     '$store.state.panel.devices.rfid': function(newVal, oldVal){
       let map = this.$store.state.dashboard.map;
       let self = this;
+
+      this.markerGroups.trucks.truck = L.markerClusterGroup({
+        iconCreateFunction: function(cluster) {
+          return L.divIcon({
+            html: '<div class="marker-cluster-trucks-truck"><span>' + cluster.getChildCount() + '</span></div>',
+            className: 'marker-cluster marker-cluster-truck',
+            iconSize: L.point(40, 40)
+          });
+        }
+      });
+
       // Init trucks
       newVal.forEach(data => {
         const popupOptions = {
@@ -420,11 +440,13 @@ export default {
           </div>
         </div>
         `
-        marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
+        marker.bindPopup(popupContent, popupOptions)
+        .on('click', function(e) {
           map.setView(e.target.getLatLng());
           //self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
           //self.$store.commit('dashboard/setInfoData', data);
-        }).on('popupclose', function(e){
+        })
+        .on('popupclose', function(e){
           if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
             self.$store.commit('dashboard/setInfoCurrent', '');
           }
@@ -434,13 +456,18 @@ export default {
             }
           }
         })
+        
+        this.markerGroups.trucks.truck.addLayer(marker);
+
         this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', data, marker});
         //this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
         this.markers.trucks.truck.push(marker);
         //this.trucksMarkers.push(marker);
       })
-      this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
-      this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+
+      map.addLayer(this.markerGroups.trucks.truck);
+      //this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
+      //this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
 
       this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.trucks});
     },
@@ -731,6 +758,24 @@ export default {
 }
 
 .marker-cluster.marker-cluster-collected {
-  background: red;
+  background: #00640070;
+}
+.marker-cluster-dumpsters-collected {
+  background: #006400;
+  color: #fff;
+}
+.marker-cluster.marker-cluster-notCollected {
+  background: #8b000070;
+}
+.marker-cluster-dumpsters-notCollected {
+  background: #8B0000;
+  color: #fff;
+}
+.marker-cluster.marker-cluster-truck {
+  background: #0000FF70;
+}
+.marker-cluster-trucks-truck {
+  background: #0000FF;
+  color: #fff;
 }
 </style>
