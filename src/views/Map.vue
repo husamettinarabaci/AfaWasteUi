@@ -298,7 +298,7 @@ export default {
         `
         //this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no', 'rftag_title'], data, marker});
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          //map.setView(e.target.getLatLng(),5);
+          map.setView(e.target.getLatLng(),5);
           WebApi.getTag(data).then(response => {
             console.log('response: ', response)
             self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');

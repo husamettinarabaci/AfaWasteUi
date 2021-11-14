@@ -3,7 +3,7 @@
         <h4 class="card-title">Günlük Toplanma Oranı</h4>
         <div class="pie-text text-center">
             <h2 class="font-weight-bolder">
-                {{ $store.state.dashboard.markers.filter(marker => marker.type == 'rfTag').length }}
+                {{ $store.state.dashboard.markers.filter(marker => marker.type == 'tag').length }}
             </h2>
             <span class="font-weight-bold">Toplam</span>
         </div>
@@ -13,6 +13,7 @@
 
 <script>
 import AppEchartDoughnut from '@core/components/charts/echart/AppEchartDoughnut.vue'
+import Enums from '@/config/system.enums';
 
 export default {
     components: {
@@ -45,9 +46,9 @@ export default {
                 },
                 data: []
             }
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'rfTag');
-            obj.data.push({value : all.filter(dumpster => dumpster.data.status == 'collected').length, name: 'Toplandı'})
-            obj.data.push({value : all.filter(dumpster => dumpster.data.status == 'notCollected').length, name: 'Toplanmadı'})
+            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            obj.data.push({value : all.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY).length, name: 'Toplandı'})
+            obj.data.push({value : all.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL).length, name: 'Toplanmadı'})
             return [obj];
         }
     },
