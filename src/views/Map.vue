@@ -149,34 +149,34 @@ export default {
             if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
             break;
           case 'containers':
-            map.removeLayer(markerGroups.trucks.truck);
-            map.removeLayer(markerGroups.trucks.winch);
-            map.removeLayer(markerGroups.rfTags.collected);
-            map.removeLayer(markerGroups.rfTags.notCollected);
-            map.removeLayer(markerGroups.recycles);
+            if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
+            if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
+            if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
+            if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
+            if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
             break;
           case 'recycles':
-            map.removeLayer(markerGroups.trucks.truck);
-            map.removeLayer(markerGroups.trucks.winch);
-            map.removeLayer(markerGroups.rfTags.collected);
-            map.removeLayer(markerGroups.rfTags.notCollected);
-            map.removeLayer(markerGroups.ults.empty);
-            map.removeLayer(markerGroups.ults.little);
-            map.removeLayer(markerGroups.ults.medium);
-            map.removeLayer(markerGroups.ults.full);
+            if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
+            if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
+            if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
+            if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
+            if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
+            if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
+            if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
+            if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
             break;
         } 
       })
       newVal.on('closing', function(e){
-        map.addLayer(markerGroups.trucks.truck);
-        map.addLayer(markerGroups.trucks.winch);
-        map.addLayer(markerGroups.rfTags.collected);
-        map.addLayer(markerGroups.rfTags.notCollected);
-        map.addLayer(markerGroups.ults.empty);
-        map.addLayer(markerGroups.ults.little);
-        map.addLayer(markerGroups.ults.medium);
-        map.addLayer(markerGroups.ults.full);
-        map.addLayer(markerGroups.recycles);
+        if (markerGroups.trucks.truck) map.addLayer(markerGroups.trucks.truck);
+        if (markerGroups.trucks.winch) map.addLayer(markerGroups.trucks.winch);
+        if (markerGroups.rfTags.collected) map.addLayer(markerGroups.rfTags.collected);
+        if (markerGroups.rfTags.notCollected) map.addLayer(markerGroups.rfTags.notCollected);
+        if (markerGroups.ults.empty) map.addLayer(markerGroups.ults.empty);
+        if (markerGroups.ults.little) map.addLayer(markerGroups.ults.little);
+        if (markerGroups.ults.medium) map.addLayer(markerGroups.ults.medium);
+        if (markerGroups.ults.full) map.addLayer(markerGroups.ults.full);
+        if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
         self.$store.commit('dashboard/setCurrentTab', '');
       })
     },
@@ -211,39 +211,39 @@ export default {
           break;
         case 'containers':
           this.$store.commit('dashboard/setInfoCurrent', 'Containers');
-          map.removeLayer(markerGroups.trucks.truck);
-          map.removeLayer(markerGroups.trucks.winch);
-          map.removeLayer(markerGroups.rfTags.collected);
-          map.removeLayer(markerGroups.rfTags.notCollected);
-          map.addLayer(markerGroups.ults.empty);
-          map.addLayer(markerGroups.ults.little);
-          map.addLayer(markerGroups.ults.medium);
-          map.addLayer(markerGroups.ults.full);
-          map.removeLayer(markerGroups.recycles);
+          if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
+          if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
+          if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
+          if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
+          if (markerGroups.ults.empty) map.addLayer(markerGroups.ults.empty);
+          if (markerGroups.ults.little) map.addLayer(markerGroups.ults.little);
+          if (markerGroups.ults.medium) map.addLayer(markerGroups.ults.medium);
+          if (markerGroups.ults.full) map.addLayer(markerGroups.ults.full);
+          if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
           break;
         case 'recycles':
           this.$store.commit('dashboard/setInfoCurrent', 'Recycles');
-          map.removeLayer(markerGroups.trucks.truck);
-          map.removeLayer(markerGroups.trucks.winch);
-          map.removeLayer(markerGroups.rfTags.collected);
-          map.removeLayer(markerGroups.rfTags.notCollected);
-          map.removeLayer(markerGroups.ults.empty);
-          map.removeLayer(markerGroups.ults.little);
-          map.removeLayer(markerGroups.ults.medium);
-          map.removeLayer(markerGroups.ults.full);
-          map.addLayer(markerGroups.recycles);
+          if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
+          if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
+          if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
+          if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
+          if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
+          if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
+          if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
+          if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
+          if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
           break;
         default:
           //this.$store.commit('dashboard/setInfoCurrent', '');
-          map.addLayer(markerGroups.trucks.truck);
-          map.addLayer(markerGroups.trucks.winch);
-          map.addLayer(markerGroups.rfTags.collected);
-          map.addLayer(markerGroups.rfTags.notCollected);
-          map.addLayer(markerGroups.ults.empty);
-          map.addLayer(markerGroups.ults.little);
-          map.addLayer(markerGroups.ults.medium);
-          map.addLayer(markerGroups.ults.full);
-          map.addLayer(markerGroups.recycles);
+          if (markerGroups.trucks.truck) map.addLayer(markerGroups.trucks.truck);
+          if (markerGroups.trucks.winch) map.addLayer(markerGroups.trucks.winch);
+          if (markerGroups.rfTags.collected) map.addLayer(markerGroups.rfTags.collected);
+          if (markerGroups.rfTags.notCollected) map.addLayer(markerGroups.rfTags.notCollected);
+          if (markerGroups.ults.empty) map.addLayer(markerGroups.ults.empty);
+          if (markerGroups.ults.little) map.addLayer(markerGroups.ults.little);
+          if (markerGroups.ults.medium) map.addLayer(markerGroups.ults.medium);
+          if (markerGroups.ults.full) map.addLayer(markerGroups.ults.full);
+          if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
           break;
       }
     },
