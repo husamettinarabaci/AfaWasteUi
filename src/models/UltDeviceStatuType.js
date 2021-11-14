@@ -4,7 +4,10 @@ export default class UltDeviceStatuType {
         this.StatusTime = null;      //string
         this.AliveStatus = null;     //string
         this.AliveLastOkTime = null; //string
+        this.UltStatus = null;       //string
+        this.ContainerStatu = null;  //string
         this.NewData = null;         //bool
+    
     }
 
     static from(json){

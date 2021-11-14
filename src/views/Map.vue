@@ -269,7 +269,7 @@ export default {
       let notCollectedMarkers = L.markerClusterGroup({
           maxClusterRadius: 40,
       });
-      newVal.slice(0,250).forEach(data => {
+      newVal.slice(0,50).filter(d => ![2173,1576, 1711, 2466].includes(d.TagId)).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -313,7 +313,7 @@ export default {
         `
         //this.$store.commit('dashboard/addMarker', {type: 'rfTag', icon: 'Trash2Icon', searchableFields: ['container_no', 'rftag_title'], data, marker});
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
+          map.setView(e.target.getLatLng());
           WebApi.getTag(data).then(response => {
             console.log('response: ', response)
             self.$store.commit('dashboard/setInfoCurrent', 'DumpsterDetails');
@@ -329,18 +329,22 @@ export default {
                       <tr>
                         <td class="text-bold">DURUM</td>
                         <td>
-                          <span class="badge badge-light-${data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'success' : 'danger'}" style="float:left">
-                            ${data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'Toplandı' : 'Toplanmadı'}
+                          <span class="badge badge-light-${response.TagStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'success' : 'danger'}" style="float:left">
+                            ${response.TagStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'Toplandı' : 'Toplanmadı'}
                           </span>
                         </td>
                       </tr>
                       <tr>
+                        <td class="text-bold">TAG ID</td>
+                        <td>${response.TagId}</td>
+                      </tr>
+                      <tr>
                         <td class="text-bold">SON TOPLANMA TARİHİ</td>
-                        <td>${self.$moment(data.TagStatu.CheckTime).format('DD.MM.YYYY hh:mm:ss')}</td>
+                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY hh:mm:ss')}</td>
                       </tr>
                       <tr>
                         <td class="text-bold">SON OKUNMA TARİHİ</td>
-                        <td>${self.$moment(data.TagStatu.CheckTime).format('DD.MM.YYYY hh:mm:ss')}</td>
+                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY hh:mm:ss')}</td>
                       </tr>
                     </table>
                   </div>
@@ -380,7 +384,7 @@ export default {
       let map = this.$store.state.dashboard.map;
       let self = this;
       // Init trucks
-      newVal.slice(0,15).forEach(data => {
+      newVal.forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -391,7 +395,7 @@ export default {
             //icon: 'fa-truck',
             //innerHTML: `<img src="${data.type == 'truck' ? TruckIcon : WinchIcon}"/>`,
             innerHTML: `<img src="${TruckIcon}"/>`,
-            markerColor: data.type == 'truck' ? 'orange' : 'orange-dark',
+            markerColor: data.type == 'truck' ? 'orange' : 'blue',
             shape: 'square',
             prefix: 'fa'
         });
@@ -417,9 +421,9 @@ export default {
         </div>
         `
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
-          self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
-          self.$store.commit('dashboard/setInfoData', data);
+          map.setView(e.target.getLatLng());
+          //self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
+          //self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
           if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
             self.$store.commit('dashboard/setInfoCurrent', '');
@@ -445,8 +449,22 @@ export default {
       let map = this.$store.state.dashboard.map;
       let self = this;
 
+      let vals = newVal.slice(0,5)
+      vals[0].DeviceGps.Latitude = 37.04819002372351;
+      vals[0].DeviceGps.Longitude = 27.34308242797852;
+      vals[1].DeviceGps.Latitude = 37.05531410185666;
+      vals[1].DeviceGps.Longitude = 27.357501983642578;
+      vals[2].DeviceGps.Latitude = 37.05325914794976;
+      vals[2].DeviceGps.Longitude = 27.37895965576172;
+      vals[3].DeviceGps.Latitude = 37.05599907412595;
+      vals[3].DeviceGps.Longitude = 27.458438873291016;
+      vals[4].DeviceGps.Latitude = 37.02489510178452;
+      vals[4].DeviceGps.Longitude = 27.442817687988285;
+
+      return;
+
       // Init ults - Containers
-      newVal.slice(0,5).forEach(data => {
+      vals.forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -477,7 +495,7 @@ export default {
             shape: 'star',
             prefix: 'fa'
         });
-        var marker = L.marker([data.latitude, data.longitude], {icon: markerIcon});
+        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon, data});
         var popupContent = `
         <div class="card">
           <div class="card-body">
@@ -497,7 +515,7 @@ export default {
         </div>
         `
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
+          map.setView(e.target.getLatLng());
           self.$store.commit('dashboard/setInfoCurrent', 'ContainerDetails');
           self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
@@ -564,7 +582,7 @@ export default {
         </div>
         `
         marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-          map.setView(e.target.getLatLng(),5);
+          map.setView(e.target.getLatLng());
           self.$store.commit('dashboard/setInfoCurrent', 'RecycleDetails');
           self.$store.commit('dashboard/setInfoData', data);
         }).on('popupclose', function(e){
@@ -710,5 +728,9 @@ export default {
   height: 30px;
   margin-left: 3px;
   margin-top: 2px;
+}
+
+.marker-cluster.marker-cluster-collected {
+  background: red;
 }
 </style>

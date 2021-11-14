@@ -10,16 +10,16 @@ WebApi.getCustomer().then(customer => {
             store.commit('panel/setRfidDevices', response.Devices);
         })
     }
-    if (customer.UltApp == Enums.STATU_ACTIVE){
-        WebApi.getDevices(Enums.DEVICETYPE_ULT).then(response => {
-            store.commit('panel/setUltDevices', response.Devices);
-        })
-    }
-    if (customer.RecyApp == Enums.STATU_ACTIVE){
-        WebApi.getDevices(Enums.DEVICETYPE_RECY).then(response => {
-            store.commit('panel/setRecyDevices', response.Devices);
-        })
-    }
+    //if (customer.UltApp == Enums.STATU_ACTIVE){
+    //    WebApi.getDevices(Enums.DEVICETYPE_ULT).then(response => {
+    //        store.commit('panel/setUltDevices', response.Devices);
+    //    })
+    //}
+    //if (customer.RecyApp == Enums.STATU_ACTIVE){
+    //    WebApi.getDevices(Enums.DEVICETYPE_RECY).then(response => {
+    //        store.commit('panel/setRecyDevices', response.Devices);
+    //    })
+    //}
 }).catch(e => {
     console.log('error: ', e)
 })

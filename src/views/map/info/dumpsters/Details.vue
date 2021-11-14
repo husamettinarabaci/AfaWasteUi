@@ -7,8 +7,9 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Konum</h4>
-            <b-card-text class="mb-0">{{ details.TagGps.Latitude }}</b-card-text>
+            <b-card-text class="mb-0">{{ `${details.TagGps.Latitude}, ${details.TagGps.Longitude}` }}</b-card-text>
         </b-media>
+        <!--
         <b-media vertical-align="center">
             <template #aside>
                 <b-avatar rounded size="42" variant="light-primary">
@@ -18,6 +19,7 @@
             <h4 class="media-heading">Toplanma Sıklığı</h4>
             <b-card-text class="mb-0">{{ details.TagId }}</b-card-text>
         </b-media>
+        -->
         <b-media vertical-align="center">
             <template #aside>
                 <b-avatar rounded size="42" variant="light-primary">
@@ -35,13 +37,16 @@
             </template>
             <h4 class="media-heading">Kamyon</h4>
             <b-card-text class="mb-0">
-                <b-badge variant="light-info" @click="showTruck">
+                <b-badge variant="light-info" v-if="truck" @click="showTruck(truck.DeviceId)">
                     <feather-icon
                         icon="TruckIcon"
                         class="mr-25"
                     />
-                    <span>{{ details.truck_plate_no }}</span>
+                    <span>{{ truck.DeviceDetail.PlateNo }}</span>
                 </b-badge>
+                <div v-else>
+                    Bulunamadı
+                </div>
             </b-card-text>
         </b-media>
     </div>
@@ -69,13 +74,17 @@ export default {
     computed: {
         details: function(){
             return this.$store.state.dashboard.info.data;
+        },
+
+        truck: function(){
+            let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type === 'truck' && marker.data.DeviceId === this.details.TagMain.DeviceId);
+            return filtered.length ? filtered[0].data : '';
         }
     },
 
     methods: {
-        showTruck(){
-            let trucks = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
-            let filtered = trucks.filter(truck => truck.data.plate_no == this.details.truck_plate_no);
+        showTruck(id){
+            let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck' && marker.data.DeviceId == id);
             if (filtered.length){
                 this.$emit('showTrucks');
                 filtered[0].marker.fireEvent('click');
