@@ -32,9 +32,20 @@ export default {
         deviceTypesGps[Enums.DATATYPE_ULT_STATU_DEVICE] = 'DeviceStatu';
         deviceTypesGps[Enums.DATATYPE_RFID_GPS_DEVICE] = 'DeviceGps';
 
+        let tagTypes = {};
+        tagTypes[Enums.DATATYPE_TAG_MAIN] = 'TagMain'
+        tagTypes[Enums.DATATYPE_TAG_BASE] = 'TagBase'
+        tagTypes[Enums.DATATYPE_TAG_READER] = 'TagReader'
+
+        let tagTypesStatuGps = {};
+        tagTypesStatuGps[Enums.DATATYPE_TAG_STATU] = 'TagStatu'
+        tagTypesStatuGps[Enums.DATATYPE_TAG_GPS] = 'TagGps'
+
         return {
             deviceTypes,
-            deviceTypesGps
+            deviceTypesGps,
+            tagTypes,
+            tagTypesStatuGps
         }
     },
 
@@ -58,11 +69,11 @@ export default {
         changeDeviceLocation(deviceType, value){
             let type = this.getType(deviceType);
             let filtered = store.state.dashboard.markers.filter(marker => marker.type == type && marker.data.DeviceId == value.DeviceId);
-            //let filteredDeviceMarker = store.state.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
-            //if (filteredDeviceMarker.length){
-            //    var newLatLng = new L.LatLng(device.Latitude, device.Longitude);
-            //    filteredDeviceMarker[0].setLatLng(newLatLng);
-            //}
+            if (filtered.length){
+                let marker = filtered[0].marker;
+                var newLatLng = new L.LatLng(value.Latitude, value.Longitude);
+                marker.setLatLng(newLatLng);
+            }
         },
 
         changeDeviceData(deviceType, value){
@@ -73,6 +84,37 @@ export default {
                 d[this.deviceTypes[deviceType]] = value;
             }
         },
+
+        changeTagLocation(value){
+            let filtered = store.state.dashboard.markers.filter(marker => marker.type == 'tag' && marker.data.TagId == value.TagId);
+            if (filtered.length){
+                let marker = filtered[0].marker;
+                var newLatLng = new L.LatLng(value.Latitude, value.Longitude);
+                marker.setLatLng(newLatLng);
+            }
+        },
+
+        changeTagData(tagType, value){
+            let filtered = store.state.dashboard.markers.filter(marker => marker.type == 'tag' && marker.data.TagId == value.TagId);
+            if (filtered.length){
+                let d = filtered[0].data;
+                d[this.tagTypes[tagType]] = value;
+            }
+        },
+
+        changeTagStatus(value){
+            let filtered = store.state.dashboard.markers.filter(marker => marker.type == 'tag' && marker.data.TagId == value.TagId);
+            if (filtered.length){
+                let marker = filtered[0].marker;
+                var newMarker = L.ExtraMarkers.icon({
+                    icon: 'fa-dumpster',
+                    markerColor: value.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'green-dark' : 'red-dark',
+                    shape: 'circle',
+                    prefix: 'fa'
+                });
+                marker.setIcon(newMarker);
+            }
+        }
 
         // panel
         //DATATYPE_CUSTOMER           : "CUSTOMER",

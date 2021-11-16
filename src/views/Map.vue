@@ -73,11 +73,11 @@ export default {
   data() {
     return {
       url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
-      zoom: 13,
+      zoom: 11,
       center: [37.036604, 27.424406],
       options: {
         zoomControl: false,
-        minZoom: 13,
+        minZoom: 8,
         maxZoom: 18
       },
       rfTags: rfTagsData.tags,
@@ -283,7 +283,7 @@ export default {
         }
       });
       
-      newVal.slice(0,50).forEach(data => {
+      newVal.forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -652,6 +652,24 @@ export default {
         self.changeDeviceData(data.Result, value);
         self.changeDeviceLocation(data.Result, value);
       }
+      else if (Object.keys(self.tagTypes).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeTagData(data.Result, value);
+      }
+      else if (Object.keys(self.tagTypesStatuGps).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeTagData(data.Result, value);
+        if (data.Result == Enums.DATATYPE_TAG_GPS){
+          self.changeTagLocation(value);
+        }
+        else if (data.Result == Enums.DATATYPE_TAG_STATU){
+          self.changeTagStatus(value);
+        }
+      }
+      else {
+        console.log('hepsinin dışında bir veri geldi: ', data.Result);
+      }
+      /*
       else if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
         let device = JSON.parse(data.Retval);
         let filteredDeviceMarker = self.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
@@ -659,7 +677,8 @@ export default {
           var newLatLng = new L.LatLng(device.Latitude, device.Longitude);
           filteredDeviceMarker[0].setLatLng(newLatLng);
         }
-      }
+      }*/
+
       //console.log('data: ', data)
     }
   },
@@ -669,10 +688,10 @@ export default {
       // Add sidebar to vuex state
       this.$store.commit('dashboard/setMap', map)
 
-      map.on('click', function(e){
-        console.log('latitude: ', e.latlng.lat)
-        console.log('longitude: ', e.latlng.lng)
-      })
+      //map.on('click', function(e){
+      //  console.log('latitude: ', e.latlng.lat)
+      //  console.log('longitude: ', e.latlng.lng)
+      //})
 
       // Add markers to map
       this.attachMarkers(map);
