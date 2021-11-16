@@ -54,6 +54,7 @@
 
 <script>
 import {BCardText, BMediaBody, BMedia, BMediaAside, BAvatar, BBadge} from 'bootstrap-vue';
+let esri = require('esri-leaflet');
 
 export default {
     components: {
@@ -80,6 +81,10 @@ export default {
             let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type === 'truck' && marker.data.DeviceId === this.details.TagMain.DeviceId);
             return filtered.length ? filtered[0].data : '';
         }
+    },
+
+    created(){
+        //console.log('esri: ', esri.Geocoding.reverseGeocode)
     },
 
     methods: {

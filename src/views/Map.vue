@@ -46,6 +46,9 @@ import { s3Url } from '@/config/app.config';
 // Services
 import WebApi from '@/services/webapi.service';
 
+// Mixins
+import socketMixin from '@/mixins/socket.mixin'
+
 // Icons
 import TruckIcon from '../assets/images/icon/afatek-icon-05.png';
 import WinchIcon from '../assets/images/icon/afatek-icon-04.png';
@@ -64,6 +67,9 @@ export default {
     Sidebar,
     Info
   },
+
+  mixins: [socketMixin],
+
   data() {
     return {
       url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
@@ -635,8 +641,13 @@ export default {
     let self = this;
     this.socket.onmessage = function(event) {
       let data = JSON.parse(event.data);
-      console.log('socket data: ', data);
-      if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
+      //console.log('socket data: ', data);
+      //console.log('devicetypesqwe: ', self.deviceTypes)
+      if (Object.keys(self.deviceTypes).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeData(data.Result, value);
+      }
+      else if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
         let device = JSON.parse(data.Retval);
         let filteredDeviceMarker = self.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
         if (filteredDeviceMarker.length){
