@@ -645,7 +645,12 @@ export default {
       //console.log('devicetypesqwe: ', self.deviceTypes)
       if (Object.keys(self.deviceTypes).includes(data.Result)){
         let value = JSON.parse(data.Retval);
-        self.changeData(data.Result, value);
+        self.changeDeviceData(data.Result, value);
+      }
+      else if (Object.keys(self.deviceTypesGps).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeDeviceData(data.Result, value);
+        self.changeDeviceLocation(data.Result, value);
       }
       else if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
         let device = JSON.parse(data.Retval);

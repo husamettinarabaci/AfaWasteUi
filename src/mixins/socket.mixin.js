@@ -3,7 +3,7 @@ import store from '@/store';
 
 export default {
     data(){
-        let deviceTypes = {}
+        let deviceTypes = {};
         deviceTypes[Enums.DATATYPE_RECY_MAIN_DEVICE] = 'DeviceMain';
         deviceTypes[Enums.DATATYPE_RECY_BASE_DEVICE] = 'DeviceBase';
         deviceTypes[Enums.DATATYPE_RECY_THERM_DEVICE] = 'DeviceTherm';
@@ -26,17 +26,20 @@ export default {
         deviceTypes[Enums.DATATYPE_RFID_BASE_DEVICE] = 'DeviceBase';
         deviceTypes[Enums.DATATYPE_RFID_DETAIL_DEVICE] = 'DeviceDetail';
 
+        let deviceTypesGps = {};
+        deviceTypesGps[Enums.DATATYPE_RECY_GPS_DEVICE] = 'DeviceGps';
+        deviceTypesGps[Enums.DATATYPE_ULT_GPS_DEVICE] = 'DeviceGps';
+        deviceTypesGps[Enums.DATATYPE_ULT_STATU_DEVICE] = 'DeviceStatu';
+        deviceTypesGps[Enums.DATATYPE_RFID_GPS_DEVICE] = 'DeviceGps';
+
         return {
-            deviceTypes
+            deviceTypes,
+            deviceTypesGps
         }
     },
 
     methods: {
-        changeLocation(){
-
-        },
-
-        changeData(deviceType, value){
+        getType(deviceType){
             var type = '';
             switch(deviceType.split('_')[0]){
                 case 'RFID':
@@ -49,12 +52,26 @@ export default {
                     type = 'recycle';
                     break;
             }
+            return type;
+        },
+
+        changeDeviceLocation(deviceType, value){
+            let type = this.getType(deviceType);
+            let filtered = store.state.dashboard.markers.filter(marker => marker.type == type && marker.data.DeviceId == value.DeviceId);
+            //let filteredDeviceMarker = store.state.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
+            //if (filteredDeviceMarker.length){
+            //    var newLatLng = new L.LatLng(device.Latitude, device.Longitude);
+            //    filteredDeviceMarker[0].setLatLng(newLatLng);
+            //}
+        },
+
+        changeDeviceData(deviceType, value){
+            let type = this.getType(deviceType);
             let filtered = store.state.dashboard.markers.filter(marker => marker.type == type && marker.data.DeviceId == value.DeviceId);
             if (filtered.length){
                 let d = filtered[0].data;
                 d[this.deviceTypes[deviceType]] = value;
             }
-
         },
 
         // panel
@@ -86,16 +103,22 @@ export default {
         DATATYPE_RFID_STATU_DEVICE  : "RFID_STATU_DEVICE",
         DATATYPE_RFID_BASE_DEVICE   : "RFID_BASE_DEVICE",
         DATATYPE_RFID_DETAIL_DEVICE : "RFID_DETAIL_DEVICE",
+        */
 
+        /*
         DATATYPE_TAG_MAIN           : "TAG_MAIN",
         DATATYPE_TAG_BASE           : "TAG_BASE",
         DATATYPE_TAG_READER         : "TAG_READER",
+        */
 
-
+        /*
         DATATYPE_RECY_GPS_DEVICE    : "RECY_GPS_DEVICE",
         DATATYPE_ULT_GPS_DEVICE     : "ULT_GPS_DEVICE",
         DATATYPE_ULT_STATU_DEVICE   : "ULT_STATU_DEVICE",
         DATATYPE_RFID_GPS_DEVICE    : "RFID_GPS_DEVICE",
+
+
+
         DATATYPE_TAG_STATU          : "TAG_STATU",
         DATATYPE_TAG_GPS            : "TAG_GPS",
         */
