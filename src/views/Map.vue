@@ -349,11 +349,11 @@ export default {
                       </tr>
                       <tr>
                         <td class="text-bold">SON TOPLANMA TARİHİ</td>
-                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY hh:mm:ss')}</td>
+                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY HH:mm:ss')}</td>
                       </tr>
                       <tr>
                         <td class="text-bold">SON OKUNMA TARİHİ</td>
-                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY hh:mm:ss')}</td>
+                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY HH:mm:ss')}</td>
                       </tr>
                     </table>
                   </div>
@@ -635,6 +635,7 @@ export default {
     let self = this;
     this.socket.onmessage = function(event) {
       let data = JSON.parse(event.data);
+      console.log('socket data: ', data);
       if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
         let device = JSON.parse(data.Retval);
         let filteredDeviceMarker = self.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);

@@ -29,7 +29,6 @@
             <h4 class="media-heading">Uyarı</h4>
             <b-card-text class="mb-0">{{ details.warning ? details.warning : 'Yok' }}</b-card-text>
         </b-media>
-        <!--
         <b-media vertical-align="center">
             <template #aside>
                 <b-avatar rounded size="42" variant="light-primary">
@@ -50,7 +49,6 @@
                 </div>
             </b-card-text>
         </b-media>
-        -->
     </div>
 </template>
 
