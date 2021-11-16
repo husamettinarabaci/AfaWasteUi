@@ -4,9 +4,11 @@
             <app-timeline-item v-for="(item, id) in items" :key="id" :variant="item.status.variant">
                 <div class="d-flex flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-0">
                     <h6 :class="{'bold': id == 0}">{{ item.no }}</h6>
+                    <!--
                     <small :class="{'bold': id == 0}" class="text-muted">{{ $moment(item.date).fromNow() }}</small>
+                    -->
                 </div>
-                <p :class="{'bold': id == 0}" class="address">{{ item.address }}</p>
+                <p :class="{'bold': id == 0}" class="address">{{ item.status.status }}</p>
             </app-timeline-item>
         </app-timeline>
     </div>
@@ -15,12 +17,14 @@
 <script>
 import AppTimeline from '@core/components/app-timeline/AppTimeline.vue'
 import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem.vue'
+import Enums from '@/config/system.enums';
 
 export default {
     components: {
         AppTimeline,
         AppTimelineItem,
     },
+
     data(){
         return {
             fields: [
@@ -29,39 +33,32 @@ export default {
                 {key: 'address', label: 'Adres'},
                 {key: 'status', label: 'Durum'}
             ],
-            items: [
-                {
-                    date: '2021-10-11T18:24:24.058Z',
-                    no: 'NO1232186',
-                    address: 'Test Mh. Örnek Cd. No: 1',
-                    status: {status: 'Toplandı', variant: 'success'}
-                },
-                {
-                    date: '2021-10-11T18:10:24.058Z',
-                    no: 'NO1232185',
-                    address: 'Örnek Mh. Test Cd. No: 2',
-                    status: {status: 'Toplanmadı', variant: 'danger'}
-                },
-                {
-                    date: '2021-10-11T15:24:24.058Z',
-                    no: 'NO1232184',
-                    address: 'Test Mh. Örnek Cd. No: 1',
-                    status: {status: 'Toplandı', variant: 'success'}
-                },
-                {
-                    date: '2021-10-10T21:24:24.058Z',
-                    no: 'NO1232183',
-                    address: 'Test Mh. Örnek Cd. No: 1',
-                    status: {status: 'Toplandı', variant: 'success'}
-                },
-                {
-                    date: '2021-10-10T18:24:24.058Z',
-                    no: 'NO1232182',
-                    address: 'Test Mh. Örnek Cd. No: 1',
-                    status: {status: 'Toplandı', variant: 'success'}
-                },
-            ],
+            items: [],
         }
+    },
+
+    computed: {
+        socket: function(){
+            return this.$store.getters['socket/getSocket'];
+        }
+    },
+
+    created(){
+        let self = this;
+        this.socket.addEventListener('message', function(event){
+            let data = JSON.parse(event.data);
+            if (data.Result === Enums.DATATYPE_TAG_STATU){
+                let value = JSON.parse(data.Retval);
+                self.items.unshift({
+                    date: value.CheckTime,
+                    no: value.TagId,
+                    status: {
+                        status: value.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'Toplandı' : 'Toplanmadı', 
+                        variant: value.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'success' : 'danger'
+                    }
+                })
+            }
+        })
     }
 }
 </script>

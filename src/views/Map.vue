@@ -283,7 +283,7 @@ export default {
         }
       });
       
-      newVal.forEach(data => {
+      newVal.slice(0,50).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -681,6 +681,10 @@ export default {
 
       //console.log('data: ', data)
     }
+  },
+
+  destroyed(){
+    this.socket.onmessage = null;
   },
 
   methods: {
