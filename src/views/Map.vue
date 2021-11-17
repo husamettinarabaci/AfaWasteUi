@@ -453,6 +453,7 @@ export default {
       let map = this.$store.state.dashboard.map;
       let self = this;
 
+      /*
       this.markerGroups.trucks.truck = L.markerClusterGroup({
         iconCreateFunction: function(cluster) {
           return L.divIcon({
@@ -462,6 +463,7 @@ export default {
           });
         }
       });
+      */
 
       // Init trucks
       newVal.forEach(data => {
@@ -517,7 +519,7 @@ export default {
           }
         })
         
-        this.markerGroups.trucks.truck.addLayer(marker);
+        //this.markerGroups.trucks.truck.addLayer(marker);
 
         this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', data, marker});
         //this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
@@ -525,9 +527,9 @@ export default {
         //this.trucksMarkers.push(marker);
       })
 
-      map.addLayer(this.markerGroups.trucks.truck);
-      //this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
-      //this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+      //map.addLayer(this.markerGroups.trucks.truck);
+      this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
+      this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
 
       this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.trucks});
     },
