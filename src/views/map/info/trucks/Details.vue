@@ -39,6 +39,7 @@
                 {{ details.collected_container_count }}
             </b-card-text>
         </b-media>
+        <!--
         <b-media vertical-align="center">
             <template #aside>
                 <b-avatar rounded size="42" variant="light-primary">
@@ -52,6 +53,7 @@
                 {{ details.productivity_rate }}%
             </b-card-text>
         </b-media>
+        -->
         <b-media vertical-align="center">
             <template #aside>
                 <b-avatar rounded size="42" variant="light-primary">

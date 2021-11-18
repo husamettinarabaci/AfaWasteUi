@@ -3,7 +3,7 @@
     <b-row class="match-height">
         <b-col md="6" xl="6" class="cardCol">
             <b-card 
-            :bg-variant="filteredType == 'truck' ? 'warning' : ''" 
+            :bg-variant="filteredType == 'truck' ? 'info' : ''" 
             :text-variant="filteredType == 'truck' ? 'white' : ''" 
             @click="filteredType == 'truck' ? (filteredType = '') : (filteredType = 'truck')">
                 <b-avatar class="mb-1" variant="light-warning" size="45">

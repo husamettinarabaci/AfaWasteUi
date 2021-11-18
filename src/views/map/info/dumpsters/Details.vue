@@ -7,7 +7,7 @@
                 </b-avatar>
             </template>
             <h4 class="media-heading">Konum</h4>
-            <b-card-text class="mb-0">{{ `${details.TagGps.Latitude}, ${details.TagGps.Longitude}` }}</b-card-text>
+            <b-card-text class="mb-0 address-text">{{ address }}</b-card-text>
         </b-media>
         <!--
         <b-media vertical-align="center">
@@ -54,7 +54,7 @@
 
 <script>
 import {BCardText, BMediaBody, BMedia, BMediaAside, BAvatar, BBadge} from 'bootstrap-vue';
-let esri = require('esri-leaflet');
+import GeocodingService from '@/services/geocoding.service';
 
 export default {
     components: {
@@ -68,7 +68,7 @@ export default {
 
     data(){
         return {
-
+            address: '-'
         }
     },
 
@@ -84,27 +84,20 @@ export default {
     },
 
     created(){
-        //console.log('esri: ', esri.Geocoding.reverseGeocode)
+        GeocodingService.getAddress(this.details.TagGps.Latitude, this.details.TagGps.Longitude).then(response => {
+            if (response.status == 'OK'){
+                this.address = response.results[0].formatted_address
+            }
+        })
     },
 
     methods: {
         showTruck(id){
-            let markers = this.$store.state.dashboard.markerGroups.trucks.truck;
             let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck' && marker.data.DeviceId == id);
             if (filtered.length){
+                this.$emit('showTrucks');
                 let marker = filtered[0].marker;
-                let visibleLayer = markers.getVisibleParent(marker);
-                if (visibleLayer instanceof L.MarkerCluster){
-                    markers.fire('click', {
-                        layer: visibleLayer,
-                        latlng: marker.getLatLng()
-                    });
-                }
-                else {
-                    marker.fire('click');
-                }
-                //this.$emit('showTrucks');
-                //filtered[0].marker.fireEvent('click');
+                marker.fireEvent('click');
             }
             else {
                 console.log('bulunamadı')
@@ -118,5 +111,8 @@ export default {
     .badge.badge-light-info {
         margin-top: 5px;
         cursor: pointer;
+    }
+    .address-text {
+        word-break: break-word;
     }
 </style>

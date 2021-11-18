@@ -419,7 +419,7 @@ export default {
             shape: 'circle',
             prefix: 'fa'
         });
-        var marker = L.marker([data.Latitude, data.Longitude], {icon: markerIcon, data});
+        var marker = L.marker([data.Latitude, data.Longitude], {icon: markerIcon});
         var popupContent = `
         <div class="card videoCard">
             <video class="tagVideo" controls autoplay>
@@ -438,10 +438,6 @@ export default {
                 </tr>
                 <tr>
                   <td class="text-bold">SON TOPLANMA TARİHİ</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td class="text-bold">SON OKUNMA TARİHİ</td>
                   <td>-</td>
                 </tr>
               </table>
@@ -478,10 +474,6 @@ export default {
                       </tr>
                       <tr>
                         <td class="text-bold">SON TOPLANMA TARİHİ</td>
-                        <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY HH:mm:ss')}</td>
-                      </tr>
-                      <tr>
-                        <td class="text-bold">SON OKUNMA TARİHİ</td>
                         <td title="${response.TagReader.ReadTime}">${self.$moment(response.TagReader.ReadTime).format('DD.MM.YYYY HH:mm:ss')}</td>
                       </tr>
                     </table>
@@ -521,6 +513,7 @@ export default {
 
     // Init Trucks - Rfid
     attachRfidMarkers(map){
+      let self = this;
       let markers = this.$store.getters['panel/getRfidDevices'];
       markers.forEach(data => {
         const popupOptions = {
@@ -537,7 +530,7 @@ export default {
             shape: 'square',
             prefix: 'fa'
         });
-        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon, data});
+        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon});
         var popupContent = `
         <div class="card">
           <div class="card-body">
@@ -561,8 +554,8 @@ export default {
         marker.bindPopup(popupContent, popupOptions)
         .on('click', function(e) {
           map.setView(e.target.getLatLng());
-          //self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
-          //self.$store.commit('dashboard/setInfoData', data);
+          self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
+          self.$store.commit('dashboard/setInfoData', data);
         })
         .on('popupclose', function(e){
           if (self.$store.state.dashboard.sidebar.object.getContainer().classList.contains('collapsed')){
@@ -592,6 +585,7 @@ export default {
 
     // Init Ults - Ult
     attachUltMarkers(map){
+      let self = this;
       let markers = this.$store.getters['panel/getUltDevices'];
       let vals = markers.slice(0,5)
       vals[0].DeviceGps.Latitude = 37.04819002372351;
@@ -639,7 +633,7 @@ export default {
             shape: 'star',
             prefix: 'fa'
         });
-        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon, data});
+        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon});
         var popupContent = `
         <div class="card">
           <div class="card-body">
@@ -696,6 +690,7 @@ export default {
 
     // Init Recycles - Recy
     attachRecyMarkers(map){
+      let self = this;
       let markers = this.$store.getters['panel/getRecyDevices'];
       markers.slice(0,5).forEach(data => {
         const popupOptions = {
@@ -787,8 +782,8 @@ export default {
     */
 
     showTrucks(){
-      //this.$store.commit('dashboard/setCurrentTab', 'trucks');
-      //this.$store.state.dashboard.sidebar.object._tabitems[2].click();
+      this.$store.commit('dashboard/setCurrentTab', 'trucks');
+      this.$store.state.dashboard.sidebar.object._tabitems[2].click();
     }
   }
 }

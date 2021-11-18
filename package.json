@@ -33,7 +33,6 @@
     "chart.js": "2.9.4",
     "core-js": "3.8.1",
     "echarts": "4.8.0",
-    "esri-leaflet": "^3.0.3",
     "jsonwebtoken": "8.5.1",
     "leaflet": "1.6.0",
     "leaflet-extra-markers": "^1.2.1",
