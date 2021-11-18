@@ -4,7 +4,7 @@
         <div class="leaflet-sidebar-tabs">
             <!-- top aligned tabs -->
             <ul role="tablist">
-                <li v-for="tab in tabs" :key="tab.id" :data-tab="tab.id" :ref="'tab-' + tab.id" @click="tabChanged(tab)">
+                <li v-for="tab in showingTabs" :key="tab.id" :data-tab="tab.id" :ref="'tab-' + tab.id" @click="tabChanged(tab)">
                     <a :href="'#' + tab.id" role="tab">
                         <i v-if="tab.icon.length" :class="tab.icon"></i>
                         <img class="iconImg" v-else :src="currentTab == tab.id ? tab.imgWhite : tab.img"/>
@@ -41,7 +41,10 @@
 
         <!-- panel content -->
         <div class="leaflet-sidebar-content">
-            <div v-for="tab in tabs" :key="tab.id" class="leaflet-sidebar-pane" :id="tab.id">
+            <div 
+            v-for="tab in showingTabs" :key="tab.id" 
+            class="leaflet-sidebar-pane" 
+            :id="tab.id">
                 <h1 class="leaflet-sidebar-header">
                     {{ tab.title }}
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
@@ -57,6 +60,7 @@
 
 <script>
 import { BModal } from 'bootstrap-vue'
+import Enums from '@/config/system.enums';
 
 import Summary from './tabs/Summary';
 import Search from './tabs/Search';
@@ -112,7 +116,8 @@ export default {
                     img: TruckIcon,
                     imgWhite: TruckIconWhite,
                     content: 'Trucks',
-                    title: 'Kamyonlar'
+                    title: 'Kamyonlar',
+                    parameter: Enums.WEB_APP_TYPE_RFID
                 },
                 {
                     id: 'dumpsters',
@@ -127,19 +132,36 @@ export default {
                     img: ContainerIcon,
                     imgWhite: ContainerIconWhite,
                     content: 'Containers',
-                    title: 'Doluluk Sensörleri'
+                    title: 'Doluluk Sensörleri',
+                    parameter: Enums.WEB_APP_TYPE_ULT
                 },
                 {
                     id: 'recycles',
                     icon: 'fa fa-recycle',
                     content: 'Recycles',
-                    title: 'Geri Dönüşüm Cihazları'
+                    title: 'Geri Dönüşüm Cihazları',
+                    parameter: Enums.WEB_APP_TYPE_RECY
                 }
             ],
         }
     },
 
     computed: {
+        showingTabs: function(){
+            let customer = this.$store.getters['panel/getCustomer'];
+            return this.tabs.filter(tab => {
+                if (tab.parameter){
+                    if (customer[tab.parameter] == Enums.STATU_ACTIVE){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                return true;
+            })
+        },
+
         currentTab: function(){
             return this.$store.state.dashboard.sidebar.currentTab;
         }

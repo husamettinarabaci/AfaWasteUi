@@ -4,6 +4,11 @@ export default {
         RESULT_OK  : "OK",
         RESULT_NOT : "NOT",
 
+        // App Type
+        WEB_APP_TYPE_RFID: "RfIdApp",
+        WEB_APP_TYPE_ULT : "UltApp",
+        WEB_APP_TYPE_RECY: "RecyApp",
+
         // Status Type
         STATU_ACTIVE : "ACTIVE",
         STATU_PASSIVE: "PASSIVE",

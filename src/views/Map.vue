@@ -749,13 +749,13 @@ export default {
 
       this.attachTagMarkers(map);
       
-      if (customer.RfIdApp = Enums.STATU_ACTIVE){
+      if (customer[Enums.WEB_APP_TYPE_RFID] = Enums.STATU_ACTIVE){
         this.attachRfidMarkers(map);
       }
-      if (customer.UltApp = Enums.STATU_ACTIVE){
+      if (customer[Enums.WEB_APP_TYPE_ULT] = Enums.STATU_ACTIVE){
         this.attachUltMarkers(map);
       }
-      if (customer.RecyApp = Enums.STATU_ACTIVE){
+      if (customer[Enums.WEB_APP_TYPE_RECY] = Enums.STATU_ACTIVE){
         this.attachRecyMarkers(map);
       }
 
