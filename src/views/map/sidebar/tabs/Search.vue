@@ -78,17 +78,39 @@ export default {
     },
 
     methods: {
+        getSearchableFields(type){
+            let searchableFields = [];
+            switch(type){
+                case 'tag':
+                    searchableFields = ['ContainerNo', 'TagId'];
+                    break;
+                case 'truck':
+                    searchableFields = ['DeviceDetail.PlateNo'];
+                    break;
+            }
+            return searchableFields;
+        },
+
         search(){
             let markers = this.$store.state.dashboard.markers;
             let self = this;
             this.results = markers.filter(marker => {
                 let addResult = false;
-                marker.searchableFields.forEach(field => {
-                    if (typeof marker.data[field] == 'string'){
-                        if (marker.data[field].toLocaleLowerCase().includes(self.query.toLocaleLowerCase())) addResult = true;
+                let searchableFields = this.getSearchableFields(marker.type);
+                searchableFields.forEach(field => {
+                    let f;
+                    if (field.includes('.')){
+                        f = field.split('.');
+                        f = marker.data[f[0]][f[1]];
                     }
                     else {
-                        if (marker.data[field] == self.query) addResult = true;
+                        f = marker.data[field];
+                    }
+                    if (typeof f == 'string'){
+                        if (f.toLocaleLowerCase().includes(self.query.toLocaleLowerCase())) addResult = true;
+                    }
+                    else {
+                        if (f == self.query) addResult = true;
                     }
                 })
                 return addResult ? marker : false;
@@ -97,9 +119,17 @@ export default {
         },
         
         displayTitle: function(result){
+            let searchableFields = this.getSearchableFields(result.type);
             let t = ''
-            result.searchableFields.forEach(field => {
-                t += result.data[field]
+            searchableFields.forEach(field => {
+                let f;
+                if (field.includes('.')){
+                    f = field.split('.');
+                    t += result.data[f[0]][f[1]];
+                }
+                else {
+                    t += result.data[field];
+                }
             })
             return t;
         },

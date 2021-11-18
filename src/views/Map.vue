@@ -339,6 +339,9 @@ export default {
 
 
       newVal.filter(a => idList.includes(a.TagId)).forEach(data => {
+        if (data.TagId == 39) {
+          data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_EMPTY
+        }
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
