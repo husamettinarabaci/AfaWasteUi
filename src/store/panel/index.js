@@ -13,6 +13,17 @@ export default {
     },
 
     getters: {
+        getCurrentType: state => state.currentType,
+        
+        getCustomer: state => state.customer,
+
+        getRfidDevices: state => state.devices.rfid,
+
+        getUltDevices: state => state.devices.ult,
+
+        getRecyDevices: state => state.devices.recy,
+
+        getTags: state => state.tags,
     },
 
     mutations: {

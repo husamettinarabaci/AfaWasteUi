@@ -1,18 +1,20 @@
 <template>
-    <div id="loading-bg">
-      <div class="loading-logo">
-        <img :src="logo" alt="Logo" />
-      </div>
-      <div class="loading-progress">
-        <b-progress
-            key="info"
-            animated
-            :value="calculatePercent"
-            variant="info"
-            class="progress-bar-info"
-        />
-      </div>
-    </div>
+    <transition name="fade">
+        <div id="loading-bg">
+        <div class="loading-logo">
+            <img :src="logo" alt="Logo" />
+        </div>
+        <div class="loading-progress">
+            <b-progress
+                key="info"
+                animated
+                :value="calculatePercent"
+                variant="info"
+                class="progress-bar-info"
+            />
+        </div>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -112,7 +114,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .loading-progress {
     position: absolute;
     margin-top: 35px;
@@ -121,4 +123,17 @@ export default {
     width: 50%;
     transform: translate(-50%, 50%);
 }
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+
 </style>

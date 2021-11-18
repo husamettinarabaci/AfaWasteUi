@@ -256,14 +256,79 @@ export default {
           if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
           break;
       }
+    }
+  },
+
+  created(){
+    let self = this;
+    this.socket.onmessage = function(event) {
+      let data = JSON.parse(event.data);
+      //console.log('socket data: ', data);
+      //console.log('devicetypesqwe: ', self.deviceTypes)
+      if (Object.keys(self.deviceTypes).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeDeviceData(data.Result, value);
+      }
+      else if (Object.keys(self.deviceTypesGps).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeDeviceData(data.Result, value);
+        self.changeDeviceLocation(data.Result, value);
+      }
+      else if (Object.keys(self.tagTypes).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeTagData(data.Result, value);
+      }
+      else if (Object.keys(self.tagTypesStatuGps).includes(data.Result)){
+        let value = JSON.parse(data.Retval);
+        self.changeTagData(data.Result, value);
+        if (data.Result == Enums.DATATYPE_TAG_GPS){
+          self.changeTagLocation(value);
+        }
+        else if (data.Result == Enums.DATATYPE_TAG_STATU){
+          self.changeTagStatus(value);
+        }
+      }
+      else {
+        console.log('hepsinin dışında bir veri geldi: ', data.Result);
+      }
+      /*
+      else if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
+        let device = JSON.parse(data.Retval);
+        let filteredDeviceMarker = self.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
+        if (filteredDeviceMarker.length){
+          var newLatLng = new L.LatLng(device.Latitude, device.Longitude);
+          filteredDeviceMarker[0].setLatLng(newLatLng);
+        }
+      }*/
+
+      //console.log('data: ', data)
+    }
+  },
+
+  destroyed(){
+    this.socket.onmessage = null;
+  },
+
+  methods: {
+    mapReady(map){
+      // Add sidebar to vuex state
+      this.$store.commit('dashboard/setMap', map)
+
+      //map.on('click', function(e){
+      //  console.log('latitude: ', e.latlng.lat)
+      //  console.log('longitude: ', e.latlng.lng)
+      //})
+
+      // Add markers to map
+      this.attachMarkers(map);
+
     },
 
-    '$store.state.panel.tags': function(newVal, oldVal){
-      let map = this.$store.state.dashboard.map;
+
+    // Init Dumpsters - Tags
+    attachTagMarkers(map){
       let self = this;
-      // Init trucks
-      
-      // Init rfTags - Dumpsters
+      let markers = this.$store.getters['panel/getTags'];
       this.markerGroups.rfTags.collected = L.markerClusterGroup({
         iconCreateFunction: function(cluster) {
           return L.divIcon({
@@ -338,7 +403,7 @@ export default {
       ]
 
 
-      newVal.filter(a => idList.includes(a.TagId)).forEach(data => {
+      markers.filter(a => idList.includes(a.TagId)).forEach(data => {
         if (data.TagId == 39) {
           data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_EMPTY
         }
@@ -454,24 +519,10 @@ export default {
       this.$store.commit('dashboard/addMarkerGroup', {type: 'rfTags', markerGroup: this.markerGroups.rfTags});
     },
 
-    '$store.state.panel.devices.rfid': function(newVal, oldVal){
-      let map = this.$store.state.dashboard.map;
-      let self = this;
-
-      /*
-      this.markerGroups.trucks.truck = L.markerClusterGroup({
-        iconCreateFunction: function(cluster) {
-          return L.divIcon({
-            html: '<div class="marker-cluster-trucks-truck"><span>' + cluster.getChildCount() + '</span></div>',
-            className: 'marker-cluster marker-cluster-truck',
-            iconSize: L.point(40, 40)
-          });
-        }
-      });
-      */
-
-      // Init trucks
-      newVal.forEach(data => {
+    // Init Trucks - Rfid
+    attachRfidMarkers(map){
+      let markers = this.$store.getters['panel/getRfidDevices'];
+      markers.forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -539,11 +590,10 @@ export default {
       this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.trucks});
     },
 
-    '$store.state.panel.devices.ult': function(newVal, oldVal){
-      let map = this.$store.state.dashboard.map;
-      let self = this;
-
-      let vals = newVal.slice(0,5)
+    // Init Ults - Ult
+    attachUltMarkers(map){
+      let markers = this.$store.getters['panel/getUltDevices'];
+      let vals = markers.slice(0,5)
       vals[0].DeviceGps.Latitude = 37.04819002372351;
       vals[0].DeviceGps.Longitude = 27.34308242797852;
       vals[1].DeviceGps.Latitude = 37.05531410185666;
@@ -644,12 +694,10 @@ export default {
       this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
     },
 
-    '$store.state.panel.devices.recy': function(newVal, oldVal){
-      let map = this.$store.state.dashboard.map;
-      let self = this;
-
-      // Init recycles
-      newVal.slice(0,5).forEach(data => {
+    // Init Recycles - Recy
+    attachRecyMarkers(map){
+      let markers = this.$store.getters['panel/getRecyDevices'];
+      markers.slice(0,5).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -694,76 +742,22 @@ export default {
       })
       
       this.markerGroups.recycles = L.layerGroup(this.markers.recycles).addTo(map);
-    }
-  },
-
-  created(){
-    let self = this;
-    this.socket.onmessage = function(event) {
-      let data = JSON.parse(event.data);
-      //console.log('socket data: ', data);
-      //console.log('devicetypesqwe: ', self.deviceTypes)
-      if (Object.keys(self.deviceTypes).includes(data.Result)){
-        let value = JSON.parse(data.Retval);
-        self.changeDeviceData(data.Result, value);
-      }
-      else if (Object.keys(self.deviceTypesGps).includes(data.Result)){
-        let value = JSON.parse(data.Retval);
-        self.changeDeviceData(data.Result, value);
-        self.changeDeviceLocation(data.Result, value);
-      }
-      else if (Object.keys(self.tagTypes).includes(data.Result)){
-        let value = JSON.parse(data.Retval);
-        self.changeTagData(data.Result, value);
-      }
-      else if (Object.keys(self.tagTypesStatuGps).includes(data.Result)){
-        let value = JSON.parse(data.Retval);
-        self.changeTagData(data.Result, value);
-        if (data.Result == Enums.DATATYPE_TAG_GPS){
-          self.changeTagLocation(value);
-        }
-        else if (data.Result == Enums.DATATYPE_TAG_STATU){
-          self.changeTagStatus(value);
-        }
-      }
-      else {
-        console.log('hepsinin dışında bir veri geldi: ', data.Result);
-      }
-      /*
-      else if (data.Result === Enums.DATATYPE_RFID_GPS_DEVICE){
-        let device = JSON.parse(data.Retval);
-        let filteredDeviceMarker = self.markers.trucks.truck.filter(marker => marker.options.data.DeviceId == device.DeviceId);
-        if (filteredDeviceMarker.length){
-          var newLatLng = new L.LatLng(device.Latitude, device.Longitude);
-          filteredDeviceMarker[0].setLatLng(newLatLng);
-        }
-      }*/
-
-      //console.log('data: ', data)
-    }
-  },
-
-  destroyed(){
-    this.socket.onmessage = null;
-  },
-
-  methods: {
-    mapReady(map){
-      // Add sidebar to vuex state
-      this.$store.commit('dashboard/setMap', map)
-
-      //map.on('click', function(e){
-      //  console.log('latitude: ', e.latlng.lat)
-      //  console.log('longitude: ', e.latlng.lng)
-      //})
-
-      // Add markers to map
-      this.attachMarkers(map);
-
     },
 
     attachMarkers(map){
-      let self = this;
+      let customer = this.$store.getters['panel/getCustomer'];
+
+      this.attachTagMarkers(map);
+      
+      if (customer.RfIdApp = Enums.STATU_ACTIVE){
+        this.attachRfidMarkers(map);
+      }
+      if (customer.UltApp = Enums.STATU_ACTIVE){
+        this.attachUltMarkers(map);
+      }
+      if (customer.RecyApp = Enums.STATU_ACTIVE){
+        this.attachRecyMarkers(map);
+      }
 
       //this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
       //this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
@@ -783,12 +777,14 @@ export default {
       
     },
 
+  /*
     computeVariant(percent){
         if (percent < 25) return 'success';
         else if ((percent >= 25) && (percent < 50)) return 'info';
         else if ((percent >= 50) && (percent < 75)) return 'warning';
         else if ((percent >= 75) && (percent <= 100)) return 'danger';
     },
+    */
 
     showTrucks(){
       //this.$store.commit('dashboard/setCurrentTab', 'trucks');

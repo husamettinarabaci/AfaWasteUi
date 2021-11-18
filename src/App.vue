@@ -84,7 +84,7 @@ export default {
     this.$store.commit('socket/setSocket', socket);
 
     socket.onopen = function() {
-        console.log('successfully connected')
+        console.log('successfully connected to socket server')
     }
   },
 
