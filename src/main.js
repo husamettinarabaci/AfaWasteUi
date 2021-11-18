@@ -29,9 +29,6 @@ require('@core/scss/core.scss')
 // import assets styles
 require('@/assets/scss/style.scss')
 
-// Run bootstrap script
-import '@/bootstrap';
-
 Vue.config.productionTip = false
 
 new Vue({
