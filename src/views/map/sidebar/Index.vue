@@ -116,7 +116,7 @@ export default {
                     img: TruckIcon,
                     imgWhite: TruckIconWhite,
                     content: 'Trucks',
-                    title: 'Kamyonlar',
+                    title: 'Araçlar',
                     parameter: Enums.WEB_APP_TYPE_RFID
                 },
                 {

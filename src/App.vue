@@ -86,6 +86,12 @@ export default {
     socket.onopen = function() {
         console.log('successfully connected to socket server')
     }
+
+    // Refresh in 45 minutes
+    let self = this;
+    setTimeout(function(){
+      self.$router.go();
+    }, 1000 * 60 * 45)
   },
 
   setup() {

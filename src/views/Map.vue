@@ -403,7 +403,9 @@ export default {
       ]
 
 
-      markers.filter(a => idList.includes(a.TagId)).forEach(data => {
+      markers
+      .filter(a => idList.includes(a.TagId))
+      .forEach(data => {
         if (data.TagId == 39) {
           data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_EMPTY
         }
@@ -493,6 +495,7 @@ export default {
             }
           }
         });
+        
         if (data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY){
           this.markerGroups.rfTags.collected.addLayer(marker);
         }
@@ -587,22 +590,22 @@ export default {
     attachUltMarkers(map){
       let self = this;
       let markers = this.$store.getters['panel/getUltDevices'];
-      let vals = markers.slice(0,5)
-      vals[0].DeviceGps.Latitude = 37.04819002372351;
-      vals[0].DeviceGps.Longitude = 27.34308242797852;
-      vals[1].DeviceGps.Latitude = 37.05531410185666;
-      vals[1].DeviceGps.Longitude = 27.357501983642578;
-      vals[2].DeviceGps.Latitude = 37.05325914794976;
-      vals[2].DeviceGps.Longitude = 27.37895965576172;
-      vals[3].DeviceGps.Latitude = 37.05599907412595;
-      vals[3].DeviceGps.Longitude = 27.458438873291016;
-      vals[4].DeviceGps.Latitude = 37.02489510178452;
-      vals[4].DeviceGps.Longitude = 27.442817687988285;
+      
+      //let vals = markers.slice(0,5)
+      //vals[0].DeviceGps.Latitude = 37.04819002372351;
+      //vals[0].DeviceGps.Longitude = 27.34308242797852;
+      //vals[1].DeviceGps.Latitude = 37.05531410185666;
+      //vals[1].DeviceGps.Longitude = 27.357501983642578;
+      //vals[2].DeviceGps.Latitude = 37.05325914794976;
+      //vals[2].DeviceGps.Longitude = 27.37895965576172;
+      //vals[3].DeviceGps.Latitude = 37.05599907412595;
+      //vals[3].DeviceGps.Longitude = 27.458438873291016;
+      //vals[4].DeviceGps.Latitude = 37.02489510178452;
+      //vals[4].DeviceGps.Longitude = 27.442817687988285;
 
-      return;
+      markers = markers.slice(0, 10)
 
-      // Init ults - Containers
-      vals.forEach(data => {
+      markers.forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -610,21 +613,23 @@ export default {
             'className': 'mapPopup containerPopup'
         };
         var markerColor, markerHTML;
-        if (data.filled_rate < 25){
-          markerColor = 'green-light';
-          markerIcon = ContainerEmptyIcon;
-        }
-        else if ((data.filled_rate >= 25) && (data.filled_rate < 50)){
-          markerColor = 'green-dark';
-          markerIcon = ContainerLittleIcon;
-        }
-        else if ((data.filled_rate >= 50) && (data.filled_rate < 75)){
-          markerColor = 'yellow';
-          markerIcon = ContainerMediumIcon;
-        }
-        else if ((data.filled_rate >= 75) && (data.filled_rate <= 100)){
-          markerColor = 'red';
-          markerIcon = ContainerFullIcon;
+        switch(data.DeviceStatu.ContainerStatu){
+          case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
+            markerColor = 'green-light';
+            markerIcon = ContainerEmptyIcon;
+            break;
+          case Enums.CONTAINER_FULLNESS_STATU_LITTLE:
+            markerColor = 'green-dark';
+            markerIcon = ContainerLittleIcon;
+            break;
+          case Enums.CONTAINER_FULLNESS_STATU_MEDIUM:
+            markerColor = 'yellow';
+            markerIcon = ContainerMediumIcon;
+            break;
+          case Enums.CONTAINER_FULLNESS_STATU_FULL:
+            markerColor = 'red';
+            markerIcon = ContainerFullIcon;
+            break;
         }
         var markerIcon = L.ExtraMarkers.icon({
             //icon: 'fa-archive',
@@ -640,12 +645,12 @@ export default {
             <table>
               <tr>
                 <td class="text-bold">Konteyner ID</td>
-                <td>${data.ult_title}</td>
+                <td>${data.DeviceId}</td>
               </tr>
               <tr>
                 <td class="text-bold">Doluluk Oranı</td>
                 <td>
-                  <span class="badge badge-light-${this.computeVariant(data.filled_rate)}">${data.filled_rate}%</span>
+                  <span class="badge badge-light-${this.computeVariant(data.DeviceStatu.ContainerStatu)}">${data.DeviceStatu.ContainerStatu}</span>
                 </td>
               </tr>
             </table>
@@ -667,18 +672,20 @@ export default {
           }
         });
         this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_title'], data, marker});
-        if (data.filled_rate < 25){
-          this.markers.ults.empty.push(marker);
-        }
-        else if ((data.filled_rate >= 25) && (data.filled_rate < 50)){
-          this.markers.ults.little.push(marker);
-        }
-        else if ((data.filled_rate >= 50) && (data.filled_rate < 75)){
-          this.markers.ults.medium.push(marker);
-        }
-        else if ((data.filled_rate >= 75) && (data.filled_rate <= 100)){
-          this.markers.ults.full.push(marker);
-        }
+        
+        this.markers.ults[data.DeviceStatu.ContainerStatu.toLowerCase()].push(marker);
+        //if (data.filled_rate < 25){
+        //  this.markers.ults.empty.push(marker);
+        //}
+        //else if ((data.filled_rate >= 25) && (data.filled_rate < 50)){
+        //  this.markers.ults.little.push(marker);
+        //}
+        //else if ((data.filled_rate >= 50) && (data.filled_rate < 75)){
+        //  this.markers.ults.medium.push(marker);
+        //}
+        //else if ((data.filled_rate >= 75) && (data.filled_rate <= 100)){
+        //  this.markers.ults.full.push(marker);
+        //}
       })
       
 
@@ -772,14 +779,19 @@ export default {
       
     },
 
-  /*
-    computeVariant(percent){
-        if (percent < 25) return 'success';
-        else if ((percent >= 25) && (percent < 50)) return 'info';
-        else if ((percent >= 50) && (percent < 75)) return 'warning';
-        else if ((percent >= 75) && (percent <= 100)) return 'danger';
+  
+    computeVariant(containerStatu){
+      switch(containerStatu){
+        case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
+          return 'success';
+        case Enums.CONTAINER_FULLNESS_STATU_LITTLE:
+          return 'info'
+        case Enums.CONTAINER_FULLNESS_STATU_MEDIUM:
+          return 'warning'
+        case Enums.CONTAINER_FULLNESS_STATU_FULL:
+          return 'danger'
+      }
     },
-    */
 
     showTrucks(){
       this.$store.commit('dashboard/setCurrentTab', 'trucks');

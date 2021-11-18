@@ -86,7 +86,14 @@ export default {
     created(){
         GeocodingService.getAddress(this.details.TagGps.Latitude, this.details.TagGps.Longitude).then(response => {
             if (response.status == 'OK'){
-                this.address = response.results[0].formatted_address
+                let filtered = response.results.filter(result => {
+                    if (result.types.includes('route')){
+                        return true;
+                    }
+                })
+                if (filtered.length){
+                    this.address = filtered[0].formatted_address;
+                }
             }
         })
     },
