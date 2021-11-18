@@ -2,12 +2,13 @@ import Enums from '@/config/system.enums';
 import WebApi from '@/services/webapi.service';
 import store from '@/store';
 
+/*
 WebApi.getCustomer().then(customer => {
     console.log('customer: ', customer)
     store.commit('panel/setCustomer', customer);
     if (customer.RfIdApp == Enums.STATU_ACTIVE){
         WebApi.getDevices(Enums.DEVICETYPE_RFID).then(response => {
-            store.commit('panel/setRfidDevices', response.Devices);
+            store.commit('panel/setRfidDevices', response);
         })
     }
     //if (customer.UltApp == Enums.STATU_ACTIVE){
@@ -29,6 +30,7 @@ WebApi.getTags().then(response => {
     let tags = response.Tags;
     store.commit('panel/setTags', tags);
 })
+*/
 
 /*
 console.log([Enums.DATATYPE_ADMINCONFIG, Enums.DATATYPE_LOCALCONFIG])

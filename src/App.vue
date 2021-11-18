@@ -4,7 +4,8 @@
     class="h-100"
     :class="[skinClasses]"
   >
-    <component :is="layout">
+    <loading v-if="getLoading"/>
+    <component v-else :is="layout">
       <router-view />
     </component>
 
@@ -23,6 +24,8 @@ import { useWindowSize, useCssVar } from '@vueuse/core'
 
 import store from '@/store'
 
+import Loading from '@/components/Loading';
+
 const LayoutVertical = () => import('@/layouts/vertical/LayoutVertical.vue')
 const LayoutHorizontal = () => import('@/layouts/horizontal/LayoutHorizontal.vue')
 const LayoutFull = () => import('@/layouts/full/LayoutFull.vue')
@@ -30,6 +33,7 @@ import {socketUrl} from '@/config/app.config';
 
 export default {
   components: {
+    Loading,
 
     // Layouts
     LayoutHorizontal,
@@ -46,6 +50,10 @@ export default {
     },
     contentLayoutType() {
       return this.$store.state.appConfig.layout.type
+    },
+
+    getLoading() {
+      return this.$store.getters['app/getLoading']
     },
   },
   beforeCreate() {

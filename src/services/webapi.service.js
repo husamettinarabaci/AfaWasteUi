@@ -19,14 +19,14 @@ export default class WebApi {
         obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
         return axios.post(apiUrl + webApiUrl + '/getDevices', obj)
             .then(response => {
-                return response;
+                return response.Devices;
             })
     }
 
     static getTags(){
         return axios.post(apiUrl + webApiUrl + '/getTags')
         .then(response => {
-            return response;
+            return response.Tags;
         })
     }
 
