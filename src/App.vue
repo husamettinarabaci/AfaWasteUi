@@ -125,3 +125,11 @@ export default {
   },
 }
 </script>
+
+<style>
+.highlighted-text {
+    padding: 2px 0;
+    border-radius: 4px;
+    color: #fff;
+}
+</style>
