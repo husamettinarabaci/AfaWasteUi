@@ -116,9 +116,6 @@ export default {
       },
       filteredType: '', // truck, winch
       filterQuery: '',
-      perfectScrollbarSettings: {
-        wheelPropagation: true
-      },
     }
   },
 

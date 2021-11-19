@@ -9,7 +9,12 @@
                     <b-form-input v-model="query" class="searchInput" placeholder="Kamyon ve konteyner bilgisi için en az 3 karakter girmelisiniz" />
                 </b-input-group>
                 <b-list-group v-if="showResults">
-                    <div v-if="results.length">
+                    <vue-perfect-scrollbar
+                        v-if="results.length"
+                        class="search-list search-list-main scroll-area overflow-hidden allList"
+                        :class="{'show': showResults}"
+                        tagname="ul"
+                    >
                         <transition-group name="fade" tag="div">
                             <b-list-group-item class="d-flex cursor-pointer" v-for="(result, id) in results" :key="id" @click="getDetails(result)">
                                 <span class="mr-1">
@@ -18,10 +23,10 @@
                                     size="16"
                                     />
                                 </span>
-                                <span>{{ displayTitle(result) }}</span>
+                                <span v-html="$options.filters.highlight(displayTitle(result), query)"></span>
                             </b-list-group-item>
                         </transition-group>
-                    </div>
+                    </vue-perfect-scrollbar>
                     <transition v-else name="fade">
                         <b-list-group-item class="d-flex">
                             <span class="mr-1">
@@ -41,6 +46,8 @@
 
 <script>
 import {BRow, BCol, BInputGroup, BFormInput, BInputGroupPrepend, BListGroup, BListGroupItem} from 'bootstrap-vue'
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+
 export default {
     components: {
         BRow,
@@ -49,7 +56,8 @@ export default {
         BFormInput,
         BInputGroupPrepend,
         BListGroup,
-        BListGroupItem
+        BListGroupItem,
+        VuePerfectScrollbar
     },
 
     data(){
@@ -153,5 +161,11 @@ export default {
     }
     .cursor-pointer {
         cursor: pointer;
+    }
+    .allList {
+        max-height: calc(100vh - 150px);
+        overflow: auto;
+        padding: 0;
+        margin:0;
     }
 </style>
