@@ -36,7 +36,12 @@
     <b-row class="trucksList">
       <b-col md="12" xl="12" class="trucksCol">
         <b-list-group class="truckList">
-            <div v-if="trucks.length">
+              <vue-perfect-scrollbar
+                v-if="trucks.length"
+                class="search-list search-list-main scroll-area overflow-hidden allList"
+                :class="{'show': filterQuery}"
+                tagname="ul"
+              >
                 <transition-group name="fade" tag="div">
                     <b-list-group-item class="d-flex cursor-pointer" v-for="(truck, id) in trucks" :key="id" @click="getDetails(truck)">
                         <span class="mr-1">
@@ -54,7 +59,7 @@
                         </b-badge>
                     </b-list-group-item>
                 </transition-group>
-            </div>
+            </vue-perfect-scrollbar>
             <transition v-else name="fade">
                 <b-list-group-item class="d-flex">
                     <span class="mr-1">
@@ -74,6 +79,7 @@
 
 <script>
 import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BFormGroup, BFormInput } from 'bootstrap-vue'
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 // Icons
 import TruckIcon from '../../../../assets/images/icon/afatek-icon-14.png';
@@ -93,7 +99,8 @@ export default {
       BListGroup,
       BListGroupItem,
       BFormGroup, 
-      BFormInput
+      BFormInput,
+      VuePerfectScrollbar
   },
 
   data(){
@@ -107,7 +114,10 @@ export default {
         white: WinchIconWhite
       },
       filteredType: '', // truck, winch
-      filterQuery: ''
+      filterQuery: '',
+      perfectScrollbarSettings: {
+        wheelPropagation: true
+      },
     }
   },
 
@@ -205,5 +215,11 @@ export default {
 .b-avatar-custom img {
   width: 40px;
   height: 40px;
+}
+.allList {
+  max-height: calc(100vh - 310px);
+  overflow: auto;
+  padding: 0;
+  margin:0;
 }
 </style>
