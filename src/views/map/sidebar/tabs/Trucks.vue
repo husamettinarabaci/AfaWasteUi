@@ -28,8 +28,8 @@
     </b-row>
     <b-row>
       <b-col md="12" xl="12" class="filterCol">
-        <b-form-group label-for="basicInput">
-          <b-form-input id="basicInput" placeholder="Plaka girin" v-model="filterQuery"/>
+        <b-form-group label-for="filterInput">
+          <b-form-input id="filterInput" placeholder="Plaka girin" v-model="filterQuery"/>
         </b-form-group>
       </b-col>
     </b-row>
@@ -38,8 +38,7 @@
         <b-list-group class="truckList">
               <vue-perfect-scrollbar
                 v-if="trucks.length"
-                class="search-list search-list-main scroll-area overflow-hidden allList"
-                :class="{'show': filterQuery}"
+                class="search-list search-list-main scroll-area overflow-hidden allList show"
                 tagname="ul"
               >
                 <transition-group name="fade" tag="div">

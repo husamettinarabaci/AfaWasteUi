@@ -34,10 +34,22 @@
             </b-col>
         </b-row>
 
+        <b-row>
+            <b-col xl="12" md="12" class="filterCol">
+                <b-form-group label-for="filterInput">
+                    <b-form-input id="filterInput" placeholder="Device Id" v-model="filterQuery"/>
+                </b-form-group>
+            </b-col>
+        </b-row>
+
         <b-row class="ultsList">
             <b-col xl="12" md="12" class="ultsCol">
                 <b-list-group>
-                    <div v-if="ults.length">
+                    <vue-perfect-scrollbar
+                        v-if="ults.length"
+                        class="search-list search-list-main scroll-area overflow-hidden allList show"
+                        tagname="ul"
+                    >
                         <transition-group name="fade" tag="div">
                             <b-list-group-item class="d-flex cursor-pointer" v-for="(ult, id) in ults" :key="id" @click="getDetails(ult)">
                                 <span class="mr-1">
@@ -46,18 +58,20 @@
                                     size="16"
                                     />
                                 </span>
-                                <span>{{ ult.data.ult_title }}</span>
+
+                                <span v-if="filterQuery" v-html="$options.filters.highlight(ult.data.DeviceId, filterQuery)"></span>
+                                <span v-else>{{ ult.data.DeviceId }}</span>
                                 <b-progress
-                                    :title="`${ult.data.filled_rate}%`"
-                                    :key="computeVariant(ult.data.filled_rate)"
+                                    :title="`${computePercent(ult.data.DeviceStatu.ContainerStatu)}%`"
+                                    :key="computeVariant(ult.data.DeviceStatu.ContainerStatu)"
                                     animated
-                                    :value="ult.data.filled_rate"
-                                    :variant="computeVariant(ult.data.filled_rate)"
-                                    :class="'progressBar progress-bar-' + computeVariant(ult.data.filled_rate)"
+                                    :value="computePercent(ult.data.DeviceStatu.ContainerStatu)"
+                                    :variant="computeVariant(ult.data.DeviceStatu.ContainerStatu)"
+                                    :class="'progressBar progress-bar-' + computeVariant(ult.data.DeviceStatu.ContainerStatu)"
                                 />
                             </b-list-group-item>
                         </transition-group>
-                    </div>
+                    </vue-perfect-scrollbar>
                     <transition v-else name="fade">
                         <b-list-group-item class="d-flex">
                             <span class="mr-1">
@@ -76,7 +90,9 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BProgress, BFormGroup, BFormInput } from 'bootstrap-vue'
+import Enums from '@/config/system.enums'
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 // Icons
 import EmptyIcon from '../../../../assets/images/icon/afatek-icon-15.png';
@@ -99,12 +115,16 @@ export default {
         BCardTitle,
         BListGroup,
         BListGroupItem,
-        BProgress
+        BProgress,
+        BFormGroup, 
+        BFormInput,
+        VuePerfectScrollbar
     },
 
     data(){
         return {
             filteredType: '',
+            filterQuery: '',
             types: [
                 { 
                     bg: 'success', 
@@ -145,17 +165,36 @@ export default {
     computed: {
         ults: function(){
             let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
-            switch(this.filteredType){
-                case 'empty':
-                    return all.filter(ult => {return ult.data.filled_rate < 25})
-                case 'little':
-                    return all.filter(ult => {return (ult.data.filled_rate >= 25) && (ult.data.filled_rate < 50)})
-                case 'medium':
-                    return all.filter(ult => {return (ult.data.filled_rate >= 50) && (ult.data.filled_rate < 75)})
-                case 'full':
-                    return all.filter(ult => {return (ult.data.filled_rate >= 75) && (ult.data.filled_rate < 100)})
-                default:
-                    return all;
+            if (this.filteredType.length) {
+                let type 
+                switch(this.filteredType){
+                    case 'empty':
+                        type = Enums.CONTAINER_FULLNESS_STATU_EMPTY;
+                        break;
+                    case 'little':
+                        type = Enums.CONTAINER_FULLNESS_STATU_LITTLE;
+                        break;
+                    case 'medium':
+                        type = Enums.CONTAINER_FULLNESS_STATU_MEDIUM;
+                        break;
+                    case 'full':
+                        type = Enums.CONTAINER_FULLNESS_STATU_FULL;
+                        break;
+                    default:
+                        type = '';
+                        break;
+                }
+                let filtered = all.filter(ult => ult.data.DeviceStatu.ContainerStatu === type);
+                if (this.filterQuery) {
+                    return filtered.filter(ult => ult.data.DeviceId == this.filterQuery);
+                }
+                return filtered
+            } 
+            else {
+                if (this.filterQuery) {
+                    return all.filter(ult => ult.data.DeviceId == this.filterQuery);
+                }
+                return all;
             }
         }
     },
@@ -163,37 +202,38 @@ export default {
     watch: {
         'filteredType': function(newVal, oldVal){
             let map = this.$store.state.dashboard.map;
+            let markerGroups = this.$store.state.dashboard.markerGroups.ults;
             switch(newVal){
                 case 'empty':
-                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.empty);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.little);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.medium);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    if (markerGroups.empty) map.addLayer(markerGroups.empty);
+                    if (markerGroups.little) map.removeLayer(markerGroups.little);
+                    if (markerGroups.medium) map.removeLayer(markerGroups.medium);
+                    if (markerGroups.full) map.removeLayer(markerGroups.full);
                     break;
                 case 'little':
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.empty);
-                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.little);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.medium);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    if (markerGroups.empty) map.removeLayer(markerGroups.empty);
+                    if (markerGroups.little) map.addLayer(markerGroups.little);
+                    if (markerGroups.medium) map.removeLayer(markerGroups.medium);
+                    if (markerGroups.full) map.removeLayer(markerGroups.full);
                     break;
                 case 'medium':
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.empty);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.little);
-                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.medium);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    if (markerGroups.empty) map.removeLayer(markerGroups.empty);
+                    if (markerGroups.little) map.removeLayer(markerGroups.little);
+                    if (markerGroups.medium) map.addLayer(markerGroups.medium);
+                    if (markerGroups.full) map.removeLayer(markerGroups.full);
                     break;
                 case 'full':
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.empty);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.little);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.ults.medium);
-                    map.addLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                    if (markerGroups.empty) map.removeLayer(markerGroups.empty);
+                    if (markerGroups.little) map.removeLayer(markerGroups.little);
+                    if (markerGroups.medium) map.removeLayer(markerGroups.medium);
+                    if (markerGroups.full) map.addLayer(markerGroups.full);
                     break;
                 default:
                     if (this.$store.state.dashboard.sidebar.currentTab == 'containers'){
-                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.empty);
-                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.little);
-                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.medium);
-                        map.addLayer(this.$store.state.dashboard.markerGroups.ults.full);
+                        if (markerGroups.empty) map.addLayer(markerGroups.empty);
+                        if (markerGroups.little) map.addLayer(markerGroups.little);
+                        if (markerGroups.medium) map.addLayer(markerGroups.medium);
+                        if (markerGroups.full) map.addLayer(markerGroups.full);
                     }
                     break;
             }
@@ -205,11 +245,39 @@ export default {
     },
 
     methods: {
-        computeVariant(percent){
-            if (percent < 25) return 'success';
-            else if ((percent >= 25) && (percent < 50)) return 'info';
-            else if ((percent >= 50) && (percent < 75)) return 'warning';
-            else if ((percent >= 75) && (percent <= 100)) return 'danger';
+        computeVariant(status){
+            switch(status){
+                case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
+                    return 'success';
+                case Enums.CONTAINER_FULLNESS_STATU_LITTLE:
+                    return 'info';
+                case Enums.CONTAINER_FULLNESS_STATU_MEDIUM:
+                    return 'warning';
+                case Enums.CONTAINER_FULLNESS_STATU_FULL:
+                    return 'danger';
+                default:
+                    return 'empty';
+            }
+            
+            //if (percent < 25) return 'success';
+            //else if ((percent >= 25) && (percent < 50)) return 'info';
+            //else if ((percent >= 50) && (percent < 75)) return 'warning';
+            //else if ((percent >= 75) && (percent <= 100)) return 'danger';
+        },
+
+        computePercent(status){
+            switch(status){
+                case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
+                    return 12.5;
+                case Enums.CONTAINER_FULLNESS_STATU_LITTLE:
+                    return 37.5;
+                case Enums.CONTAINER_FULLNESS_STATU_MEDIUM:
+                    return 62.5;
+                case Enums.CONTAINER_FULLNESS_STATU_FULL:
+                    return 87.5;
+                default:
+                    return 10;
+            }
         },
 
         filterList(ult){
@@ -223,24 +291,24 @@ export default {
         },
 
         getDetails(ult){
-            ult.marker.enablePermanentHighlight();
             ult.marker.fireEvent('click');
-            setTimeout(function(){
-                ult.marker.disablePermanentHighlight();
-            }, 5000)
+            //ult.marker.enablePermanentHighlight();
+            //setTimeout(function(){
+            //    ult.marker.disablePermanentHighlight();
+            //}, 5000)
         },
 
         getCount(type){
             let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
             switch (type){
                 case 'empty':
-                    return all.filter(ult => (ult.data.filled_rate < 25)).length
+                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY)).length;
                 case 'little':
-                    return all.filter(ult => ((ult.data.filled_rate >= 25) && (ult.data.filled_rate < 50))).length
+                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_LITTLE)).length;
                 case 'medium':
-                    return all.filter(ult => ((ult.data.filled_rate >= 50) && (ult.data.filled_rate < 75))).length
+                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_MEDIUM)).length;
                 case 'full':
-                    return all.filter(ult => ((ult.data.filled_rate >= 75) && (ult.data.filled_rate <= 100))).length
+                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL)).length;
             }
         }
     }
@@ -251,7 +319,7 @@ export default {
     .ultsContent {
         padding: 20px 0;
     }
-    .cardCol {
+    .cardCol, .filterCol {
         padding: 0 5px;
     }
     .cardCol .card {
@@ -267,8 +335,6 @@ export default {
         margin-bottom: .35rem;
     }
     .ultsList {
-        max-height: calc(100vh - 18.25rem);
-        overflow-y: auto;
         padding: 0 5px;
     }
     .ultsList .ultsCol {
@@ -297,5 +363,11 @@ export default {
 
     .bg-success, .bg-info, .bg-warning, .bg-danger {
         transition: all ease .2s; 
+    }
+    .allList {
+        max-height: calc(100vh - 21.8rem);
+        overflow-y: auto;
+        padding: 0;
+        margin: 0;
     }
 </style>

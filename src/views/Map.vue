@@ -591,28 +591,31 @@ export default {
       let self = this;
       let markers = this.$store.getters['panel/getUltDevices'];
       
-      //let vals = markers.slice(0,5)
-      //vals[0].DeviceGps.Latitude = 37.04819002372351;
-      //vals[0].DeviceGps.Longitude = 27.34308242797852;
-      //vals[1].DeviceGps.Latitude = 37.05531410185666;
-      //vals[1].DeviceGps.Longitude = 27.357501983642578;
-      //vals[2].DeviceGps.Latitude = 37.05325914794976;
-      //vals[2].DeviceGps.Longitude = 27.37895965576172;
-      //vals[3].DeviceGps.Latitude = 37.05599907412595;
-      //vals[3].DeviceGps.Longitude = 27.458438873291016;
-      //vals[4].DeviceGps.Latitude = 37.02489510178452;
-      //vals[4].DeviceGps.Longitude = 27.442817687988285;
+      let vals = markers.slice(0,50)
+      vals[0].DeviceGps.Latitude = 37.04819002372351;
+      vals[0].DeviceGps.Longitude = 27.34308242797852;
+      vals[1].DeviceGps.Latitude = 37.05531410185666;
+      vals[1].DeviceGps.Longitude = 27.357501983642578;
+      vals[2].DeviceGps.Latitude = 37.05325914794976;
+      vals[2].DeviceGps.Longitude = 27.37895965576172;
+      vals[3].DeviceGps.Latitude = 37.05599907412595;
+      vals[3].DeviceGps.Longitude = 27.458438873291016;
+      vals[4].DeviceGps.Latitude = 37.02489510178452;
+      vals[4].DeviceGps.Longitude = 27.442817687988285;
 
-      markers = markers.slice(0, 10)
+      //markers = markers.slice(0, 10)
 
-      markers.forEach(data => {
+      vals.forEach(data => {
+        if (!data.DeviceStatu.ContainerStatu){
+          return;
+        }
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
             'height' : '300',
             'className': 'mapPopup containerPopup'
         };
-        var markerColor, markerHTML;
+        var markerColor;
         switch(data.DeviceStatu.ContainerStatu){
           case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
             markerColor = 'green-light';
@@ -693,6 +696,8 @@ export default {
       this.markerGroups.ults.little = L.layerGroup(this.markers.ults.little).addTo(map);
       this.markerGroups.ults.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
       this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
+
+      this.$store.commit('dashboard/addMarkerGroup', {type: 'ults', markerGroup: this.markerGroups.ults});
     },
 
     // Init Recycles - Recy
