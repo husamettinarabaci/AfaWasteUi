@@ -22,7 +22,7 @@ import Enums from '@/config/system.enums';
 import WebApi from '@/services/webapi.service';
 import {BProgress} from 'bootstrap-vue'
 
-import Logo from '/public/logo.png';
+import Logo from '/public/assets/logo.png';
 
 export default {
     components: {
