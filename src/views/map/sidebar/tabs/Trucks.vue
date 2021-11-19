@@ -26,6 +26,13 @@
             </b-card>
         </b-col>
     </b-row>
+    <b-row>
+      <b-col md="12" xl="12" class="filterCol">
+        <b-form-group label-for="basicInput">
+          <b-form-input id="basicInput" placeholder="Plaka girin" v-model="filterQuery"/>
+        </b-form-group>
+      </b-col>
+    </b-row>
     <b-row class="trucksList">
       <b-col md="12" xl="12" class="trucksCol">
         <b-list-group class="truckList">
@@ -66,7 +73,7 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BFormGroup, BFormInput } from 'bootstrap-vue'
 
 // Icons
 import TruckIcon from '../../../../assets/images/icon/afatek-icon-14.png';
@@ -84,7 +91,9 @@ export default {
       BCardText,
       BCardTitle,
       BListGroup,
-      BListGroupItem
+      BListGroupItem,
+      BFormGroup, 
+      BFormInput
   },
 
   data(){
@@ -97,21 +106,31 @@ export default {
         default: WinchIcon,
         white: WinchIconWhite
       },
-      filteredType: '' // truck, winch
+      filteredType: '', // truck, winch
+      filterQuery: ''
     }
   },
 
   computed: {
     trucks: function(){
       let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
-        if (this.filteredType.length){
-          return markers.filter(marker => {
+      if (this.filteredType.length){
+        let filtered = markers.filter(marker => {
             if (this.filteredType == 'truck'){
               return marker;
             }
           });
+        if (this.filterQuery) {
+          return filtered.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
         }
-        return markers;
+        return filtered;
+      }
+      else {
+        if (this.filterQuery) {
+          return markers.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
+        }
+      }
+      return markers;
     }
   },
 
@@ -163,7 +182,7 @@ export default {
 .trucksContent {
     padding: 20px 0;
 }
-.cardCol, .trucksCol {
+.cardCol, .trucksCol, .filterCol {
     padding: 0 5px;
 }
 .cardCol .card-body {
