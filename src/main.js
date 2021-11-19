@@ -4,6 +4,7 @@ import VueCompositionAPI from '@vue/composition-api'
 
 import router from './router'
 import store from './store'
+import './filters'
 import App from './App.vue'
 
 // Global Components

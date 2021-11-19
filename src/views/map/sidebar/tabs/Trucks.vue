@@ -50,7 +50,8 @@
                             size="16"
                             />
                         </span>
-                        <span>{{ truck.data.DeviceDetail.PlateNo }}</span>
+                        <span v-if="filterQuery" v-html="$options.filters.highlight(truck.data.DeviceDetail.PlateNo, filterQuery)"></span>
+                        <span v-else>{{ truck.data.DeviceDetail.PlateNo }}</span>
                         <b-badge class="truckBadge" variant="light-info">
                             <feather-icon
                             icon="ArrowRightIcon"
