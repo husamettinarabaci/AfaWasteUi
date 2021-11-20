@@ -78,8 +78,12 @@ export default {
         },
 
         truck: function(){
-            let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type === 'truck' && marker.data.DeviceId === this.details.TagMain.DeviceId);
-            return filtered.length ? filtered[0].data : '';
+            let trucks = this.$store.getters['dashboard/getSpecificMarkers']('rfid');
+            return trucks[this.details.TagMain.DeviceId].data;
+            //let filtered = this.$store.state.dashboard.markers
+            //.filter(marker => 
+            //marker.type === 'truck' && marker.data.DeviceId === this.details.TagMain.DeviceId);
+            //return filtered.length ? filtered[0].data : '';
         }
     },
 
@@ -100,15 +104,20 @@ export default {
 
     methods: {
         showTruck(id){
-            let filtered = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck' && marker.data.DeviceId == id);
-            if (filtered.length){
-                this.$emit('showTrucks');
-                let marker = filtered[0].marker;
-                marker.fireEvent('click');
-            }
-            else {
-                console.log('bulunamadı')
-            }
+            let trucks = this.$store.getters['dashboard/getSpecificMarkers']('rfid');
+            this.$emit('showTrucks');
+            trucks[id].marker.fireEvent('click');
+
+            //let filtered = this.$store.state.dashboard.markers
+            //.filter(marker => marker.type == 'truck' && marker.data.DeviceId == id);
+            //if (filtered.length){
+            //    this.$emit('showTrucks');
+            //    let marker = filtered[0].marker;
+            //    marker.fireEvent('click');
+            //}
+            //else {
+            //    console.log('bulunamadı')
+            //}
         }
     }
 }

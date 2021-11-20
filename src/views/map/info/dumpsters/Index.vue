@@ -3,7 +3,7 @@
         <h4 class="card-title">Günlük Toplanma Oranı</h4>
         <div class="pie-text text-center">
             <h2 class="font-weight-bolder">
-                {{ $store.state.dashboard.markers.filter(marker => marker.type == 'tag').length }}
+                {{ tagsCount }}
             </h2>
             <span class="font-weight-bold">Toplam</span>
         </div>
@@ -27,6 +27,11 @@ export default {
     },
 
     computed: {
+        tagsCount: function(){
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('tags');
+            return Object.keys(all).length;
+        },
+
         series: function(){
             let obj = {
                 name: 'Toplanma Oranları',
@@ -46,9 +51,10 @@ export default {
                 },
                 data: []
             }
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
-            obj.data.push({value : all.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY).length, name: 'Toplandı'})
-            obj.data.push({value : all.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL).length, name: 'Toplanmadı'})
+            //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('tags');
+            obj.data.push({value : Object.keys(all.collected).length, name: 'Toplandı'})
+            obj.data.push({value : Object.keys(all.notCollected).length, name: 'Toplanmadı'})
             return [obj];
         }
     },

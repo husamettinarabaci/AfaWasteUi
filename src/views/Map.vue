@@ -524,7 +524,8 @@ export default {
 
       this.markerGroups.rfid.truck = L.layerGroup();
 
-      rfidDevices.forEach(data => {
+      Object.keys(rfidDevices).forEach(d => {
+        let data = rfidDevices[d];
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -623,6 +624,7 @@ export default {
       this.markerGroups.ult.medium = L.layerGroup();
       this.markerGroups.ult.full = L.layerGroup();
       
+      /*
       let vals = ultDevices.slice(0,50)
       vals[0].DeviceGps.Latitude = 37.04819002372351;
       vals[0].DeviceGps.Longitude = 27.34308242797852;
@@ -634,11 +636,13 @@ export default {
       vals[3].DeviceGps.Longitude = 27.458438873291016;
       vals[4].DeviceGps.Latitude = 37.02489510178452;
       vals[4].DeviceGps.Longitude = 27.442817687988285;
+      */
 
       //markers = markers.slice(0, 10)
 
-      vals.forEach(data => {
-        if (!data.DeviceStatu.ContainerStatu){
+      Object.keys(ultDevices).forEach(d => {
+        let data = ultDevices[d];
+        if (!data.ContainerStatu){
           return;
         }
         const popupOptions = {
@@ -648,7 +652,7 @@ export default {
             'className': 'mapPopup containerPopup'
         };
         var markerColor;
-        switch(data.DeviceStatu.ContainerStatu){
+        switch(data.ContainerStatu){
           case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
             markerColor = 'green-light';
             markerIcon = ContainerEmptyIcon;
@@ -673,7 +677,7 @@ export default {
             shape: 'star',
             prefix: 'fa'
         });
-        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon});
+        var marker = L.marker([data.Latitude, data.Longitude], {icon: markerIcon});
         var popupContent = `
         <div class="card">
           <div class="card-body">
@@ -685,7 +689,7 @@ export default {
               <tr>
                 <td class="text-bold">Doluluk Oranı</td>
                 <td>
-                  <span class="badge badge-light-${this.computeVariant(data.DeviceStatu.ContainerStatu)}">${data.DeviceStatu.ContainerStatu}</span>
+                  <span class="badge badge-light-${this.computeVariant(data.ContainerStatu)}">${data.ContainerStatu}</span>
                 </td>
               </tr>
             </table>
@@ -707,9 +711,9 @@ export default {
           }
         });
 
-        this.markerGroups.ult[data.DeviceStatu.ContainerStatu.toLowerCase()].addLayer(marker);
+        this.markerGroups.ult[data.ContainerStatu.toLowerCase()].addLayer(marker);
 
-        markersObject[data.DeviceStatu.ContainerStatu.toLowerCase()][data.DeviceId] = {
+        markersObject[data.ContainerStatu.toLowerCase()][data.DeviceId] = {
           data,
           marker
         };
@@ -762,11 +766,12 @@ export default {
     // Init Recycles - Recy
     attachRecyMarkers(map){
       let self = this;
-      let markers = this.$store.getters['panel/getRecyDevices'];
+      let recycleDevices = this.$store.getters['panel/getRecyDevices'];
       let markersObject = {};
       this.markerGroups.recy = L.layerGroup();
 
-      markers.slice(0,5).forEach(data => {
+      Object.keys(recycleDevices).forEach(d => {
+        let data = recycleDevices[d];
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -840,14 +845,12 @@ export default {
       if (customer[Enums.WEB_APP_TYPE_RFID] = Enums.STATU_ACTIVE){
         this.attachRfidMarkers(map);
       }
-      /*
       if (customer[Enums.WEB_APP_TYPE_ULT] = Enums.STATU_ACTIVE){
         this.attachUltMarkers(map);
       }
       if (customer[Enums.WEB_APP_TYPE_RECY] = Enums.STATU_ACTIVE){
         this.attachRecyMarkers(map);
       }
-      */
 
       //this.markerGroups.rfid.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
       //this.markerGroups.rfid.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);

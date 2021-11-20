@@ -25,11 +25,11 @@ export default {
         deviceTypes[Enums.DATATYPE_RFID_STATU_DEVICE] = 'DeviceStatu';
         deviceTypes[Enums.DATATYPE_RFID_BASE_DEVICE] = 'DeviceBase';
         deviceTypes[Enums.DATATYPE_RFID_DETAIL_DEVICE] = 'DeviceDetail';
+        deviceTypes[Enums.DATATYPE_ULT_STATU_DEVICE] = 'DeviceStatu';
 
         let deviceTypesGps = {};
         deviceTypesGps[Enums.DATATYPE_RECY_GPS_DEVICE] = 'DeviceGps';
         deviceTypesGps[Enums.DATATYPE_ULT_GPS_DEVICE] = 'DeviceGps';
-        deviceTypesGps[Enums.DATATYPE_ULT_STATU_DEVICE] = 'DeviceStatu';
         deviceTypesGps[Enums.DATATYPE_RFID_GPS_DEVICE] = 'DeviceGps';
 
         let tagTypes = {};
@@ -54,13 +54,13 @@ export default {
             var type = '';
             switch(deviceType.split('_')[0]){
                 case 'RFID':
-                    type = 'truck';
+                    type = 'rfid';
                     break;
                 case 'ULT':
                     type = 'ult';
                     break;
                 case 'RECY':
-                    type = 'recycle';
+                    type = 'recy';
                     break;
             }
             return type;
@@ -68,52 +68,42 @@ export default {
 
         changeDeviceLocation(deviceType, value){
             let type = this.getType(deviceType);
-            let filtered = store.state.dashboard.markers.filter(marker => marker.type == type && marker.data.DeviceId == value.DeviceId);
-            if (filtered.length){
-                let marker = filtered[0].marker;
-                var newLatLng = new L.LatLng(value.Latitude, value.Longitude);
-                marker.setLatLng(newLatLng);
-            }
+            let markers = store.getters['dashboard/getSpecificMarkers'](type);
+            console.log('devicetype: ', deviceType)
+            console.log('value: ', value)
+            markers[value.DeviceId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude));
         },
 
         changeDeviceData(deviceType, value){
             let type = this.getType(deviceType);
-            let filtered = store.state.dashboard.markers.filter(marker => marker.type == type && marker.data.DeviceId == value.DeviceId);
-            if (filtered.length){
-                let d = filtered[0].data;
-                d[this.deviceTypes[deviceType]] = value;
+            if (deviceType == 'ULT_DEVICE_STATU'){
+                console.log('devicetype: ', deviceType)
+                console.log('value: ', value)
             }
+            let markers = store.getters['dashboard/getSpecificMarkers'](type);
+            markers[value.DeviceId].data[this.deviceTypes[deviceType]] = value;
         },
 
         changeTagLocation(value){
-            let filtered = store.state.dashboard.markers.filter(marker => marker.type == 'tag' && marker.data.TagId == value.TagId);
-            if (filtered.length){
-                let marker = filtered[0].marker;
-                var newLatLng = new L.LatLng(value.Latitude, value.Longitude);
-                marker.setLatLng(newLatLng);
-            }
+            let markers = store.getters['dashboard/getSpecificMarkers']('tags');
+            markers[value.TagId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude))
         },
 
         changeTagData(tagType, value){
-            let filtered = store.state.dashboard.markers.filter(marker => marker.type == 'tag' && marker.data.TagId == value.TagId);
-            if (filtered.length){
-                let d = filtered[0].data;
-                d[this.tagTypes[tagType]] = value;
-            }
+            let markers = store.getters['dashboard/getSpecificMarkers']('tags');
+            markers[value.DeviceId].data[this.tagTypes[tagType]] = value;
         },
 
         changeTagStatus(value){
-            let filtered = store.state.dashboard.markers.filter(marker => marker.type == 'tag' && marker.data.TagId == value.TagId);
-            if (filtered.length){
-                let marker = filtered[0].marker;
-                var newMarker = L.ExtraMarkers.icon({
-                    icon: 'fa-dumpster',
-                    markerColor: value.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'green-dark' : 'red-dark',
-                    shape: 'circle',
-                    prefix: 'fa'
-                });
-                marker.setIcon(newMarker);
-            }
+            const newMarker = L.ExtraMarkers.icon({
+                icon: 'fa-dumpster',
+                markerColor: value.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'green-dark' : 'red-dark',
+                shape: 'circle',
+                prefix: 'fa'
+            });
+
+            let markers = store.getters['dashboard/getSpecificMarkers']('tags');
+            markers[value.TagId].marker.setIcon(newMarker);
         }
 
         // panel

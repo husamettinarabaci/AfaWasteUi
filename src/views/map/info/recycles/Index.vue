@@ -46,9 +46,11 @@ export default {
                 },
                 data: []
             }
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('recy');
             var plasticCount = 0, glassCount = 0, metalCount = 0; 
-            all.forEach(recycle => {
+            Object.keys(all).forEach(id => {
+                let recycle = all[id];
                 plasticCount += parseInt(recycle.data.plastic_count);
                 glassCount += parseInt(recycle.data.glass_count);
                 metalCount += parseInt(recycle.data.metal_count);
@@ -66,11 +68,16 @@ export default {
         },
 
         getTotalCount(){
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('recy');
             var count = 0;
-            all.forEach(recycle => {
-                count += parseInt(recycle.data.plastic_count) + parseInt(recycle.data.glass_count) + parseInt(recycle.data.metal_count);
-            });
+            Object.keys(all).forEach(id => {
+                let recycle = all[id];
+                count += 
+                parseInt(recycle.data.plastic_count) 
+                + parseInt(recycle.data.glass_count) 
+                + parseInt(recycle.data.metal_count);
+            })
             return count;
         }
     }

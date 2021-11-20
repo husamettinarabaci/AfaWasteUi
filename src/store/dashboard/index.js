@@ -36,6 +36,20 @@ export default {
             return g;
         },
 
+        getSpecificMarkers: state => type => {
+            let g = {}
+            let markers = state.markers[type] ? state.markers[type].markers : [];
+            Object.keys(markers).forEach(key => {
+                if (markers[key] != null) {
+                    g = {
+                        ...g,
+                        ...markers[key]
+                    }
+                }
+            })
+            return g;
+        },
+
         getTagMarkers: state => {
             return state.markers.tags ? state.markers.tags.markers : [];
         },

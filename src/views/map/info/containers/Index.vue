@@ -3,7 +3,7 @@
         <h4 class="card-title">Günlük Doluluk Oranı</h4>
         <div class="pie-text text-center">
             <h2 class="font-weight-bolder">
-                {{ $store.state.dashboard.markers.filter(marker => marker.type == 'ult').length }}
+                {{ ultsCount }}
             </h2>
             <span class="font-weight-bold">Toplam</span>
         </div>
@@ -26,6 +26,11 @@ export default {
     },
 
     computed: {
+        ultsCount: function(){
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('ult');
+            return Object.keys(all).length;
+        },
+
         series: function(){
             let obj = {
                 name: 'Doluluk Oranları',
@@ -47,11 +52,11 @@ export default {
                 },
                 data: []
             }
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
-            obj.data.push({value: all.filter(ult => (ult.data.filled_rate < 25)).length, name: 'Boş'})
-            obj.data.push({value: all.filter(ult => ((ult.data.filled_rate >= 25) && (ult.data.filled_rate < 50))).length, name: 'Az Dolu'})
-            obj.data.push({value: all.filter(ult => ((ult.data.filled_rate >= 50) && (ult.data.filled_rate < 75))).length, name: 'Orta Dolu'})
-            obj.data.push({value: all.filter(ult => ((ult.data.filled_rate >= 75) && (ult.data.filled_rate <= 100))).length, name: 'Dolu'})
+            let ults = this.$store.getters['dashboard/getSpecificMarkers']('ult');
+            obj.data.push({value: Object.keys(ults.empty).length, name: 'Boş'})
+            obj.data.push({value: Object.keys(ults.little).length, name: 'Az Dolu'})
+            obj.data.push({value: Object.keys(ults.medium).length, name: 'Orta Dolu'})
+            obj.data.push({value: Object.keys(ults.full).length, name: 'Dolu'})
             return [obj];
         }
     },

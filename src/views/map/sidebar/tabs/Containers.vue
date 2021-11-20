@@ -54,7 +54,7 @@
                             <b-list-group-item class="d-flex cursor-pointer" v-for="(ult, id) in ults" :key="id" @click="getDetails(ult)">
                                 <span class="mr-1">
                                     <feather-icon
-                                    :icon="ult.icon"
+                                    icon="ArchiveIcon"
                                     size="16"
                                     />
                                 </span>
@@ -62,12 +62,12 @@
                                 <span v-if="filterQuery" v-html="$options.filters.highlight(ult.data.DeviceId, filterQuery)"></span>
                                 <span v-else>{{ ult.data.DeviceId }}</span>
                                 <b-progress
-                                    :title="`${computePercent(ult.data.DeviceStatu.ContainerStatu)}%`"
-                                    :key="computeVariant(ult.data.DeviceStatu.ContainerStatu)"
+                                    :title="`${computePercent(ult.data.ContainerStatu)}%`"
+                                    :key="computeVariant(ult.data.ContainerStatu)"
                                     animated
-                                    :value="computePercent(ult.data.DeviceStatu.ContainerStatu)"
-                                    :variant="computeVariant(ult.data.DeviceStatu.ContainerStatu)"
-                                    :class="'progressBar progress-bar-' + computeVariant(ult.data.DeviceStatu.ContainerStatu)"
+                                    :value="computePercent(ult.data.ContainerStatu)"
+                                    :variant="computeVariant(ult.data.ContainerStatu)"
+                                    :class="'progressBar progress-bar-' + computeVariant(ult.data.ContainerStatu)"
                                 />
                             </b-list-group-item>
                         </transition-group>
@@ -188,7 +188,7 @@ export default {
                 }
                 */
                 let filtered = markers[this.filteredType]
-                //let filtered = all.filter(ult => ult.data.DeviceStatu.ContainerStatu === type);
+                //let filtered = all.filter(ult => ult.data.ContainerStatu === type);
                 if (this.filterQuery) {
                     return filtered.filter(ult => ult.data.DeviceId == this.filterQuery);
                 }
