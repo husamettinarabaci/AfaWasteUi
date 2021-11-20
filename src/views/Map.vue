@@ -118,51 +118,51 @@ export default {
         self.$store.commit('dashboard/setCurrentTab', activeTab);
         switch(activeTab){
           case 'trucks':
-            if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
-            if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
-            if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
-            if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
-            if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
-            if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+            if (markerGroups.tags && markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+            if (markerGroups.tags && markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+            if (markerGroups.ult && markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+            if (markerGroups.ult && markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+            if (markerGroups.ult && markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+            if (markerGroups.ult && markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
             if (markerGroups.recy) map.removeLayer(markerGroups.recy);
             break;
           case 'dumpsters':
-            if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
-            if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
-            if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
-            if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
-            if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
-            if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+            if (markerGroups.rfid && markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+            if (markerGroups.rfid && markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+            if (markerGroups.ult && markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+            if (markerGroups.ult && markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+            if (markerGroups.ult && markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+            if (markerGroups.ult && markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
             if (markerGroups.recy) map.removeLayer(markerGroups.recy);
             break;
           case 'containers':
-            if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
-            if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
-            if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
-            if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+            if (markerGroups.rfid && markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+            if (markerGroups.rfid && markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+            if (markerGroups.tags && markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+            if (markerGroups.tags && markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
             if (markerGroups.recy) map.removeLayer(markerGroups.recy);
             break;
           case 'recycles':
-            if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
-            if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
-            if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
-            if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
-            if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
-            if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
-            if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
-            if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+            if (markerGroups.rfid && markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+            if (markerGroups.rfid && markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+            if (markerGroups.tags && markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+            if (markerGroups.tags && markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+            if (markerGroups.ult && markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+            if (markerGroups.ult && markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+            if (markerGroups.ult && markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+            if (markerGroups.ult && markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
             break;
         } 
       })
       newVal.on('closing', function(e){
-        if (markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
-        if (markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
-        if (markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
-        if (markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
-        if (markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
-        if (markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
-        if (markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
-        if (markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
+        if (markerGroups.rfid && markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
+        if (markerGroups.rfid && markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
+        if (markerGroups.tags && markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
+        if (markerGroups.tags && markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
+        if (markerGroups.ult && markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
+        if (markerGroups.ult && markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
+        if (markerGroups.ult && markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
+        if (markerGroups.ult && markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
         if (markerGroups.recy) map.addLayer(markerGroups.recy);
         self.$store.commit('dashboard/setCurrentTab', '');
       })
@@ -174,62 +174,62 @@ export default {
       switch(newVal){
         case 'trucks':
           this.$store.commit('dashboard/setInfoCurrent', '');
-          if (markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
-          if (markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
-          if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
-          if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
-          if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
-          if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
-          if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
-          if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+          if (markerGroups.rfid && markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid && markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags && markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+          if (markerGroups.tags && markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult && markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+          if (markerGroups.ult && markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+          if (markerGroups.ult && markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+          if (markerGroups.ult && markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
           if (markerGroups.recy) map.removeLayer(markerGroups.recy);
           break;
         case 'dumpsters':
           this.$store.commit('dashboard/setInfoCurrent', 'Dumpsters');
-          if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
-          if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
-          if (markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
-          if (markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
-          if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
-          if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
-          if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
-          if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+          if (markerGroups.rfid && markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid && markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags && markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
+          if (markerGroups.tags && markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult && markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+          if (markerGroups.ult && markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+          if (markerGroups.ult && markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+          if (markerGroups.ult && markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
           if (markerGroups.recy) map.removeLayer(markerGroups.recy);
           break;
         case 'containers':
           this.$store.commit('dashboard/setInfoCurrent', 'Containers');
-          if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
-          if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
-          if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
-          if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
-          if (markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
-          if (markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
-          if (markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
-          if (markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
+          if (markerGroups.rfid && markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid && markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags && markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+          if (markerGroups.tags && markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult && markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
+          if (markerGroups.ult && markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
+          if (markerGroups.ult && markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
+          if (markerGroups.ult && markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
           if (markerGroups.recy) map.removeLayer(markerGroups.recy);
           break;
         case 'recycles':
           this.$store.commit('dashboard/setInfoCurrent', 'Recycles');
-          if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
-          if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
-          if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
-          if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
-          if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
-          if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
-          if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
-          if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+          if (markerGroups.rfid && markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid && markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags && markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+          if (markerGroups.tags && markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult && markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+          if (markerGroups.ult && markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+          if (markerGroups.ult && markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+          if (markerGroups.ult && markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
           if (markerGroups.recy) map.addLayer(markerGroups.recy);
           break;
         default:
           //this.$store.commit('dashboard/setInfoCurrent', '');
-          if (markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
-          if (markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
-          if (markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
-          if (markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
-          if (markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
-          if (markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
-          if (markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
-          if (markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
+          if (markerGroups.rfid && markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid && markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags && markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
+          if (markerGroups.tags && markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult && markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
+          if (markerGroups.ult && markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
+          if (markerGroups.ult && markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
+          if (markerGroups.ult && markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
           if (markerGroups.recy) map.addLayer(markerGroups.recy);
           break;
       }
