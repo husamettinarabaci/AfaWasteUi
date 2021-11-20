@@ -129,7 +129,7 @@ export default {
           });
           //return filtered.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
         }
-        return Object.values(markers.truck);
+        return markers.truck ? Object.values(markers.truck) : [];
       }
       else {
         if (this.filterQuery) {

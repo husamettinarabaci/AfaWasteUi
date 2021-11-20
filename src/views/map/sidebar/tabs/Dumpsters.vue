@@ -89,33 +89,36 @@ export default {
 
     computed: {
         dumpsters: function(){
-            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            let markers = this.$store.getters['dashboard/getTagMarkers'];
             if (this.filteredType.length){
-                return markers.filter(marker => {
-                    let filtered = this.filteredType == 'collected' ? Enums.CONTAINER_FULLNESS_STATU_EMPTY : Enums.CONTAINER_FULLNESS_STATU_FULL;
-                    if (marker.data.ContainerStatu == filtered) return marker;
-                });
+                return markers[this.filteredType] ? Object.values(markers[this.filteredType]) : [];
             }
-            return markers;
+            return [].concat(
+                markers.collected ? Object.values(markers.collected) : [],
+                markers.notCollected ? Object.values(markers.notCollected) : []
+            );
         }
     },
 
     watch: {
         'filteredType': function(newVal, oldVal){
             let map = this.$store.state.dashboard.map;
+            let collectedGroup = this.$store.getters['dashboard/getTagCollectedMarkerGroup'];
+            let notCollectedGroup = this.$store.getters['dashboard/getTagNotCollectedMarkerGroup'];
             switch(newVal){
                 case 'collected':
-                    map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.collected);
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.rfTags.notCollected);
+                    if (collectedGroup) map.addLayer(collectedGroup);
+                    if (notCollectedGroup) map.removeLayer(notCollectedGroup);
                     break;
                 case 'notCollected':
-                    map.removeLayer(this.$store.state.dashboard.markerGroups.rfTags.collected);
-                    map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.notCollected);
+                    if (collectedGroup) map.removeLayer(collectedGroup);
+                    if (notCollectedGroup) map.addLayer(notCollectedGroup);
                     break;
                 default:
                     if (this.$store.state.dashboard.sidebar.currentTab == 'dumpsters'){
-                        map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.collected);
-                        map.addLayer(this.$store.state.dashboard.markerGroups.rfTags.notCollected);
+                        if (collectedGroup) map.addLayer(collectedGroup);
+                        if (notCollectedGroup) map.addLayer(notCollectedGroup);
                     }
                     break;
             }
@@ -145,12 +148,13 @@ export default {
         },
 
         getCount(type){
-            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            let markers = this.$store.getters['dashboard/getTagMarkers'];
             if (type == 'collected'){
-                return markers.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY).length
+                return markers.collected ? Object.keys(markers.collected).length : 0
             }
             else {
-                return markers.filter(dumpster => dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL).length
+                return markers.notCollected ? Object.keys(markers.notCollected).length : 0
             }
         }
     }
