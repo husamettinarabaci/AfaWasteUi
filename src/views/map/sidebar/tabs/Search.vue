@@ -174,7 +174,7 @@ export default {
             let displayField = '';
             switch(result.type){
                 case 'tags':
-                    displayField = 'ContainerNo';
+                    displayField = 'TagId';
                     break;
                 case 'rfid':
                     displayField = 'DeviceDetail.PlateNo';
