@@ -58,7 +58,6 @@
                                     size="16"
                                     />
                                 </span>
-
                                 <span v-if="filterQuery" v-html="$options.filters.highlight(ult.data.DeviceId, filterQuery)"></span>
                                 <span v-else>{{ ult.data.DeviceId }}</span>
                                 <b-progress

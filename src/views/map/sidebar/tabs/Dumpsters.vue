@@ -26,16 +26,30 @@
                 </b-card>
             </b-col>
         </b-row>
+
+        <b-row>
+            <b-col xl="12" md="12" class="filterCol">
+                <b-form-group label-for="filterInput">
+                    <b-form-input id="filterInput" placeholder="Device Id" v-model="filterQuery"/>
+                </b-form-group>
+            </b-col>
+        </b-row>
+
         <b-row class="dumpstersList">
             <b-col md="12" xl="12" class="dumpstersCol">
                 <b-list-group>
-                    <div v-if="dumpsters.length">
+                    <vue-perfect-scrollbar
+                        v-if="dumpsters.length"
+                        class="search-list search-list-main scroll-area overflow-hidden allList show"
+                        tagname="ul"
+                    >
                         <transition-group name="fade" tag="div">
                             <b-list-group-item class="d-flex cursor-pointer" v-for="(dumpster, id) in dumpsters" :key="id" @click="getDetails(dumpster)">
                                 <span class="mr-1">
                                     <font-awesome-icon icon="dumpster"/>
                                 </span>
-                                <span>{{ dumpster.data.TagId }}</span>
+                                <span v-if="filterQuery" v-html="$options.filters.highlight(dumpster.data.TagId, filterQuery)"></span>
+                                <span v-else>{{ dumpster.data.TagId }}</span>
                                 <b-badge class="dumpsterBadge" :variant="'light-'+ (dumpster.data.ContainerStatu == collectedStatus ? 'success' : 'danger')">
                                     <feather-icon
                                     :icon="dumpster.data.ContainerStatu == collectedStatus ? 'CheckIcon' : 'AlertTriangleIcon'"
@@ -44,7 +58,7 @@
                                 </b-badge>
                             </b-list-group-item>
                         </transition-group>
-                    </div>
+                    </vue-perfect-scrollbar>
                     <transition v-else name="fade">
                         <b-list-group-item class="d-flex">
                             <span class="mr-1">
@@ -63,8 +77,9 @@
 </template>
 
 <script>
-import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import { BRow, BCol, BCard, BAvatar, BBadge, BCardText, BCardTitle, BListGroup, BListGroupItem, BFormGroup, BFormInput } from 'bootstrap-vue'
 import Enums from '@/config/system.enums';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export default {
     components: {
@@ -76,12 +91,16 @@ export default {
         BCardText,
         BCardTitle,
         BListGroup,
-        BListGroupItem
+        BListGroupItem,
+        BFormGroup, 
+        BFormInput,
+        VuePerfectScrollbar
     },
 
     data(){
         return {
             filteredType: '',
+            filterQuery: '',
             collectedStatus: Enums.CONTAINER_FULLNESS_STATU_EMPTY,
             notCollectedStatus: Enums.CONTAINER_FULLNESS_STATU_FULL
         }
@@ -89,15 +108,25 @@ export default {
 
     computed: {
         dumpsters: function(){
-            //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('tags');
             let markers = this.$store.getters['dashboard/getTagMarkers'];
             if (this.filteredType.length){
+                let data = markers[this.filteredType]
+                if (this.filterQuery) {
+                    return Object.values(data).filter(tag => {
+                        return tag.data.TagId == this.filterQuery;
+                    })
+                }
                 return markers[this.filteredType] ? Object.values(markers[this.filteredType]) : [];
             }
-            return [].concat(
-                markers.collected ? Object.values(markers.collected) : [],
-                markers.notCollected ? Object.values(markers.notCollected) : []
-            );
+            else {
+                if (this.filterQuery) {
+                    return Object.values(all).filter(tag => {
+                        return tag.data.TagId == this.filterQuery;
+                    })
+                }
+            }
+            return Object.values(all);
         }
     },
 
@@ -164,7 +193,7 @@ export default {
 .dumpstersContent {
     padding: 20px 0;
 }
-.cardCol, .dumpstersCol {
+.cardCol, .dumpstersCol, .filterCol {
     padding: 0 5px;
 }
 .cardCol .card-body {
@@ -183,5 +212,11 @@ export default {
 }
 .bg-danger, .bg-success {
     transition: all ease .2s;
+}
+.allList {
+    max-height: calc(100vh - 22.5rem);
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
 }
 </style>

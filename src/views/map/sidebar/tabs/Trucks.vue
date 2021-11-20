@@ -120,6 +120,7 @@ export default {
 
   computed: {
     trucks: function(){
+      let all = this.$store.getters['dashboard/getSpecificMarkers']('rfid');
       let markers = this.$store.getters['dashboard/getRfidMarkers'];
       //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
       if (this.filteredType.length){
@@ -138,10 +139,7 @@ export default {
           });
         }
       }
-      return [].concat(
-        markers.truck ? Object.values(markers.truck) : [],
-        markers.winch ? Object.values(markers.winch) : []
-      );
+      return Object.values(all);
     }
   },
 
