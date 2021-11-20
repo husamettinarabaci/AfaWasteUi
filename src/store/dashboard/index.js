@@ -10,24 +10,12 @@ export default {
             current: '', // If blank, the info card is hidden 
             data: '' // Current card's data
         },
-        markers: [],
-        markerGroups: {
-            rfTags: {
-                collected: null,
-                notCollected: null
-            },
-            trucks: {
-                truck: null,
-                winch: null
-            },
-            ults: {
-                empty: null,
-                little: null,
-                medium: null,
-                full: null,
-            },
-            recycles: null
-        }
+        markers: {
+            tags: null,
+            rfid: null,
+            ult: null,
+            recy: null
+        },
     },
     getters: {
         getMap: state => {
@@ -36,7 +24,23 @@ export default {
 
         //getSidebarObject: state => {
         //    return state.sidebar.object;
-        //}
+        //},
+
+        getTagMarkers: state => {
+            return state.markers.tags ? state.markers.tags.markers : [];
+        },
+
+        getRfidMarkers: state => {
+            return state.markers.rfid ? state.markers.rfid.markers : [];
+        },
+
+        getUltMarkers: state => {
+            return state.markers.ult ? state.markers.ult.markers : [];
+        },
+
+        getRecyMarkers: state => {
+            return state.markers.recy ? state.markers.recy.markers : [];
+        }
     },
     mutations: {
         setMap: (state, map) => {
@@ -59,13 +63,17 @@ export default {
             state.info.data = data;
         },
 
-        addMarker: (state, marker) => {
-            state.markers.push(marker);
+        addMarkers: (state, marker) => {
+            state.markers[marker.type] = {
+                icon: marker.icon,
+                markers: marker.markers,
+                markerGroup: marker.markerGroup
+            }
         },
 
-        addMarkerGroup: (state, {type, markerGroup}) => {
-            state.markerGroups[type] = markerGroup
-        },
+        //addMarkerGroup: (state, {type, markerGroup}) => {
+        //    state.markerGroups[type] = markerGroup
+        //},
     },
     actions: {},
 }

@@ -9,7 +9,7 @@ export default {
             ult: [],
             recy: []
         },
-        tags: []
+        tags: {}
     },
 
     getters: {

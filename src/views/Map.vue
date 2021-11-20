@@ -33,12 +33,6 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 import Sidebar from './map/sidebar/Index';
 import Info from './map/info/Index';
 
-// Get datas
-import rfTagsData from '../data/rfTags.data';
-import trucksData from '../data/trucks.data';
-import ultData from '../data/ult.data';
-import recycleData from '../data/recycle.data';
-
 // Config
 import Enums from '@/config/system.enums';
 import { s3Url } from '@/config/app.config';
@@ -80,43 +74,26 @@ export default {
         minZoom: 8,
         maxZoom: 18
       },
-      rfTags: rfTagsData.tags,
-      trucks: trucksData,
-      ults: ultData,
-      recycles: recycleData,
-      markers: {
-        trucks: {
-          truck: [],
-          winch: []
-        },
-        rfTags: {
-          collected: [],
-          notCollected: []
-        },
-        ults: {
-          empty: [],
-          little: [],
-          medium: [],
-          full: []
-        },
-        recycles: []
-      },
+      //rfTags: rfTagsData.tags,
+      //trucks: trucksData,
+      //ults: ultData,
+      //recycles: recycleData,
       markerGroups: {
-        trucks: {
+        rfid: {
           truck: null,
           winch: null
         },
-        rfTags: {
+        tags: {
           collected: null,
           notCollected: null
         },
-        ults: {
+        ult: {
           empty: null,
           little: null,
           medium: null,
           full: null
         },
-        recycles: null
+        recy: null
       }
     }
   },
@@ -141,52 +118,52 @@ export default {
         self.$store.commit('dashboard/setCurrentTab', activeTab);
         switch(activeTab){
           case 'trucks':
-            if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
-            if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
-            if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
-            if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
-            if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
-            if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
-            if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
+            if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+            if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+            if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+            if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+            if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+            if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+            if (markerGroups.recy) map.removeLayer(markerGroups.recy);
             break;
           case 'dumpsters':
-            if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
-            if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
-            if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
-            if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
-            if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
-            if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
-            if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
+            if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+            if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+            if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+            if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+            if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+            if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+            if (markerGroups.recy) map.removeLayer(markerGroups.recy);
             break;
           case 'containers':
-            if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
-            if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
-            if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
-            if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
-            if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
+            if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+            if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+            if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+            if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+            if (markerGroups.recy) map.removeLayer(markerGroups.recy);
             break;
           case 'recycles':
-            if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
-            if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
-            if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
-            if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
-            if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
-            if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
-            if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
-            if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
+            if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+            if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+            if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+            if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+            if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+            if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+            if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+            if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
             break;
         } 
       })
       newVal.on('closing', function(e){
-        if (markerGroups.trucks.truck) map.addLayer(markerGroups.trucks.truck);
-        if (markerGroups.trucks.winch) map.addLayer(markerGroups.trucks.winch);
-        if (markerGroups.rfTags.collected) map.addLayer(markerGroups.rfTags.collected);
-        if (markerGroups.rfTags.notCollected) map.addLayer(markerGroups.rfTags.notCollected);
-        if (markerGroups.ults.empty) map.addLayer(markerGroups.ults.empty);
-        if (markerGroups.ults.little) map.addLayer(markerGroups.ults.little);
-        if (markerGroups.ults.medium) map.addLayer(markerGroups.ults.medium);
-        if (markerGroups.ults.full) map.addLayer(markerGroups.ults.full);
-        if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
+        if (markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
+        if (markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
+        if (markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
+        if (markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
+        if (markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
+        if (markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
+        if (markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
+        if (markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
+        if (markerGroups.recy) map.addLayer(markerGroups.recy);
         self.$store.commit('dashboard/setCurrentTab', '');
       })
     },
@@ -197,63 +174,63 @@ export default {
       switch(newVal){
         case 'trucks':
           this.$store.commit('dashboard/setInfoCurrent', '');
-          if (markerGroups.trucks.truck) map.addLayer(markerGroups.trucks.truck);
-          if (markerGroups.trucks.winch) map.addLayer(markerGroups.trucks.winch);
-          if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
-          if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
-          if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
-          if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
-          if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
-          if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
-          if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
+          if (markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+          if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+          if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+          if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+          if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+          if (markerGroups.recy) map.removeLayer(markerGroups.recy);
           break;
         case 'dumpsters':
           this.$store.commit('dashboard/setInfoCurrent', 'Dumpsters');
-          if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
-          if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
-          if (markerGroups.rfTags.collected) map.addLayer(markerGroups.rfTags.collected);
-          if (markerGroups.rfTags.notCollected) map.addLayer(markerGroups.rfTags.notCollected);
-          if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
-          if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
-          if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
-          if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
-          if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
+          if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
+          if (markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+          if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+          if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+          if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+          if (markerGroups.recy) map.removeLayer(markerGroups.recy);
           break;
         case 'containers':
           this.$store.commit('dashboard/setInfoCurrent', 'Containers');
-          if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
-          if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
-          if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
-          if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
-          if (markerGroups.ults.empty) map.addLayer(markerGroups.ults.empty);
-          if (markerGroups.ults.little) map.addLayer(markerGroups.ults.little);
-          if (markerGroups.ults.medium) map.addLayer(markerGroups.ults.medium);
-          if (markerGroups.ults.full) map.addLayer(markerGroups.ults.full);
-          if (markerGroups.recycles) map.removeLayer(markerGroups.recycles);
+          if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+          if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
+          if (markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
+          if (markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
+          if (markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
+          if (markerGroups.recy) map.removeLayer(markerGroups.recy);
           break;
         case 'recycles':
           this.$store.commit('dashboard/setInfoCurrent', 'Recycles');
-          if (markerGroups.trucks.truck) map.removeLayer(markerGroups.trucks.truck);
-          if (markerGroups.trucks.winch) map.removeLayer(markerGroups.trucks.winch);
-          if (markerGroups.rfTags.collected) map.removeLayer(markerGroups.rfTags.collected);
-          if (markerGroups.rfTags.notCollected) map.removeLayer(markerGroups.rfTags.notCollected);
-          if (markerGroups.ults.empty) map.removeLayer(markerGroups.ults.empty);
-          if (markerGroups.ults.little) map.removeLayer(markerGroups.ults.little);
-          if (markerGroups.ults.medium) map.removeLayer(markerGroups.ults.medium);
-          if (markerGroups.ults.full) map.removeLayer(markerGroups.ults.full);
-          if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
+          if (markerGroups.rfid.truck) map.removeLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid.winch) map.removeLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags.collected) map.removeLayer(markerGroups.tags.collected);
+          if (markerGroups.tags.notCollected) map.removeLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult.empty) map.removeLayer(markerGroups.ult.empty);
+          if (markerGroups.ult.little) map.removeLayer(markerGroups.ult.little);
+          if (markerGroups.ult.medium) map.removeLayer(markerGroups.ult.medium);
+          if (markerGroups.ult.full) map.removeLayer(markerGroups.ult.full);
+          if (markerGroups.recy) map.addLayer(markerGroups.recy);
           break;
         default:
           //this.$store.commit('dashboard/setInfoCurrent', '');
-          if (markerGroups.trucks.truck) map.addLayer(markerGroups.trucks.truck);
-          if (markerGroups.trucks.winch) map.addLayer(markerGroups.trucks.winch);
-          if (markerGroups.rfTags.collected) map.addLayer(markerGroups.rfTags.collected);
-          if (markerGroups.rfTags.notCollected) map.addLayer(markerGroups.rfTags.notCollected);
-          if (markerGroups.ults.empty) map.addLayer(markerGroups.ults.empty);
-          if (markerGroups.ults.little) map.addLayer(markerGroups.ults.little);
-          if (markerGroups.ults.medium) map.addLayer(markerGroups.ults.medium);
-          if (markerGroups.ults.full) map.addLayer(markerGroups.ults.full);
-          if (markerGroups.recycles) map.addLayer(markerGroups.recycles);
+          if (markerGroups.rfid.truck) map.addLayer(markerGroups.rfid.truck);
+          if (markerGroups.rfid.winch) map.addLayer(markerGroups.rfid.winch);
+          if (markerGroups.tags.collected) map.addLayer(markerGroups.tags.collected);
+          if (markerGroups.tags.notCollected) map.addLayer(markerGroups.tags.notCollected);
+          if (markerGroups.ult.empty) map.addLayer(markerGroups.ult.empty);
+          if (markerGroups.ult.little) map.addLayer(markerGroups.ult.little);
+          if (markerGroups.ult.medium) map.addLayer(markerGroups.ult.medium);
+          if (markerGroups.ult.full) map.addLayer(markerGroups.ult.full);
+          if (markerGroups.recy) map.addLayer(markerGroups.recy);
           break;
       }
     }
@@ -328,8 +305,13 @@ export default {
     // Init Dumpsters - Tags
     attachTagMarkers(map){
       let self = this;
-      let markers = this.$store.getters['panel/getTags'];
-      this.markerGroups.rfTags.collected = L.markerClusterGroup({
+      let tags = this.$store.getters['panel/getTags'];
+      let markersObject = {
+        collected: {},
+        notCollected: {}
+      }
+
+      this.markerGroups.tags.collected = L.markerClusterGroup({
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: '<div class="marker-cluster-dumpsters-collected"><span>' + cluster.getChildCount() + '</span></div>',
@@ -338,7 +320,7 @@ export default {
           });
         }
       });
-      this.markerGroups.rfTags.notCollected = L.markerClusterGroup({
+      this.markerGroups.tags.notCollected = L.markerClusterGroup({
         iconCreateFunction: function(cluster) {
           return L.divIcon({
             html: '<div class="marker-cluster-dumpsters-notCollected"><span>' + cluster.getChildCount() + '</span></div>',
@@ -402,12 +384,10 @@ export default {
         48
       ]
 
-
-      markers
-      .filter(a => idList.includes(a.TagId))
-      .forEach(data => {
+      idList.forEach(id => {
+        let data = tags[id];
         if (data.TagId == 39) {
-          data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_EMPTY
+          data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_FULL
         }
         const popupOptions = {
             'maxWidth': '500',
@@ -497,28 +477,54 @@ export default {
         });
         
         if (data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY){
-          this.markerGroups.rfTags.collected.addLayer(marker);
+          this.markerGroups.tags.collected.addLayer(marker);
+          markersObject.collected[data.TagId] = {
+            data,
+            marker
+          };
         }
         else {
-          this.markerGroups.rfTags.notCollected.addLayer(marker);
+          this.markerGroups.tags.notCollected.addLayer(marker);
+          markersObject.notCollected[data.TagId] = {
+            data,
+            marker
+          };
         }
-        this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
-        this.$store.commit('dashboard/addMarker', {type: 'tag', icon: 'Trash2Icon', data, marker});
+      });
+
+      map.addLayer(this.markerGroups.tags.collected);
+      map.addLayer(this.markerGroups.tags.notCollected);
+
+
+      //this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
+      this.$store.commit('dashboard/addMarkers', {
+        type: 'tags', 
+        icon: 'Trash2Icon',
+        markers: markersObject,
+        markerGroup: {
+          collected: this.markerGroups.tags.collected,
+          notCollected: this.markerGroups.tags.notCollected
+        }
       });
       
-      map.addLayer(this.markerGroups.rfTags.collected);
-      map.addLayer(this.markerGroups.rfTags.notCollected);
-      //this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
-      //this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
+      //this.markerGroups.tags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
+      //this.markerGroups.tags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
       
-      this.$store.commit('dashboard/addMarkerGroup', {type: 'rfTags', markerGroup: this.markerGroups.rfTags});
+      //this.$store.commit('dashboard/addMarkerGroup', {type: 'rfTags', markerGroup: this.markerGroups.tags});
     },
 
     // Init Trucks - Rfid
     attachRfidMarkers(map){
       let self = this;
-      let markers = this.$store.getters['panel/getRfidDevices'];
-      markers.forEach(data => {
+      let rfidDevices = this.$store.getters['panel/getRfidDevices'];
+      let markersObject = {
+        truck: {},
+        winch: {}
+      }
+
+      this.markerGroups.rfid.truck = L.layerGroup();
+
+      rfidDevices.forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
             'width' : '250',
@@ -571,27 +577,53 @@ export default {
           }
         })
         
-        //this.markerGroups.trucks.truck.addLayer(marker);
+        this.markerGroups.rfid.truck.addLayer(marker);
 
-        this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', data, marker});
+        markersObject.truck[data.DeviceId] = {
+          data,
+          marker
+        };
+
+        //this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', data, marker});
         //this.$store.commit('dashboard/addMarker', {type: 'truck', icon: 'TruckIcon', searchableFields: ['plate_no'], data, marker});
-        this.markers.trucks.truck.push(marker);
+        //this.markers.trucks.truck.push(marker);
         //this.trucksMarkers.push(marker);
       })
 
-      //map.addLayer(this.markerGroups.trucks.truck);
-      this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
-      this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+      map.addLayer(this.markerGroups.rfid.truck);
+      //this.markerGroups.rfid.truck = L.layerGroup(Object.values(this.markers.rfid.truck.markers)).addTo(map);
+      //this.markers.rfid.winch.markerGroup = L.layerGroup(Object.values(this.markers.rfid.winch.markers)).addTo(map);
 
-      this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.trucks});
+      this.$store.commit('dashboard/addMarkers', {
+        type: 'rfid', 
+        icon: 'TruckIcon',
+        markers: markersObject,
+        markerGroup: {
+          truck: this.markerGroups.rfid.truck,
+          winch: this.markerGroups.rfid.winch
+        }
+      });
+
+      //this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.rfid});
     },
 
     // Init Ults - Ult
     attachUltMarkers(map){
       let self = this;
-      let markers = this.$store.getters['panel/getUltDevices'];
+      let ultDevices = this.$store.getters['panel/getUltDevices'];
+      let markersObject = {
+        empty: {},
+        little: {},
+        medium: {},
+        full: {}
+      };
+
+      this.markerGroups.ult.empty = L.layerGroup();
+      this.markerGroups.ult.little = L.layerGroup();
+      this.markerGroups.ult.medium = L.layerGroup();
+      this.markerGroups.ult.full = L.layerGroup();
       
-      let vals = markers.slice(0,50)
+      let vals = ultDevices.slice(0,50)
       vals[0].DeviceGps.Latitude = 37.04819002372351;
       vals[0].DeviceGps.Longitude = 27.34308242797852;
       vals[1].DeviceGps.Latitude = 37.05531410185666;
@@ -674,9 +706,19 @@ export default {
             }
           }
         });
-        this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_title'], data, marker});
+
+        this.markerGroups.ult[data.DeviceStatu.ContainerStatu.toLowerCase()].addLayer(marker);
+
+        markersObject[data.DeviceStatu.ContainerStatu.toLowerCase()][data.DeviceId] = {
+          data,
+          marker
+        };
+
+
+        //this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_title'], data, marker});
+        //
+        //this.markers.ults[data.DeviceStatu.ContainerStatu.toLowerCase()].push(marker);
         
-        this.markers.ults[data.DeviceStatu.ContainerStatu.toLowerCase()].push(marker);
         //if (data.filled_rate < 25){
         //  this.markers.ults.empty.push(marker);
         //}
@@ -692,18 +734,38 @@ export default {
       })
       
 
-      this.markerGroups.ults.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
-      this.markerGroups.ults.little = L.layerGroup(this.markers.ults.little).addTo(map);
-      this.markerGroups.ults.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
-      this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
+      //this.markerGroups.ult.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
+      //this.markerGroups.ult.little = L.layerGroup(this.markers.ults.little).addTo(map);
+      //this.markerGroups.ult.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
+      //this.markerGroups.ult.full = L.layerGroup(this.markers.ults.full).addTo(map);
 
-      this.$store.commit('dashboard/addMarkerGroup', {type: 'ults', markerGroup: this.markerGroups.ults});
+      map.addLayer(this.markerGroups.ult.empty);
+      map.addLayer(this.markerGroups.ult.little);
+      map.addLayer(this.markerGroups.ult.medium);
+      map.addLayer(this.markerGroups.ult.full);
+
+      this.$store.commit('dashboard/addMarkers', {
+        type: 'ult', 
+        icon: 'ArchiveIcon',
+        markers: markersObject,
+        markerGroup: {
+          empty: this.markerGroups.ult.empty,
+          little: this.markerGroups.ult.little,
+          medium: this.markerGroups.ult.medium,
+          full: this.markerGroups.ult.full
+        }
+      });
+
+      //this.$store.commit('dashboard/addMarkerGroup', {type: 'ults', markerGroup: this.markerGroups.ult});
     },
 
     // Init Recycles - Recy
     attachRecyMarkers(map){
       let self = this;
       let markers = this.$store.getters['panel/getRecyDevices'];
+      let markersObject = {};
+      this.markerGroups.recy = L.layerGroup();
+
       markers.slice(0,5).forEach(data => {
         const popupOptions = {
             'maxWidth': '500',
@@ -744,11 +806,30 @@ export default {
             }
           }
         });
-        this.$store.commit('dashboard/addMarker', {type: 'recycle', icon: 'RefreshCwIcon', searchableFields: ['recycle_id'], data, marker});
-        this.markers.recycles.push(marker);
+
+        this.markerGroups.recy.addLayer(marker);
+
+        markersObject[data.DeviceId] = {
+          data,
+          marker
+        }
+
+        //this.markerGroups.recy.addLayer(marker);
+
+        //this.$store.commit('dashboard/addMarker', {type: 'recycle', icon: 'RefreshCwIcon', searchableFields: ['recycle_id'], data, marker});
+        //this.markers.recycles.push(marker);
       })
+
+      map.addLayer(this.markerGroups.recy);
+
+      this.$store.commit('dashboard/addMarkers', {
+        type: 'recy', 
+        icon: 'RefreshCwIcon',
+        markers: markersObject,
+        markerGroup: this.markerGroups.recy
+      });
       
-      this.markerGroups.recycles = L.layerGroup(this.markers.recycles).addTo(map);
+      //this.markerGroups.recy = L.layerGroup(this.markers.recycles).addTo(map);
     },
 
     attachMarkers(map){
@@ -759,25 +840,27 @@ export default {
       if (customer[Enums.WEB_APP_TYPE_RFID] = Enums.STATU_ACTIVE){
         this.attachRfidMarkers(map);
       }
+      /*
       if (customer[Enums.WEB_APP_TYPE_ULT] = Enums.STATU_ACTIVE){
         this.attachUltMarkers(map);
       }
       if (customer[Enums.WEB_APP_TYPE_RECY] = Enums.STATU_ACTIVE){
         this.attachRecyMarkers(map);
       }
+      */
 
-      //this.markerGroups.trucks.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
-      //this.markerGroups.trucks.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
+      //this.markerGroups.rfid.truck = L.layerGroup(this.markers.trucks.truck).addTo(map);
+      //this.markerGroups.rfid.winch = L.layerGroup(this.markers.trucks.winch).addTo(map);
 
-      //this.markerGroups.rfTags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
-      //this.markerGroups.rfTags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
+      //this.markerGroups.tags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
+      //this.markerGroups.tags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
 
-      //this.markerGroups.ults.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
-      //this.markerGroups.ults.little = L.layerGroup(this.markers.ults.little).addTo(map);
-      //this.markerGroups.ults.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
-      //this.markerGroups.ults.full = L.layerGroup(this.markers.ults.full).addTo(map);
+      //this.markerGroups.ult.empty = L.layerGroup(this.markers.ults.empty).addTo(map);
+      //this.markerGroups.ult.little = L.layerGroup(this.markers.ults.little).addTo(map);
+      //this.markerGroups.ult.medium = L.layerGroup(this.markers.ults.medium).addTo(map);
+      //this.markerGroups.ult.full = L.layerGroup(this.markers.ults.full).addTo(map);
 
-      //this.markerGroups.recycles = L.layerGroup(this.markers.recycles).addTo(map);
+      //this.markerGroups.recy = L.layerGroup(this.markers.recycles).addTo(map);
 
 
       //this.$store.commit('dashboard/setMarkerGroups', this.markerGroups);

@@ -120,24 +120,28 @@ export default {
 
   computed: {
     trucks: function(){
-      let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
+      let markers = this.$store.getters['dashboard/getRfidMarkers'];
+      //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
       if (this.filteredType.length){
-        let filtered = markers.filter(marker => {
-            if (this.filteredType == 'truck'){
-              return marker;
-            }
-          });
         if (this.filterQuery) {
-          return filtered.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
+          return Object.values(markers.truck).filter(device => {
+            return device.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase());
+          });
+          //return filtered.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
         }
-        return filtered;
+        return Object.values(markers.truck);
       }
       else {
         if (this.filterQuery) {
-          return markers.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
+          return Object.values(markers.truck).filter(device => {
+            return device.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase());
+          });
         }
       }
-      return markers;
+      return [].concat(
+        markers.truck ? Object.values(markers.truck) : [],
+        markers.winch ? Object.values(markers.winch) : []
+      );
     }
   },
 
@@ -173,12 +177,13 @@ export default {
     },
 
     getCount(type){
-        let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
+        //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'truck');
+        let markers = this.$store.getters['dashboard/getRfidMarkers'];
         if (type == 'truck'){
-          return markers.filter(truck => truck.type == 'truck').length
+          return markers.truck ? Object.keys(markers.truck).length : 0
         }
         else {
-          return markers.filter(truck => truck.data.type == 'winch').length
+          return markers.winch ? Object.keys(markers.winch).length : 0
         }
     }
   }
