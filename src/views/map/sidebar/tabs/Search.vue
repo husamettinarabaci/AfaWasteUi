@@ -140,7 +140,6 @@ export default {
                         })
                     }
                 })
-                console.log('results: ', results)
             })
             this.results = results;
             /*
