@@ -54,23 +54,23 @@ export default {
             return state.markers.tags ? state.markers.tags.markers : [];
         },
 
-        getTagCollectedMarkerGroup: state => {
-            return state.markers.tags ? state.markers.tags.markerGroup.collected : null;
-        },
-
-        getTagNotCollectedMarkerGroup: state => {
-            return state.markers.tags ? state.markers.tags.markerGroup.notCollected : null;
+        getTagMarkerGroup: state => {
+            return state.markers.tags ? state.markers.tags.markerGroup : null;
         },
 
         getRfidMarkers: state => {
             return state.markers.rfid ? state.markers.rfid.markers : [];
         },
 
+        getRfidMarkerGroup: state => {
+            return state.markers.rfid ? state.markers.rfid.markerGroup : [];
+        },
+
         getUltMarkers: state => {
             return state.markers.ult ? state.markers.ult.markers : [];
         },
 
-        getUltMarkerGroups: state => {
+        getUltMarkerGroup: state => {
             return state.markers.ult ? state.markers.ult.markerGroup : [];
         },
 

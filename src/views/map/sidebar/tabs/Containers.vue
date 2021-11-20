@@ -211,7 +211,7 @@ export default {
     watch: {
         'filteredType': function(newVal, oldVal){
             let map = this.$store.state.dashboard.map;
-            let markerGroups = this.$store.state.getters['dashboard/getUltMarkerGroups'];
+            let markerGroups = this.$store.getters['dashboard/getUltMarkerGroup'];
             switch(newVal){
                 case 'empty':
                     if (markerGroups.empty) map.addLayer(markerGroups.empty);

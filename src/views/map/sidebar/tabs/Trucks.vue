@@ -129,7 +129,7 @@ export default {
           });
           //return filtered.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
         }
-        return markers.truck ? Object.values(markers.truck) : [];
+        return this.filteredType == 'truck' ? Object.values(markers.truck) : [];
       }
       else {
         if (this.filterQuery) {
@@ -148,19 +148,20 @@ export default {
   watch: {
     'filteredType': function(newVal, oldVal){
       let map = this.$store.state.dashboard.map;
+      let markerGroup = this.$store.getters['dashboard/getRfidMarkerGroup'];
       switch(newVal){
         case 'truck':
-          map.addLayer(this.$store.state.dashboard.markerGroups.trucks.truck);
-          map.removeLayer(this.$store.state.dashboard.markerGroups.trucks.winch);
+          if (markerGroup.truck) map.addLayer(markerGroup.truck);
+          if (markerGroup.winch) map.removeLayer(markerGroup.winch);
           break;
         case 'winch':
-          map.removeLayer(this.$store.state.dashboard.markerGroups.trucks.truck);
-          map.addLayer(this.$store.state.dashboard.markerGroups.trucks.winch);
+          if (markerGroup.truck) map.removeLayer(markerGroup.truck);
+          if (markerGroup.winch) map.addLayer(markerGroup.winch);
           break;
         default:
           if (this.$store.state.dashboard.sidebar.currentTab == 'trucks'){
-            map.addLayer(this.$store.state.dashboard.markerGroups.trucks.truck);
-            map.addLayer(this.$store.state.dashboard.markerGroups.trucks.winch);
+            if (markerGroup.truck) map.addLayer(markerGroup.truck);
+            if (markerGroup.winch) map.addLayer(markerGroup.winch);
           }
           break;
       }

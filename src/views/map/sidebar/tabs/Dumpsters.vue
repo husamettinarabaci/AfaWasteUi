@@ -104,21 +104,20 @@ export default {
     watch: {
         'filteredType': function(newVal, oldVal){
             let map = this.$store.state.dashboard.map;
-            let collectedGroup = this.$store.getters['dashboard/getTagCollectedMarkerGroup'];
-            let notCollectedGroup = this.$store.getters['dashboard/getTagNotCollectedMarkerGroup'];
+            let markerGroup = this.$store.getters['dashboard/getTagMarkerGroup'];
             switch(newVal){
                 case 'collected':
-                    if (collectedGroup) map.addLayer(collectedGroup);
-                    if (notCollectedGroup) map.removeLayer(notCollectedGroup);
+                    if (markerGroup.collected) map.addLayer(markerGroup.collected);
+                    if (markerGroup.notCollected) map.removeLayer(markerGroup.notCollected);
                     break;
                 case 'notCollected':
-                    if (collectedGroup) map.removeLayer(collectedGroup);
-                    if (notCollectedGroup) map.addLayer(notCollectedGroup);
+                    if (markerGroup.collected) map.removeLayer(markerGroup.collected);
+                    if (markerGroup.notCollected) map.addLayer(markerGroup.notCollected);
                     break;
                 default:
                     if (this.$store.state.dashboard.sidebar.currentTab == 'dumpsters'){
-                        if (collectedGroup) map.addLayer(collectedGroup);
-                        if (notCollectedGroup) map.addLayer(notCollectedGroup);
+                        if (markerGroup.collected) map.addLayer(markerGroup.collected);
+                        if (markerGroup.notCollected) map.addLayer(markerGroup.notCollected);
                     }
                     break;
             }
