@@ -52,7 +52,7 @@ export default {
                 },
                 data: []
             }
-            let ults = this.$store.getters['dashboard/getSpecificMarkers']('ult');
+            let ults = this.$store.getters['dashboard/getUltMarkers'];
             obj.data.push({value: Object.keys(ults.empty).length, name: 'Boş'})
             obj.data.push({value: Object.keys(ults.little).length, name: 'Az Dolu'})
             obj.data.push({value: Object.keys(ults.medium).length, name: 'Orta Dolu'})

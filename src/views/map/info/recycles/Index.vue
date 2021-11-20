@@ -48,7 +48,7 @@ export default {
             }
             //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
             let all = this.$store.getters['dashboard/getSpecificMarkers']('recy');
-            var plasticCount = 0, glassCount = 0, metalCount = 0; 
+            var plasticCount = 0, glassCount = 0, metalCount = 0;
             Object.keys(all).forEach(id => {
                 let recycle = all[id];
                 plasticCount += parseInt(recycle.data.plastic_count);

@@ -69,17 +69,11 @@ export default {
         changeDeviceLocation(deviceType, value){
             let type = this.getType(deviceType);
             let markers = store.getters['dashboard/getSpecificMarkers'](type);
-            console.log('devicetype: ', deviceType)
-            console.log('value: ', value)
             markers[value.DeviceId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude));
         },
 
         changeDeviceData(deviceType, value){
             let type = this.getType(deviceType);
-            if (deviceType == 'ULT_DEVICE_STATU'){
-                console.log('devicetype: ', deviceType)
-                console.log('value: ', value)
-            }
             let markers = store.getters['dashboard/getSpecificMarkers'](type);
             markers[value.DeviceId].data[this.deviceTypes[deviceType]] = value;
         },

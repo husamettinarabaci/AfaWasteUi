@@ -52,7 +52,7 @@ export default {
                 data: []
             }
             //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'tag');
-            let all = this.$store.getters['dashboard/getSpecificMarkers']('tags');
+            let all = this.$store.getters['dashboard/getTagMarkers'];
             obj.data.push({value : Object.keys(all.collected).length, name: 'Toplandı'})
             obj.data.push({value : Object.keys(all.notCollected).length, name: 'Toplanmadı'})
             return [obj];
