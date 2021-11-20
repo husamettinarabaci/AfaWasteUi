@@ -132,7 +132,7 @@ export default {
         getDetails(dumpster){
             let marker = dumpster.marker;
             let type = dumpster.data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected';
-            let markerGroup = this.$store.state.dashboard.markerGroups.rfTags[type];
+            let markerGroup = this.$store.getters['dashboard/getTagMarkerGroup'][type];
             let visibleLayer = markerGroup.getVisibleParent(marker);
             if (visibleLayer instanceof L.MarkerCluster){
                 markerGroup.fire('click', {
