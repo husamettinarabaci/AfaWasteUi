@@ -45,7 +45,7 @@
                     <b-list-group-item class="d-flex cursor-pointer" v-for="(truck, id) in trucks" :key="id" @click="getDetails(truck)">
                         <span class="mr-1">
                             <feather-icon
-                            :icon="truck.icon"
+                            icon="TruckIcon"
                             size="16"
                             />
                         </span>

@@ -112,7 +112,7 @@ export default {
     '$store.state.dashboard.sidebar.object': function(newVal, oldVal){
       let map = this.$store.state.dashboard.map;
       let self = this;
-      let markerGroups = this.$store.state.dashboard.markerGroups;
+      let markerGroups = this.$store.getters['dashboard/getMarkerGroups'];
       newVal.on('opening', function(e){
         let activeTab = newVal._tabitems.find(item => item.classList.contains('active')).dataset.tab;
         self.$store.commit('dashboard/setCurrentTab', activeTab);
@@ -170,7 +170,7 @@ export default {
 
     '$store.state.dashboard.sidebar.currentTab': function(newVal, oldVal){
       let map = this.$store.state.dashboard.map;
-      let markerGroups = this.$store.state.dashboard.markerGroups;
+      let markerGroups = this.$store.getters['dashboard/getMarkerGroups'];
       switch(newVal){
         case 'trucks':
           this.$store.commit('dashboard/setInfoCurrent', '');

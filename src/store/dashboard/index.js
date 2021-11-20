@@ -26,6 +26,16 @@ export default {
         //    return state.sidebar.object;
         //},
 
+        getMarkerGroups: state => {
+            let g = {}
+            Object.keys(state.markers).forEach(key => {
+                if (state.markers[key] != null) {
+                    g[key] = state.markers[key].markerGroup
+                }
+            })
+            return g;
+        },
+
         getTagMarkers: state => {
             return state.markers.tags ? state.markers.tags.markers : [];
         },
@@ -44,6 +54,10 @@ export default {
 
         getUltMarkers: state => {
             return state.markers.ult ? state.markers.ult.markers : [];
+        },
+
+        getUltMarkerGroups: state => {
+            return state.markers.ult ? state.markers.ult.markerGroup : [];
         },
 
         getRecyMarkers: state => {

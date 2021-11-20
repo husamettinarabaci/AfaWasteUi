@@ -121,11 +121,13 @@ export default {
 
     computed: {
         recycles: function(){
-            let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
-            if (this.filteredType.length){
-                return markers.filter(marker => parseInt(marker.data[`${this.filteredType}_count`]) > 0);
-            }
-            return markers;
+            //let markers = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            let markers = this.$store.getters['dashboard/getRecyMarkers'];
+            return markers ? Object.values(markers) : [];
+            //if (this.filteredType.length){
+            //    return markers.filter(marker => parseInt(marker.data[`${this.filteredType}_count`]) > 0);
+            //}
+            //return markers;
         }
     },
 
@@ -139,8 +141,10 @@ export default {
         },
 
         getCount(type){
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
-            return all.filter(marker => parseInt(marker.data[`${type}_count`]) > 0).length;
+            //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'recycle');
+            let recycles = this.$store.getters['dashboard/getRecyMarkers'];
+            return recycles ? Object.values(recycles).length : 0;
+            //return all.filter(marker => parseInt(marker.data[`${type}_count`]) > 0).length;
             //var count = 0;
             //all.forEach(recycle => {
             //    switch(type){

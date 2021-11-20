@@ -164,9 +164,11 @@ export default {
 
     computed: {
         ults: function(){
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
+            //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
+            let markers = this.$store.getters['dashboard/getUltMarkers'];
             if (this.filteredType.length) {
                 let type 
+                /*
                 switch(this.filteredType){
                     case 'empty':
                         type = Enums.CONTAINER_FULLNESS_STATU_EMPTY;
@@ -184,7 +186,9 @@ export default {
                         type = '';
                         break;
                 }
-                let filtered = all.filter(ult => ult.data.DeviceStatu.ContainerStatu === type);
+                */
+                let filtered = markers[this.filteredType]
+                //let filtered = all.filter(ult => ult.data.DeviceStatu.ContainerStatu === type);
                 if (this.filterQuery) {
                     return filtered.filter(ult => ult.data.DeviceId == this.filterQuery);
                 }
@@ -194,15 +198,20 @@ export default {
                 if (this.filterQuery) {
                     return all.filter(ult => ult.data.DeviceId == this.filterQuery);
                 }
-                return all;
             }
+            return [].concat(
+                markers.empty ? Object.values(markers.empty) : [],
+                markers.little ? Object.values(markers.little) : [],
+                markers.medium ? Object.values(markers.medium) : [],
+                markers.full ? Object.values(markers.full) : []
+            );
         }
     },
 
     watch: {
         'filteredType': function(newVal, oldVal){
             let map = this.$store.state.dashboard.map;
-            let markerGroups = this.$store.state.dashboard.markerGroups.ults;
+            let markerGroups = this.$store.state.getters['dashboard/getUltMarkerGroups'];
             switch(newVal){
                 case 'empty':
                     if (markerGroups.empty) map.addLayer(markerGroups.empty);
@@ -299,16 +308,16 @@ export default {
         },
 
         getCount(type){
-            let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
-            switch (type){
+            let markers = this.$store.getters['dashboard/getUltMarkers'];
+            switch(type){
                 case 'empty':
-                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY)).length;
+                    return markers.empty ? Object.keys(markers.empty).length : 0;
                 case 'little':
-                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_LITTLE)).length;
+                    return markers.little ? Object.keys(markers.little).length : 0;
                 case 'medium':
-                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_MEDIUM)).length;
+                    return markers.medium ? Object.keys(markers.medium).length : 0;
                 case 'full':
-                    return all.filter(ult => (ult.data.DeviceStatu.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL)).length;
+                    return markers.full ? Object.keys(markers.full).length : 0;
             }
         }
     }
