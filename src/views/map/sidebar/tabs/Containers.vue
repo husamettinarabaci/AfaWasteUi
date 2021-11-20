@@ -164,10 +164,10 @@ export default {
 
     computed: {
         ults: function(){
-            //let all = this.$store.state.dashboard.markers.filter(marker => marker.type == 'ult');
+            let all = this.$store.getters['dashboard/getSpecificMarkers']('ult');
             let markers = this.$store.getters['dashboard/getUltMarkers'];
             if (this.filteredType.length) {
-                let type 
+                //let type 
                 /*
                 switch(this.filteredType){
                     case 'empty':
@@ -187,24 +187,22 @@ export default {
                         break;
                 }
                 */
-                let filtered = markers[this.filteredType]
-                //let filtered = all.filter(ult => ult.data.ContainerStatu === type);
+                let data = markers[this.filteredType]
                 if (this.filterQuery) {
-                    return filtered.filter(ult => ult.data.DeviceId == this.filterQuery);
+                    return Object.values(data).filter(device => {
+                        return device.data.DeviceId == this.filterQuery;
+                    })
                 }
-                return filtered
+                return Object.values(data)
             } 
             else {
                 if (this.filterQuery) {
-                    return all.filter(ult => ult.data.DeviceId == this.filterQuery);
+                    return Object.values(all).filter(device => {
+                        return device.data.DeviceId == this.filterQuery;
+                    })
                 }
             }
-            return [].concat(
-                markers.empty ? Object.values(markers.empty) : [],
-                markers.little ? Object.values(markers.little) : [],
-                markers.medium ? Object.values(markers.medium) : [],
-                markers.full ? Object.values(markers.full) : []
-            );
+            return Object.values(all);
         }
     },
 
