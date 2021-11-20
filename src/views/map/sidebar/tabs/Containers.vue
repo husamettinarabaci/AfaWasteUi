@@ -61,10 +61,10 @@
                                 <span v-if="filterQuery" v-html="$options.filters.highlight(ult.data.DeviceId, filterQuery)"></span>
                                 <span v-else>{{ ult.data.DeviceId }}</span>
                                 <b-progress
-                                    :title="`${computePercent(ult.data.ContainerStatu)}%`"
+                                    :title="`${parseInt(ult.data.SensPercent)}% => ${ult.data.ContainerStatu}`"
                                     :key="computeVariant(ult.data.ContainerStatu)"
                                     animated
-                                    :value="computePercent(ult.data.ContainerStatu)"
+                                    :value="parseInt(ult.data.SensPercent)"
                                     :variant="computeVariant(ult.data.ContainerStatu)"
                                     :class="'progressBar progress-bar-' + computeVariant(ult.data.ContainerStatu)"
                                 />
@@ -269,21 +269,6 @@ export default {
             //else if ((percent >= 25) && (percent < 50)) return 'info';
             //else if ((percent >= 50) && (percent < 75)) return 'warning';
             //else if ((percent >= 75) && (percent <= 100)) return 'danger';
-        },
-
-        computePercent(status){
-            switch(status){
-                case Enums.CONTAINER_FULLNESS_STATU_EMPTY:
-                    return 12.5;
-                case Enums.CONTAINER_FULLNESS_STATU_LITTLE:
-                    return 37.5;
-                case Enums.CONTAINER_FULLNESS_STATU_MEDIUM:
-                    return 62.5;
-                case Enums.CONTAINER_FULLNESS_STATU_FULL:
-                    return 87.5;
-                default:
-                    return 10;
-            }
         },
 
         filterList(ult){

@@ -19,7 +19,7 @@
                             <b-list-group-item class="d-flex cursor-pointer" v-for="(result, id) in results" :key="id" @click="getDetails(result)">
                                 <span class="mr-1">
                                     <feather-icon
-                                    :icon="result.icon"
+                                    icon="SearchIcon"
                                     size="16"
                                     />
                                 </span>
@@ -89,19 +89,61 @@ export default {
         getSearchableFields(type){
             let searchableFields = [];
             switch(type){
-                case 'tag':
+                case 'tags':
                     searchableFields = ['ContainerNo', 'TagId'];
                     break;
-                case 'truck':
+                case 'rfid':
                     searchableFields = ['DeviceDetail.PlateNo'];
+                    break;
+                case 'ult':
+                    searchableFields = ['DeviceId'];
                     break;
             }
             return searchableFields;
         },
 
         search(){
-            let markers = this.$store.state.dashboard.markers;
+            let markers = {
+                tags: this.$store.getters['dashboard/getSpecificMarkers']('tags'),
+                rfid: this.$store.getters['dashboard/getSpecificMarkers']('rfid'),
+                ult: this.$store.getters['dashboard/getSpecificMarkers']('ult'),
+                recy: this.$store.getters['dashboard/getSpecificMarkers']('recy'),
+            }
             let self = this;
+            let results = [];
+            Object.keys(markers).forEach(key => {
+                let data = markers[key]
+                let searchableFields = this.getSearchableFields(key);
+                searchableFields.forEach(field => {
+                    let filtered = Object.values(data).filter(d => {
+                        let f;
+                        if (field.includes('.')){
+                            f = field.split('.');
+                            f = d.data[f[0]][f[1]];
+                        }
+                        else {
+                            f = d.data[field];
+                        }
+                        if (typeof f == 'string'){
+                            return f.toLocaleLowerCase().includes(self.query.toLocaleLowerCase()) ? true : false;
+                        }
+                        else {
+                            return (f == self.query) ? true : false;
+                        }
+                    })
+                    if (filtered.length) {
+                        filtered.forEach(f => {
+                            results.push({
+                                ...f,
+                                type: key
+                            })
+                        })
+                    }
+                })
+                console.log('results: ', results)
+            })
+            this.results = results;
+            /*
             this.results = markers.filter(marker => {
                 let addResult = false;
                 let searchableFields = this.getSearchableFields(marker.type);
@@ -123,22 +165,35 @@ export default {
                 })
                 return addResult ? marker : false;
             })
+            */
             this.showResults = true;
         },
         
         displayTitle: function(result){
-            let searchableFields = this.getSearchableFields(result.type);
-            let t = ''
-            searchableFields.forEach(field => {
-                let f;
-                if (field.includes('.')){
-                    f = field.split('.');
-                    t += result.data[f[0]][f[1]];
-                }
-                else {
-                    t += result.data[field];
-                }
-            })
+            let t = '';
+            let displayField = '';
+            switch(result.type){
+                case 'tags':
+                    displayField = 'ContainerNo';
+                    break;
+                case 'rfid':
+                    displayField = 'DeviceDetail.PlateNo';
+                    break;
+                case 'ult':
+                    displayField = 'DeviceId';
+                    break;
+                case 'recy':
+                    displayField = 'DeviceId';
+                    break;
+            }
+            let f;
+            if (displayField.includes('.')){
+                f = displayField.split('.');
+                t += result.data[f[0]][f[1]] ? result.data[f[0]][f[1]] : '-';
+            }
+            else {
+                t += result.data[displayField] ? result.data[displayField] : '-';
+            }
             return t;
         },
 
