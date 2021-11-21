@@ -127,6 +127,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 .highlighted-text {
     padding: 2px 0;
     border-radius: 4px;

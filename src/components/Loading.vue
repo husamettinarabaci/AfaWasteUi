@@ -10,6 +10,7 @@
                 animated
                 :value="calculatePercent"
                 variant="info"
+                height="5px"
                 class="progress-bar-info"
             />
         </div>
