@@ -69,23 +69,23 @@ export default {
         changeDeviceLocation(deviceType, value){
             let type = this.getType(deviceType);
             let markers = store.getters['dashboard/getSpecificMarkers'](type);
-            markers[value.DeviceId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude));
+            if (markers[value.DeviceId]) markers[value.DeviceId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude));
         },
 
         changeDeviceData(deviceType, value){
             let type = this.getType(deviceType);
             let markers = store.getters['dashboard/getSpecificMarkers'](type);
-            markers[value.DeviceId].data[this.deviceTypes[deviceType]] = value;
+            if (markers[value.DeviceId]) markers[value.DeviceId].data[this.deviceTypes[deviceType]] = value;
         },
 
         changeTagLocation(value){
             let markers = store.getters['dashboard/getSpecificMarkers']('tags');
-            markers[value.TagId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude))
+            if (markers[value.TagId]) markers[value.TagId].marker.setLatLng(new L.LatLng(value.Latitude, value.Longitude))
         },
 
         changeTagData(tagType, value){
             let markers = store.getters['dashboard/getSpecificMarkers']('tags');
-            markers[value.DeviceId].data[this.tagTypes[tagType]] = value;
+            if (markers[value.TagId]) markers[value.TagId].data[this.tagTypes[tagType]] = value;
         },
 
         changeTagStatus(value){
@@ -97,7 +97,7 @@ export default {
             });
 
             let markers = store.getters['dashboard/getSpecificMarkers']('tags');
-            markers[value.TagId].marker.setIcon(newMarker);
+            if (markers[value.TagId]) markers[value.TagId].marker.setIcon(newMarker);
         }
 
         // panel
