@@ -338,7 +338,6 @@ export default {
         486,
         90,
         511,
-        1978,
         500,
         517,
         330,
@@ -355,7 +354,6 @@ export default {
         26,
         29,
         35,
-        41,
         45,
         49,
         50,
@@ -380,7 +378,9 @@ export default {
         84,
         86,
         87,
-        91
+        91,
+        93,
+        96
       ]
 
       idList.forEach(id => {
@@ -396,10 +396,10 @@ export default {
         let notCollecteds = [
           149,
           498,
-          1978,
           500,
           14,
-          79
+          79,
+          96
         ]
         if (notCollecteds.includes(data.TagId)){
           data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_FULL
@@ -579,7 +579,7 @@ export default {
         marker.bindPopup(popupContent, popupOptions)
         .on('click', function(e) {
           map.setView(e.target.getLatLng());
-          self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
+          //self.$store.commit('dashboard/setInfoCurrent', 'TruckDetails');
           self.$store.commit('dashboard/setInfoData', data);
         })
         .on('popupclose', function(e){
