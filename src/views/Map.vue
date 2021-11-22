@@ -332,61 +332,76 @@ export default {
 
       const idList = [
         1965,
-        595,
         1142,
         2483,
-        4601,
         496,
         486,
         90,
         511,
         1978,
-        15,
-        1510,
         500,
         517,
         330,
         498,
-        593,
-        489,
         521,
         149,
         507,
-        4600,
         1,
-        2,
-        3,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        14,
-        15,
-        16,
-        17,
         20,
         21,
         22,
         23,
-        24,
         25,
         26,
         29,
         35,
-        39,
         41,
-        42,
         45,
-        48
+        49,
+        50,
+        52,
+        53,
+        54,
+        56,
+        57,
+        59,
+        60,
+        70,
+        71,
+        73,
+        74,
+        75,
+        76,
+        78,
+        79,
+        80,
+        82,
+        83,
+        84,
+        86,
+        87,
+        91
       ]
 
       idList.forEach(id => {
         let data = tags[id];
-        if (data.TagId == 39) {
+        //if (data.ReadTime){
+        //  data.ReadTime = new Date(data.ReadTime);
+        //  
+        //}
+        //if (data.TagId == 39) {
+        //  data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_FULL
+        //}
+        
+        let notCollecteds = [
+          149,
+          498,
+          1978,
+          500,
+          14,
+          79
+        ]
+        if (notCollecteds.includes(data.TagId)){
           data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_FULL
         }
         const popupOptions = {
