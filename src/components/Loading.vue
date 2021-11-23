@@ -108,7 +108,7 @@ export default {
 
         runStep(step){
             return WebApi[step.name](step.parameter ? step.parameter : undefined).then(response => {
-                this.$store.commit(step.commit, response);
+                this.$store.commit(step.commit, Object.freeze(response));
                 let filtered = this.steps.filter(s => s.id === step.id);
                 filtered[0].completed = true;
             })

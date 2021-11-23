@@ -51,6 +51,8 @@ import ContainerList from '@/components/panel/devices/containers/ContainerList.v
 import ContainerMap from '@/components/panel/devices/containers/ContainerMap.vue';
 import rfTagsData from '@/data/rfTags.data';
 
+import Enums from '@/config/system.enums';
+
 export default {
     components: {
         BRow,
@@ -73,7 +75,17 @@ export default {
 
     computed: {
         filteredContainers: function(){
-            return rfTagsData.tags.filter(tag => tag.status == this.filteredStatus);
+            let tags = this.$store.getters['panel/getTags'];
+            let status = ''
+            switch(this.filteredStatus){
+                case 'collected':
+                    status = Enums.CONTAINER_FULLNESS_STATU_EMPTY;
+                    break;
+                case 'notCollected':
+                    status = Enums.CONTAINER_FULLNESS_STATU_FULL;
+                    break;
+            }
+            return Object.values(tags).filter(tag => tag.ContainerStatu == status);
         }
     },
 

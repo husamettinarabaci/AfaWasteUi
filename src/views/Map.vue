@@ -244,16 +244,16 @@ export default {
       //console.log('devicetypesqwe: ', self.deviceTypes)
       if (Object.keys(self.deviceTypes).includes(data.Result)){
         let value = JSON.parse(data.Retval);
-        self.changeDeviceData(data.Result, value);
+        //self.changeDeviceData(data.Result, value);
       }
       else if (Object.keys(self.deviceTypesGps).includes(data.Result)){
         let value = JSON.parse(data.Retval);
-        self.changeDeviceData(data.Result, value);
+        //self.changeDeviceData(data.Result, value);
         self.changeDeviceLocation(data.Result, value);
       }
       else if (Object.keys(self.tagTypes).includes(data.Result)){
         let value = JSON.parse(data.Retval);
-        self.changeTagData(data.Result, value);
+        //self.changeTagData(data.Result, value);
       }
       else if (Object.keys(self.tagTypesStatuGps).includes(data.Result)){
         let value = JSON.parse(data.Retval);
@@ -509,7 +509,7 @@ export default {
 
 
       //this.markers.rfTags[data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'collected' : 'notCollected'].push(marker);
-      this.$store.commit('dashboard/addMarkers', {
+      this.$store.commit('dashboard/addMarkers', Object.freeze({
         type: 'tags', 
         icon: 'Trash2Icon',
         markers: markersObject,
@@ -517,7 +517,7 @@ export default {
           collected: this.markerGroups.tags.collected,
           notCollected: this.markerGroups.tags.notCollected
         }
-      });
+      }));
       
       //this.markerGroups.tags.collected = L.layerGroup(this.markers.rfTags.collected).addTo(map);
       //this.markerGroups.tags.notCollected = L.layerGroup(this.markers.rfTags.notCollected).addTo(map);
@@ -607,7 +607,7 @@ export default {
       //this.markerGroups.rfid.truck = L.layerGroup(Object.values(this.markers.rfid.truck.markers)).addTo(map);
       //this.markers.rfid.winch.markerGroup = L.layerGroup(Object.values(this.markers.rfid.winch.markers)).addTo(map);
 
-      this.$store.commit('dashboard/addMarkers', {
+      this.$store.commit('dashboard/addMarkers', Object.freeze({
         type: 'rfid', 
         icon: 'TruckIcon',
         markers: markersObject,
@@ -615,7 +615,7 @@ export default {
           truck: this.markerGroups.rfid.truck,
           winch: this.markerGroups.rfid.winch
         }
-      });
+      }));
 
       //this.$store.commit('dashboard/addMarkerGroup', {type: 'trucks', markerGroup: this.markerGroups.rfid});
     },
@@ -760,7 +760,7 @@ export default {
       map.addLayer(this.markerGroups.ult.medium);
       map.addLayer(this.markerGroups.ult.full);
 
-      this.$store.commit('dashboard/addMarkers', {
+      this.$store.commit('dashboard/addMarkers', Object.freeze({
         type: 'ult', 
         icon: 'ArchiveIcon',
         markers: markersObject,
@@ -770,7 +770,7 @@ export default {
           medium: this.markerGroups.ult.medium,
           full: this.markerGroups.ult.full
         }
-      });
+      }));
 
       //this.$store.commit('dashboard/addMarkerGroup', {type: 'ults', markerGroup: this.markerGroups.ult});
     },
@@ -839,12 +839,12 @@ export default {
 
       map.addLayer(this.markerGroups.recy);
 
-      this.$store.commit('dashboard/addMarkers', {
+      this.$store.commit('dashboard/addMarkers', Object.freeze({
         type: 'recy', 
         icon: 'RefreshCwIcon',
         markers: markersObject,
         markerGroup: this.markerGroups.recy
-      });
+      }));
       
       //this.markerGroups.recy = L.layerGroup(this.markers.recycles).addTo(map);
     },
@@ -854,13 +854,13 @@ export default {
 
       this.attachTagMarkers(map);
       
-      if (customer[Enums.WEB_APP_TYPE_RFID] = Enums.STATU_ACTIVE){
+      if (customer[Enums.WEB_APP_TYPE_RFID] == Enums.STATU_ACTIVE){
         this.attachRfidMarkers(map);
       }
-      if (customer[Enums.WEB_APP_TYPE_ULT] = Enums.STATU_ACTIVE){
+      if (customer[Enums.WEB_APP_TYPE_ULT] == Enums.STATU_ACTIVE){
         this.attachUltMarkers(map);
       }
-      if (customer[Enums.WEB_APP_TYPE_RECY] = Enums.STATU_ACTIVE){
+      if (customer[Enums.WEB_APP_TYPE_RECY] == Enums.STATU_ACTIVE){
         this.attachRecyMarkers(map);
       }
 

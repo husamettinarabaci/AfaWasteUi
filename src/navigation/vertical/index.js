@@ -1,7 +1,7 @@
 let items =  [
   {
     title: 'Dashboard',
-    route: 'dashboard',
+    route: 'rfidReportsDashboard',
     icon: 'HomeIcon',
   },
   {

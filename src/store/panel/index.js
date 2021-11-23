@@ -44,7 +44,7 @@ export default {
         },
 
         setTags(state, tags) {
-            state.tags = tags;
+            state.tags = tags
         },
     },
 

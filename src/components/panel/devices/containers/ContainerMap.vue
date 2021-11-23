@@ -23,6 +23,8 @@ import 'leaflet/dist/leaflet.css';
 import "leaflet-extra-markers"
 import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
 
+import Enums from '@/config/system.enums';
+
 export default {
     props: ['devices'],
 
@@ -41,7 +43,10 @@ export default {
             map: null,
             items: [],
             markers: [],
-            markersLayer: null,
+            markerGroups: {
+                collected: null,
+                notCollected: null
+            },
             url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
             zoom: 13,
             center: [37.036604, 27.424406],
@@ -57,10 +62,10 @@ export default {
         'devices': function(newVal, oldVal){
             this.items = newVal;
             this.markers = [];
-            if (this.markersLayer){
-                this.markersLayer.clearLayers();
+            if (this.markerGroup){
+                this.markerGroup.clearLayers();
             }
-            this.attachMarkers(this.map)
+            //this.attachMarkers(this.map)
         }
     },
 
@@ -71,46 +76,67 @@ export default {
     methods: {
         mapReady(map){
             this.map = map;
-            this.attachMarkers(map);
+            //this.attachMarkers(map);
         },
 
         attachMarkers(map){
-            this.items.forEach(device => {
+            return;
+            this.markerGroup = L.markerClusterGroup({
+                iconCreateFunction: function(cluster) {
+                return L.divIcon({
+                    html: '<div class="marker-cluster-dumpsters-collected"><span>' + cluster.getChildCount() + '</span></div>',
+                    className: 'marker-cluster marker-cluster-collected',
+                    iconSize: L.point(40, 40)
+                });
+                }
+            });
+            this.markerGroups.notCollected = L.markerClusterGroup({
+                iconCreateFunction: function(cluster) {
+                return L.divIcon({
+                    html: '<div class="marker-cluster-dumpsters-notCollected"><span>' + cluster.getChildCount() + '</span></div>',
+                    className: 'marker-cluster marker-cluster-notCollected',
+                    iconSize: L.point(40, 40)
+                });
+                }
+            });
+
+            this.items.slice(0, 50).forEach(device => {
                 const popupOptions = {
                     'maxWidth': '500',
                     'width' : '250',
                     'height' : '300',
-                    'className': `mapPopup ${device.status == 'collected' ? 'successPopup' : 'dangerPopup'}`
+                    'className': `mapPopup ${device.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'successPopup' : 'dangerPopup'}`
                 };
                 var markerIcon = L.ExtraMarkers.icon({
                     icon: 'fa-dumpster',
-                    markerColor: device.status == 'collected' ? 'green-dark' : 'red-dark',
+                    markerColor: device.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'green-dark' : 'red-dark',
                     shape: 'circle',
                     prefix: 'fa'
                 });
-                var marker = L.marker([device.latitude, device.longitude], {icon: markerIcon});
+                var marker = L.marker([device.Latitude, device.Longitude], {icon: markerIcon});
                 var popupContent = `
                 <div class="details">
                     <div class="row" style="text-align:center">
-                        <div class="col-md-12">${device.container_no}</div>
+                        <div class="col-md-12">${device.TagId}</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Durumu</div>
-                        <div class="col-md-8">${device.status == 'collected' ? 'Toplandı' : 'Toplanmadı'}</div>
+                        <div class="col-md-8">${device.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY ? 'Toplandı' : 'Toplanmadı'}</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Son Toplama</div>
-                        <div class="col-md-8" title="${device.last_event}">${this.$moment(device.last_event).format('HH:mm DD/MM/YYYY')}</div>
+                        <div class="col-md-8" title="${device.ReadTime}">${this.$moment(device.ReadTime).format('HH:mm DD/MM/YYYY')}</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Adres</div>
-                        <div class="col-md-8">${device.location}</div>
+                        <div class="col-md-8">${device.Latitude,device.Longitude}</div>
                     </div>
                 </div>
                 `
                 marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
                     map.setView(e.target.getLatLng(),5);
                 });
+                this.markerGroups.collected.addLayer(marker);
                 this.markers.push(marker);
             })
             this.markersLayer = L.layerGroup(this.markers).addTo(map);
