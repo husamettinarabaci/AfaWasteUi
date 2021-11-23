@@ -17,6 +17,7 @@ let items =  [
     route: 'trucks',
     icon: 'TruckIcon',
   },
+  /*
   {
     header: 'Reports'
   },
@@ -63,6 +64,7 @@ let items =  [
     route: 'settings',
     icon: 'SettingsIcon',
   }
+  */
 ]
 
 export default items;

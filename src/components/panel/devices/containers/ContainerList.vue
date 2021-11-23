@@ -143,7 +143,7 @@ export default {
                 {key: 'TagId', label: 'Title'},
                 {key: 'ReadTime', label: 'Son Okunma Saat'}
             ],
-            sortBy: 'rftag_title',
+            sortBy: 'ReadTime',
             isSortDirDesc: true,
             totalItems: 0
         }
