@@ -69,7 +69,17 @@ export default {
         },
 
         'show': function(newVal){
-            this.markers[newVal].fireEvent('click');
+            let marker = this.markers[newVal];
+            let visibleLayer = this.markerGroup.getVisibleParent(marker);
+            if (visibleLayer instanceof L.MarkerCluster){
+                this.markerGroup.fire('click', {
+                    layer: visibleLayer,
+                    latlng: marker.getLatLng()
+                });
+            }
+            else {
+                marker.fire('click');
+            }
         }
     },
 
@@ -129,7 +139,7 @@ export default {
                 </div>
                 `
                 marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
-                    map.setView(e.target.getLatLng(),5);
+                    map.setView(e.target.getLatLng());
                 });
                 this.markerGroup.addLayer(marker);
                 this.markers = {
