@@ -36,10 +36,10 @@
         </b-row>
         <b-row class="match-height">
             <b-col lg="4">
-                <container-list :filteredStatus="filteredStatus" :devices="filteredContainers"/>
+                <container-list @showDetails="showDetailsOnMap" :filteredStatus="filteredStatus" :devices="filteredContainers"/>
             </b-col>
             <b-col lg="8">
-                <container-map :devices="filteredContainers"/>
+                <container-map :show="showOnMap" :filteredStatus="filteredStatus" :devices="filteredContainers"/>
             </b-col>
         </b-row>
     </div>
@@ -69,6 +69,7 @@ export default {
     data(){
         return {
             currentDate: new Date().toISOString(),
+            showOnMap: 0,
             filteredStatus: 'collected'
         }
     },
@@ -99,6 +100,12 @@ export default {
     created(){
         if (this.$route.params.status){
             this.filteredStatus = this.$route.params.status;
+        }
+    },
+
+    methods: {
+        showDetailsOnMap(tagId){
+            this.showOnMap = tagId;
         }
     }
 }

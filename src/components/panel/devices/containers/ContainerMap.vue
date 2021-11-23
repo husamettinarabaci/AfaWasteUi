@@ -22,11 +22,14 @@ import { LMap, LTileLayer, LControl } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import "leaflet-extra-markers"
 import "leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css"
+import "leaflet.markercluster"
+import "leaflet.markercluster/dist/MarkerCluster.css"
+import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 
 import Enums from '@/config/system.enums';
 
 export default {
-    props: ['devices'],
+    props: ['filteredStatus', 'devices', 'show'],
 
     components: {
         BCard,
@@ -42,11 +45,8 @@ export default {
         return {
             map: null,
             items: [],
-            markers: [],
-            markerGroups: {
-                collected: null,
-                notCollected: null
-            },
+            markers: {},
+            markerGroup: null,
             url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
             zoom: 13,
             center: [37.036604, 27.424406],
@@ -61,11 +61,15 @@ export default {
     watch: {
         'devices': function(newVal, oldVal){
             this.items = newVal;
-            this.markers = [];
+            this.markers = {};
             if (this.markerGroup){
                 this.markerGroup.clearLayers();
             }
-            //this.attachMarkers(this.map)
+            this.attachMarkers(this.map)
+        },
+
+        'show': function(newVal){
+            this.markers[newVal].fireEvent('click');
         }
     },
 
@@ -76,31 +80,22 @@ export default {
     methods: {
         mapReady(map){
             this.map = map;
-            //this.attachMarkers(map);
+            this.attachMarkers(map);
         },
 
         attachMarkers(map){
-            return;
+            let self = this;
             this.markerGroup = L.markerClusterGroup({
                 iconCreateFunction: function(cluster) {
                 return L.divIcon({
-                    html: '<div class="marker-cluster-dumpsters-collected"><span>' + cluster.getChildCount() + '</span></div>',
-                    className: 'marker-cluster marker-cluster-collected',
-                    iconSize: L.point(40, 40)
-                });
-                }
-            });
-            this.markerGroups.notCollected = L.markerClusterGroup({
-                iconCreateFunction: function(cluster) {
-                return L.divIcon({
-                    html: '<div class="marker-cluster-dumpsters-notCollected"><span>' + cluster.getChildCount() + '</span></div>',
-                    className: 'marker-cluster marker-cluster-notCollected',
+                    html: `<div class="marker-cluster-dumpsters-${(self.filteredStatus == 'collected') ? 'collected' : 'notCollected'}"><span>` + cluster.getChildCount() + '</span></div>',
+                    className: `marker-cluster marker-cluster-${(self.filteredStatus == 'collected') ? 'collected' : 'notCollected'}`,
                     iconSize: L.point(40, 40)
                 });
                 }
             });
 
-            this.items.slice(0, 50).forEach(device => {
+            this.items.slice(0, 100).forEach(device => {
                 const popupOptions = {
                     'maxWidth': '500',
                     'width' : '250',
@@ -136,10 +131,14 @@ export default {
                 marker.bindPopup(popupContent, popupOptions).on('click', function(e) {
                     map.setView(e.target.getLatLng(),5);
                 });
-                this.markerGroups.collected.addLayer(marker);
-                this.markers.push(marker);
-            })
-            this.markersLayer = L.layerGroup(this.markers).addTo(map);
+                this.markerGroup.addLayer(marker);
+                this.markers = {
+                    ...this.markers,
+                    [device.TagId]: marker
+                };
+            }),
+            map.addLayer(this.markerGroup);
+            //this.markersLayer = L.layerGroup(this.markers).addTo(map);
         }
     }
 }
@@ -166,5 +165,20 @@ export default {
 }
 .mapPopup.dangerPopup, .mapPopup.dangerPopup .leaflet-popup-tip {
     border: 2px solid red;
+}
+
+.marker-cluster.marker-cluster-collected {
+  background: #00640070;
+}
+.marker-cluster-dumpsters-collected {
+  background: #006400;
+  color: #fff;
+}
+.marker-cluster.marker-cluster-notCollected {
+  background: #8b000070;
+}
+.marker-cluster-dumpsters-notCollected {
+  background: #8B0000;
+  color: #fff;
 }
 </style>

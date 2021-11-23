@@ -4,6 +4,7 @@
             <!-- Table Top -->
             <b-row>
                 <!-- Per Page -->
+                <!--
                 <b-col cols="12" md="6" class="d-flex align-items-center justify-content-start mb-1 mb-md-0">
                     <label>Göster</label>
                     <v-select
@@ -13,14 +14,15 @@
                         class="per-page-selector d-inline-block ml-50 mr-1"
                     />
                 </b-col>
+                -->
 
                 <!-- Search -->
-                <b-col cols="12" md="6">
+                <b-col cols="12" md="12">
                     <div class="d-flex align-items-center justify-content-end">
                         <b-form-input
                         v-model="searchQuery"
                         class="d-inline-block mr-1"
-                        placeholder="Ara..."
+                        placeholder="Aramak için en az 3 karakter girin..."
                         />
                     </div>
                 </b-col>
@@ -37,20 +39,21 @@
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
+        @row-clicked="showDetails"
         class="position-relative"
         >
             <!-- Column: Container No -->
-            <template #cell(container_no)="data">
+            <template #cell(ContainerNo)="data">
                 {{ data.value }}
             </template>
 
             <!-- Column: Title -->
-            <template #cell(rftag_title)="data">
+            <template #cell(TagId)="data">
                 {{ data.value }}
             </template>
 
             <!-- Column: Last read -->
-            <template #cell(last_event)="data">
+            <template #cell(ReadTime)="data">
                 <b-badge pill variant="light-primary" :title="data.value">
                     {{ $moment(data.value).format('HH:mm:ss') }}
                 </b-badge>
@@ -131,9 +134,9 @@ export default {
             perPageOptions: [5, 10, 15, 20, 25, 50],
             searchQuery: '',
             fields: [
-                {key: 'container_no', label: 'Konteyner NO'},
-                {key: 'rftag_title', label: 'Title'},
-                {key: 'last_event', label: 'Son Okunma Saat'}
+                {key: 'ContainerNo', label: 'Konteyner NO'},
+                {key: 'TagId', label: 'Title'},
+                {key: 'ReadTime', label: 'Son Okunma Saat'}
             ],
             sortBy: 'rftag_title',
             isSortDirDesc: true,
@@ -144,9 +147,9 @@ export default {
     computed: {
         filteredItems: function(){
             if (this.searchQuery){
-                return this.items.filter(item => item.container_no.includes(this.searchQuery))
+                return this.items.filter(item => item.TagId == this.searchQuery)
             }
-            return this.items;
+            return this.items.slice(0, 10);
         }
     },
 
@@ -160,10 +163,18 @@ export default {
     created(){
         this.items = this.devices;
         this.totalItems = this.devices.length;
+    },
+
+    methods: {
+        showDetails(row){
+            this.$emit('showDetails', row.TagId)
+        }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+table.position-relative {
+    max-height: 300px;
+}
 </style>
