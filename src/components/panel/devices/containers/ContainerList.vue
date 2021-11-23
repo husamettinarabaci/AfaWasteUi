@@ -32,19 +32,24 @@
 
         <b-table
         :items="filteredItems"
+        :current-page="currentPage"
+        :per-page="perPage"
         responsive
+        selectable
+        select-mode="single"
         :fields="fields"
         primary-key="id"
         :sort-by.sync="sortBy"
         show-empty
         empty-text="No matching records found"
         :sort-desc.sync="isSortDirDesc"
-        @row-clicked="showDetails"
+        @row-selected="rowClicked"
         class="position-relative"
         >
             <!-- Column: Container No -->
             <template #cell(ContainerNo)="data">
-                {{ data.value }}
+                <span v-if="searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, searchQuery)"></span>
+                <span v-else>{{ data.value }}</span>
             </template>
 
             <!-- Column: Title -->
@@ -146,10 +151,13 @@ export default {
 
     computed: {
         filteredItems: function(){
-            if (this.searchQuery){
-                return this.items.filter(item => item.TagId == this.searchQuery)
+            if (this.searchQuery.length >= 3){
+                let filtered = this.items.filter(item => item.ContainerNo.includes(this.searchQuery))
+                this.totalItems = filtered.length;
+                this.currentPage = 1;
+                return filtered;
             }
-            return this.items.slice(0, 10);
+            return this.items;
         }
     },
 
@@ -166,9 +174,14 @@ export default {
     },
 
     methods: {
-        showDetails(row){
-            this.$emit('showDetails', row.TagId)
-        }
+        rowClicked(row){
+            if (row.length){
+                this.$emit('showDetails', row[0].TagId)
+            }
+            else {
+                this.$emit('showDetails', null)
+            }
+        },
     }
 }
 </script>
@@ -176,5 +189,6 @@ export default {
 <style scoped>
 table.position-relative {
     max-height: 300px;
+    overflow: auto;
 }
 </style>

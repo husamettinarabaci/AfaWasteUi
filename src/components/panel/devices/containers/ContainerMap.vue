@@ -69,6 +69,10 @@ export default {
         },
 
         'show': function(newVal){
+            if (!newVal){
+                this.map.closePopup();
+                return;
+            }
             let marker = this.markers[newVal];
             let visibleLayer = this.markerGroup.getVisibleParent(marker);
             if (visibleLayer instanceof L.MarkerCluster){
@@ -105,7 +109,7 @@ export default {
                 }
             });
 
-            this.items.slice(0, 100).forEach(device => {
+            this.items.forEach(device => {
                 const popupOptions = {
                     'maxWidth': '500',
                     'width' : '250',
