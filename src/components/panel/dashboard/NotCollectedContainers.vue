@@ -17,19 +17,19 @@
             responsive="sm"
             >
                 <!-- Column: Container No -->
-                <template #cell(container_no)="data">
+                <template #cell(ContainerNo)="data">
                     <router-link :to="{name: 'containersDetails', params: {query: data.value}}">
                         {{ data.value }}
                     </router-link>
                 </template>
 
                 <!-- Column: Title -->
-                <template #cell(rftag_title)="data">
+                <template #cell(TagId)="data">
                     {{ data.value }}
                 </template>
 
                 <!-- Column: Container No -->
-                <template #cell(last_event)="data">
+                <template #cell(ReadTime)="data">
                     <b-badge pill variant="light-danger" :title="data.value">
                         {{ $moment(data.value).fromNow() }}
                     </b-badge>
@@ -56,11 +56,12 @@ export default {
 
     data(){
         return {
-            items: rfTagsData.tags.filter(tag => tag.status == 'notCollected'),
+            //items: rfTagsData.tags.filter(tag => tag.status == 'notCollected'),
+            items: [],
             fields: [
-                {key: 'container_no', label: 'Konteyner NO'},
-                {key: 'rftag_title', label: 'Title'},
-                {key: 'last_event', label: 'Son Toplanma'}
+                {key: 'ContainerNo', label: 'Konteyner NO'},
+                {key: 'TagId', label: 'Title'},
+                {key: 'ReadTime', label: 'Son Toplanma'}
             ],
         }
     },
@@ -68,8 +69,22 @@ export default {
     computed: {
         sortedItems: function(){
             return this.items.sort((a,b) => {
-                return new Date(a.last_event) - new Date(b.last_event);
+                return new Date(b.ReadTime) - new Date(a.ReadTime);
             });
+        }
+    },
+
+    created(){
+        this.getOlderThanDays(7);
+    },
+
+    methods: {
+        getOlderThanDays(days){
+            const now = this.$moment();
+            let tags = this.$store.getters['panel/getTags'];
+            this.items = Object.values(tags).filter(tag => {
+                return now.diff(tag.ReadTime, 'days') >= days
+            })
         }
     }
 }

@@ -350,6 +350,7 @@ export default {
         21,
         22,
         23,
+        24,
         25,
         26,
         29,
@@ -394,12 +395,8 @@ export default {
         //}
         
         let notCollecteds = [
-          149,
-          498,
-          500,
           14,
           79,
-          96
         ]
         if (notCollecteds.includes(data.TagId)){
           data.ContainerStatu = Enums.CONTAINER_FULLNESS_STATU_FULL

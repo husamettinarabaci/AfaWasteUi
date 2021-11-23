@@ -1,88 +1,88 @@
 export default [
     {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: () => import('@/views/panel/Dashboard'),
+        path: '/rfid/reports/dashboard',
+        name: 'rfidReportsDashboard',
+        component: () => import('@/views/panel/rfid/Dashboard'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/containers',
+        path: '/rfid/containers',
         name: 'containers',
-        component: () => import('@/views/panel/Containers'),
+        component: () => import('@/views/panel/rfid/Containers'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/trucks',
+        path: '/rfid/trucks',
         name: 'trucks',
-        component: () => import('@/views/panel/Trucks'),
+        component: () => import('@/views/panel/rfid/Trucks'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/containers/details',
+        path: '/rfid/containers/details',
         name: 'containersDetails',
-        component: () => import('@/views/panel/details/Container'),
+        component: () => import('@/views/panel/rfid/details/Container'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/trucks/details',
+        path: '/rfid/trucks/details',
         name: 'trucksDetails',
-        component: () => import('@/views/panel/details/Truck'),
+        component: () => import('@/views/panel/rfid/details/Truck'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/containers/reports',
+        path: '/rfid/containers/reports',
         name: 'containersReports',
-        component: () => import('@/views/panel/reports/Containers'),
+        component: () => import('@/views/panel/rfid/reports/Containers'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/containers/daily-reports',
+        path: '/rfid/containers/daily-reports',
         name: 'containersDailyReports',
-        component: () => import('@/views/panel/reports/ContainersDailyReports'),
+        component: () => import('@/views/panel/rfid/reports/ContainersDailyReports'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/containers/management',
+        path: '/rfid/containers/management',
         name: 'containersManagement',
-        component: () => import('@/views/panel/ContainersManagement'),
+        component: () => import('@/views/panel/rfid/ContainersManagement'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/trucks/management',
+        path: '/rfid/trucks/management',
         name: 'trucksManagement',
-        component: () => import('@/views/panel/TrucksManagement'),
+        component: () => import('@/views/panel/rfid/TrucksManagement'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/users/list',
+        path: '/rfid/users/list',
         name: 'usersList',
-        component: () => import('@/views/panel/users/List'),
+        component: () => import('@/views/panel/rfid/users/List'),
         meta: {
             layout: 'default'
         }
     },
     {
-        path: '/settings',
+        path: '/rfid/settings',
         name: 'settings',
-        component: () => import('@/views/panel/Settings'),
+        component: () => import('@/views/panel/rfid/Settings'),
         meta: {
             layout: 'default'
         }

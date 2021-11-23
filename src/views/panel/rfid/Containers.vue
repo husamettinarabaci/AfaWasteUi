@@ -35,10 +35,10 @@
             </b-col>
         </b-row>
         <b-row class="match-height">
-            <b-col lg="6">
-                <container-list :devices="filteredContainers"/>
+            <b-col lg="4">
+                <container-list :filteredStatus="filteredStatus" :devices="filteredContainers"/>
             </b-col>
-            <b-col lg="6">
+            <b-col lg="8">
                 <container-map :devices="filteredContainers"/>
             </b-col>
         </b-row>

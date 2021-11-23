@@ -59,7 +59,7 @@ export default {
                 {
                     icon: 'TruckIcon',
                     color: 'light-primary',
-                    title: '20',
+                    title: this.getTruckCount(),
                     subtitle: 'Toplam Kamyon Sayısı',
                     customClass: 'mb-2 mb-xl-0',
                     to: {name: 'trucks'}
@@ -67,7 +67,7 @@ export default {
                 {
                     icon: 'UserIcon',
                     color: 'light-info',
-                    title: '167',
+                    title: this.getTagCount(),
                     subtitle: 'Toplam Konteyner Sayısı',
                     customClass: 'mb-2 mb-xl-0',
                     to: {name: 'containers'}
@@ -91,6 +91,16 @@ export default {
     },
 
     methods: {
+        getTruckCount(){
+            let trucks = this.$store.getters['panel/getRfidDevices'];
+            return Object.keys(trucks).length;
+        },
+
+        getTagCount(){
+            let tags = this.$store.getters['panel/getTags'];
+            return Object.keys(tags).length;
+        },
+
         toItemPage(item){
             if (item.to){
                 this.$router.push(item.to);

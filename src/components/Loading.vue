@@ -49,6 +49,7 @@ export default {
                     commit: 'panel/setRfidDevices',
                     completed: false
                 },
+                /*
                 {
                     id: 3,
                     name: 'getDevices',
@@ -57,6 +58,7 @@ export default {
                     commit: 'panel/setUltDevices',
                     completed: false
                 },
+                */
                 {
                     id: 4,
                     name: 'getDevices',

@@ -49,10 +49,10 @@
                 {{ data.value }}
             </template>
 
-            <!-- Column: Container No -->
-            <template #cell(status)="data">
-                <b-badge pill :variant="`light-${data.value == 'collected' ? 'success' : 'danger'}`">
-                    {{ data.value == 'collected' ? 'Toplandı' : 'Toplanmadı' }}
+            <!-- Column: Last read -->
+            <template #cell(last_event)="data">
+                <b-badge pill variant="light-primary" :title="data.value">
+                    {{ $moment(data.value).format('HH:mm:ss') }}
                 </b-badge>
             </template>
         </b-table>
@@ -110,7 +110,7 @@ import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
 export default {
-    props: ['devices'],
+    props: ['filteredStatus', 'devices'],
 
     components: {
         BCard,
@@ -133,7 +133,7 @@ export default {
             fields: [
                 {key: 'container_no', label: 'Konteyner NO'},
                 {key: 'rftag_title', label: 'Title'},
-                {key: 'status', label: 'Son Durum'}
+                {key: 'last_event', label: 'Son Okunma Saat'}
             ],
             sortBy: 'rftag_title',
             isSortDirDesc: true,

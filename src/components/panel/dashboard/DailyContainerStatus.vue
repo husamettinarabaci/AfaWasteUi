@@ -11,26 +11,21 @@
 
         <!-- stocks -->
         <div
-        v-for="(stock,index) in stockData"
-        :key="stock.device"
-        :class="index < stockData.length-1 ? 'mb-1':''"
+        v-for="(status,id) in statusData"
+        :key="id"
+        :class="id < statusData.length-1 ? 'mb-1':''"
         class="d-flex justify-content-between"
         >
         <div class="d-flex align-items-center">
             <feather-icon
-            :icon="stock.symbol"
+            icon="TruckIcon"
             size="16"
-            :class="stock.color"
+            :class="status.color"
             />
-            <span class="font-weight-bold ml-75 mr-25 cursor-pointer" @click="$router.push({name: 'containers', params: {status: stock.status}})">{{ stock.device }}</span>
-            <span>- {{ stock.percentage }}%</span>
+            <span class="font-weight-bold ml-75 mr-25 cursor-pointer" @click="$router.push({name: 'containers', params: {status: status.title}})">{{ status.title }}</span>
         </div>
         <div>
-            <span>{{ stock.upDown }}%</span>
-            <feather-icon
-            :icon="stock.upDown > 0 ? 'ArrowUpIcon':'ArrowDownIcon'"
-            :class="stock.upDown > 0 ? 'text-success':'text-danger'"
-            />
+            <span>{{ status.percentage }}%</span>
         </div>
         </div>
         <!--/ stocks -->
@@ -41,6 +36,7 @@
 import { BCard, BCardHeader, BCardTitle, BCardText, BCardBody } from 'bootstrap-vue'
 import DoughnutChart from '@/components/charts/Doughnut.vue';
 import { $themeColors } from '@themeConfig'
+import Enums from '@/config/system.enums';
 
 export default {
     components: {
@@ -81,9 +77,17 @@ export default {
                     tooltips: {
                         callbacks: {
                         label(tooltipItem, data) {
-                            const label = data.datasets[0].labels[tooltipItem.index] || ''
-                            const value = data.datasets[0].data[tooltipItem.index]
-                            const output = ` ${label} : ${value} %`
+                            const dataset = data.datasets[0];
+                            const label = dataset.labels[tooltipItem.index] || ''
+                            const value = dataset.data[tooltipItem.index]
+                            var total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            //get the current items value
+                            var currentValue = dataset.data[tooltipItem.index];
+                            //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
+                            var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+                            const output = ` ${label} : ${percentage} %`
                             return output
                         },
                         },
@@ -100,8 +104,8 @@ export default {
                 data: {
                     datasets: [
                         {
-                        labels: ['Toplanan', 'Toplanmayan'],
-                        data: [10, 80],
+                        labels: [],
+                        data: [],
                         backgroundColor: [$themeColors.success, $themeColors.danger],
                         borderWidth: 0,
                         pointStyle: 'rectRounded',
@@ -109,25 +113,37 @@ export default {
                     ],
                 },
             },
-            stockData: [
+            statusData: [
                 {
-                    device: 'Toplanan', 
-                    symbol: 'MonitorIcon', 
-                    color: 'text-success', 
-                    percentage: 80, 
-                    upDown: 2,
-                    status: 'collected',
+                    title: 'Toplanan',
+                    statu: 'collected',
+                    color: chartColors.successColorShade,
+                    percentage: 0,
                 },
                 {
-                    device: 'Toplanmayan', 
-                    symbol: 'TabletIcon', 
-                    color: 'text-danger', 
-                    percentage: 10, 
-                    upDown: 8,
-                    status: 'notCollected',
+                    title: 'Toplanmayan',
+                    statu: 'notCollected',
+                    color: chartColors.dangerColorShade,
+                    percentage: 0,
                 },
             ],
         }
+    },
+
+    created(){
+        let tags = this.$store.getters['panel/getTags'];
+        let collected = Object.values(tags).filter(tag => tag.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY).length
+        let notCollected = Object.values(tags).filter(tag => tag.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_FULL).length
+        this.chart.data.datasets[0].data = [collected, notCollected]
+        this.chart.data.datasets[0].labels = ['Toplanan', 'Toplanmayan']
+        this.statusData[0].percentage = this.calculatePercentage(collected, Object.values(tags).length)
+        this.statusData[1].percentage = this.calculatePercentage(notCollected, Object.values(tags).length)
+    },
+
+    methods: {
+        calculatePercentage(value, total){
+            return Math.floor(((value/total) * 100)+0.5);
+        },
     }
 
 }
