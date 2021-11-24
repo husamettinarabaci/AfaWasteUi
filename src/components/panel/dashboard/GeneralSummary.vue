@@ -1,6 +1,6 @@
 <template>
     <b-row>
-        <b-col v-for="(item, id) in statisticsItems" :key="id" md="3" lg="3" sm="6" class="mb-2 mb-md-0">
+        <b-col v-for="(item, id) in statisticsItems" :key="id" md="6" lg="6" sm="12" class="mb-2 mb-md-0">
             <b-card no-body @click="toItemPage(item)">
                 <b-card-body class="statistics-body">
                     <b-row>
@@ -72,6 +72,7 @@ export default {
                     customClass: 'mb-2 mb-xl-0',
                     to: {name: 'containers'}
                 },
+                /*
                 {
                     icon: 'BoxIcon',
                     color: 'light-danger',
@@ -86,6 +87,7 @@ export default {
                     subtitle: '30 Günlük Toplama',
                     customClass: '',
                 },
+                */
             ],
         }
     },

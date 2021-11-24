@@ -12,11 +12,13 @@
                         <daily-container-status/>
                     </b-col>
                 </b-row>
+                <!--
                 <b-row>
                     <b-col lg="12">
                         <weekly-container-status/>
                     </b-col>
                 </b-row>
+                -->
             </b-col>
             <b-col lg="8">
                 <not-collected-containers/>

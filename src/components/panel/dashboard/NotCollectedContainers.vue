@@ -11,16 +11,24 @@
         <!-- chart -->
         <b-card-body>
             <b-table
-            small
-            :fields="fields"
             :items="sortedItems"
-            responsive="sm"
+            :current-page="currentPage"
+            :per-page="perPage"
+            responsive
+            :fields="fields"
+            primary-key="id"
+            show-empty
+            empty-text="No matching records found"
+            class="position-relative"
             >
                 <!-- Column: Container No -->
                 <template #cell(ContainerNo)="data">
+                    {{ data.value }}
+                    <!--
                     <router-link :to="{name: 'containersDetails', params: {query: data.value}}">
                         {{ data.value }}
                     </router-link>
+                    -->
                 </template>
 
                 <!-- Column: Title -->
@@ -35,12 +43,35 @@
                     </b-badge>
                 </template>
             </b-table>
+            <b-pagination
+                v-model="currentPage"
+                :total-rows="totalItems"
+                :per-page="perPage"
+                first-number
+                last-number
+                class="mb-0 mt-1 mt-sm-0"
+                prev-class="prev-item"
+                next-class="next-item"
+            >
+                <template #prev-text>
+                <feather-icon
+                    icon="ChevronLeftIcon"
+                    size="18"
+                />
+                </template>
+                <template #next-text>
+                <feather-icon
+                    icon="ChevronRightIcon"
+                    size="18"
+                />
+                </template>
+            </b-pagination>
         </b-card-body>
     </b-card>
 </template>
 
 <script>
-import { BCard, BCardHeader, BCardTitle, BCardText, BCardBody, BTable, BBadge } from 'bootstrap-vue'
+import { BCard, BCardHeader, BCardTitle, BCardText, BCardBody, BTable, BBadge, BPagination} from 'bootstrap-vue'
 import rfTagsData from '@/data/rfTags.data';
 
 export default {
@@ -51,18 +82,25 @@ export default {
         BCardText,
         BCardBody,
         BTable,
-        BBadge
+        BBadge,
+        BPagination
     },
 
     data(){
         return {
-            //items: rfTagsData.tags.filter(tag => tag.status == 'notCollected'),
+            currentPage: 1,
             items: [],
+            perPage: 6,
+            perPageOptions: [5, 10, 15, 20, 25, 50],
+            searchQuery: '',
             fields: [
                 {key: 'ContainerNo', label: 'Konteyner NO'},
-                {key: 'TagId', label: 'Title'},
-                {key: 'ReadTime', label: 'Son Toplanma'}
+                {key: 'TagId', label: 'ID'},
+                {key: 'ReadTime', label: 'Son Okunma Saati'}
             ],
+            sortBy: 'ReadTime',
+            isSortDirDesc: true,
+            totalItems: 0
         }
     },
 
@@ -85,6 +123,7 @@ export default {
             this.items = Object.values(tags).filter(tag => {
                 return now.diff(tag.ReadTime, 'days') >= days
             })
+            this.totalItems = this.items.length;
         }
     }
 }

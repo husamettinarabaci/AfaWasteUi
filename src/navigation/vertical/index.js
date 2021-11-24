@@ -1,19 +1,19 @@
 let items =  [
   {
-    title: 'Dashboard',
+    title: 'Anasayfa',
     route: 'rfidReportsDashboard',
     icon: 'HomeIcon',
   },
   {
-    header: 'Devices',
+    header: 'Raporlar',
   },
   {
-    title: 'Containers',
+    title: 'RFID Takip Sistemi',
     route: 'containers',
     icon: 'HomeIcon',
   },
   {
-    title: 'Trucks',
+    title: 'Kamyonlar',
     route: 'trucks',
     icon: 'TruckIcon',
   },

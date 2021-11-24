@@ -384,7 +384,7 @@ export default {
         96
       ]
 
-      idList.forEach(id => {
+      Object.keys(tags).forEach(id => {
         let data = tags[id];
         //if (data.ReadTime){
         //  data.ReadTime = new Date(data.ReadTime);
