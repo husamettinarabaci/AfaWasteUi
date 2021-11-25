@@ -6,7 +6,7 @@
       :options="options"
       @ready="mapReady"
     >
-      <l-tile-layer :url="url" />
+      <l-tile-layer :url="tileLayer.url" :subdomains="tileLayer.subdomains" />
       <sidebar/>
       <l-control v-if="showInfo" position="topright">
         <info @showTrucks="showTrucks"/>
@@ -66,7 +66,11 @@ export default {
 
   data() {
     return {
-      url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
+      tileLayer: {
+        //url: 'https://api.mapbox.com/styles/v1/devafatek/ckfc8pw7394sr19mwqsj0vcqr/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGV2YWZhdGVrIiwiYSI6ImNrOHd5and3czAxZXczbXF6ODJuM3I2OTcifQ.mjAJVjob0WYyRMmoOESq2w',
+        url: 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      },
       zoom: 11,
       center: [37.036604, 27.424406],
       options: {
