@@ -388,6 +388,9 @@ export default {
         96
       ]
 
+      var collectedMarkers = [];
+      var notCollectedMarkers = [];
+
       Object.keys(tags).forEach(id => {
         let data = tags[id];
         //if (data.ReadTime){
@@ -493,20 +496,25 @@ export default {
         });
         
         if (data.ContainerStatu == Enums.CONTAINER_FULLNESS_STATU_EMPTY){
-          this.markerGroups.tags.collected.addLayer(marker);
+          //this.markerGroups.tags.collected.addLayer(marker);
+          collectedMarkers.push(marker);
           markersObject.collected[data.TagId] = {
             data,
             marker
           };
         }
         else {
-          this.markerGroups.tags.notCollected.addLayer(marker);
+          //this.markerGroups.tags.notCollected.addLayer(marker);
+          notCollectedMarkers.push(marker);
           markersObject.notCollected[data.TagId] = {
             data,
             marker
           };
         }
       });
+
+      this.markerGroups.tags.collected.addLayers(collectedMarkers);
+      this.markerGroups.tags.notCollected.addLayers(notCollectedMarkers);
 
       map.addLayer(this.markerGroups.tags.collected);
       map.addLayer(this.markerGroups.tags.notCollected);
