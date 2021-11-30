@@ -87,6 +87,7 @@ export default {
       //trucks: trucksData,
       //ults: ultData,
       //recycles: recycleData,
+      map: null,
       markerGroups: {
         rfid: {
           truck: null,
@@ -297,6 +298,7 @@ export default {
 
   methods: {
     mapReady(map){
+      this.map = map;
       // Add sidebar to vuex state
       this.$store.commit('dashboard/setMap', map)
 
@@ -309,7 +311,6 @@ export default {
       this.attachMarkers(map);
 
     },
-
 
     // Init Dumpsters - Tags
     attachTagMarkers(map){
@@ -740,12 +741,14 @@ export default {
           }
         });
 
-        this.markerGroups.ult[data.ContainerStatu.toLowerCase()].addLayer(marker);
+        if (this.markerGroups.ult[data.ContainerStatu.toLowerCase()]) this.markerGroups.ult[data.ContainerStatu.toLowerCase()].addLayer(marker);
 
-        markersObject[data.ContainerStatu.toLowerCase()][data.DeviceId] = {
-          data,
-          marker
-        };
+        if (markersObject[data.ContainerStatu.toLowerCase()]) {
+          markersObject[data.ContainerStatu.toLowerCase()][data.DeviceId] = {
+            data,
+            marker
+          };
+        }
 
 
         //this.$store.commit('dashboard/addMarker', {type: 'ult', icon: 'ArchiveIcon', searchableFields: ['ult_title'], data, marker});
@@ -899,6 +902,18 @@ export default {
       
     },
 
+    removeMarkers(){
+      if (this.markerGroups.rfid.truck) this.markerGroups.rfid.truck.clearLayers();
+      if (this.markerGroups.rfid.winch) this.markerGroups.rfid.winch.clearLayers();
+      if (this.markerGroups.tags.collected) this.markerGroups.tags.collected.clearLayers();
+      if (this.markerGroups.tags.notCollected) this.markerGroups.tags.notCollected.clearLayers();
+      if (this.markerGroups.ult.empty) this.markerGroups.ult.empty.clearLayers();
+      if (this.markerGroups.ult.little) this.markerGroups.ult.little.clearLayers();
+      if (this.markerGroups.ult.medium) this.markerGroups.ult.medium.clearLayers();
+      if (this.markerGroups.ult.full) this.markerGroups.ult.full.clearLayers();
+      if (this.markerGroups.recy) this.markerGroups.recy.clearLayers();
+    },
+
   
     computeVariant(containerStatu){
       switch(containerStatu){
@@ -919,7 +934,18 @@ export default {
     },
 
     dateChanged(date){
-      console.log('new date: ', date)
+      //console.log('new date: ', date)
+      this.$loading.show({delay:0, background: 'rgba(34, 41, 47, 0.5)'});
+      this.removeMarkers();
+      WebApi.getData(date).then((data) => {
+        this.$store.commit('panel/setTags', Object.freeze(data.tags));
+        this.$store.commit('panel/setRfidDevices', Object.freeze(data.rfid));
+        this.$store.commit('panel/setUltDevices', Object.freeze(data.ult));
+        this.$store.commit('panel/setRecyDevices', Object.freeze(data.recy));
+        this.attachMarkers(this.map);
+
+        this.$loading.hide();
+      });
     }
   }
 }

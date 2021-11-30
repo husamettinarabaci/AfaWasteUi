@@ -47,7 +47,7 @@ export default {
 .infoContent {
     background-color: rgba(255, 255, 255, 0.95);
     /*padding: 20px;*/
-    width: 400px;
+    width: 350px;
     word-break: break-all;
     box-shadow: 0 1px 5px rgb(0 0 0 / 65%);
 }

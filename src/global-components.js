@@ -46,3 +46,13 @@ library.add(
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+
+// 3rd party
+import Dialog from 'vue-dialog-loading'
+
+//global config
+Vue.use(Dialog, {
+    dialogBtnColor: '#0f0',
+    background:'rgba(0, 0, 0, 0.5)'
+})

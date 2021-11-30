@@ -37,16 +37,17 @@ export default {
     },
 
     data(){
+        let date = this.$moment().utc().startOf('day').toISOString()
         return {
-            date: new Date().toISOString(),
+            date,
             minDate: '',
             maxDate: '',
         }
     },
 
     watch: {
-        'date': function(newValue){
-
+        'date': function(newValue, oldValue){
+            console.log('date changed: ', newValue, oldValue)
             this.$emit('dateChanged', newValue)
         }
     },

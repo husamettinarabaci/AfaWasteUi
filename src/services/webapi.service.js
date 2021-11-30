@@ -11,19 +11,19 @@ export default class WebApi {
             })
     }
     
-    static getDevices(deviceType){
+    static getDevices(deviceType, date){
         let httpClientHeaderType = {};
         httpClientHeaderType.DeviceType = deviceType;
         let obj = {}
         obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
-        return axios.post(apiUrl + webApiUrl + '/getDevices', obj)
+        return axios.post(apiUrl + webApiUrl + '/getDevices' + (date ? ('?date=' + date) : ''), obj)
             .then(response => {
                 return response.Devices;
             })
     }
 
-    static getTags(){
-        return axios.post(apiUrl + webApiUrl + '/getTags')
+    static getTags(date){
+        return axios.post(apiUrl + webApiUrl + '/getTags' + (date ? ('?date=' + date) : ''))
         .then(response => {
             return response.Tags;
         })
@@ -51,5 +51,21 @@ export default class WebApi {
             .then(response => {
                 return response;
             })
+    }
+
+    static getData(date){
+        return axios.all([
+            this.getTags(date),
+            this.getDevices(Enums.DEVICETYPE_RFID, date),
+            this.getDevices(Enums.DEVICETYPE_ULT, date),
+            this.getDevices(Enums.DEVICETYPE_RECY, date)
+        ]).then(axios.spread((tags, rfid, ult, recy) => {
+            return {
+                tags: tags,
+                rfid: rfid,
+                ult: ult,
+                recy: recy
+            }
+        }))
     }
 }

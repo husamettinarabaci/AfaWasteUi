@@ -32,8 +32,10 @@ require('@/assets/scss/style.scss')
 
 Vue.config.productionTip = false
 
-new Vue({
+const vm = new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app')
+
+window.vm = vm;

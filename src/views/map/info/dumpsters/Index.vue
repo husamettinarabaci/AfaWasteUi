@@ -1,5 +1,5 @@
 <template>
-    <div @click="hideSidebar">
+    <div class="info-card" @click="hideSidebar">
         <h4 class="card-title">Günlük Toplanma Oranı</h4>
         <div class="pie-text text-center">
             <h2 class="font-weight-bolder">
@@ -7,7 +7,9 @@
             </h2>
             <span class="font-weight-bold">Toplam</span>
         </div>
-        <app-echart-doughnut :series="series" />
+        <div class="info-chart">
+            <app-echart-doughnut :series="series"/>  
+        </div>      
     </div>
 </template>
 
@@ -67,7 +69,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .card-body{
   position: relative;
   .pie-text{
@@ -76,8 +78,26 @@ export default {
     margin: auto;
     left: 0;
     right: 0;
-    top: 50%;
+    top: 45%;
     bottom: 0;
   }
   }
+.info-card {
+    width: 300px;
+    height: 220px;
+}
+.info-card .card-title {
+    text-align: center;
+    margin-bottom: 0;
+}
+.info-chart {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin: 0 auto;
+}
+.echarts {
+  width: 100% !important;
+  height: 100% !important;
+}
 </style>
