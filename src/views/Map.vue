@@ -9,7 +9,7 @@
       <l-tile-layer :url="tileLayer.url" :subdomains="tileLayer.subdomains" />
       <sidebar/>
       <l-control position="topright">
-        <filter-date/>
+        <filter-date @dateChanged="dateChanged"/>
       </l-control>
       <l-control v-if="showInfo" position="topright">
         <info @showTrucks="showTrucks"/>
@@ -916,6 +916,10 @@ export default {
     showTrucks(){
       this.$store.commit('dashboard/setCurrentTab', 'trucks');
       this.$store.state.dashboard.sidebar.object._tabitems[2].click();
+    },
+
+    dateChanged(date){
+      console.log('new date: ', date)
     }
   }
 }
