@@ -1,6 +1,5 @@
 import axios from 'axios';
 import qs from 'qs';
-import ResultType from '@/models/ResultType';
 import Enums from '@/config/system.enums';
 
 const instance = axios.create();
@@ -22,7 +21,7 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => {
     if (response.data.Result == Enums.RESULT_OK){
-        return ResultType.from(JSON.parse(response.data.Retval));
+        return JSON.parse(response.data.Retval);
     }
 }, error => {
   if (error.response.status === 401) {

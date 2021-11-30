@@ -34,11 +34,6 @@ import DailyContainerStatus from '@/components/panel/dashboard/DailyContainerSta
 import WeeklyContainerStatus from '@/components/panel/dashboard/WeeklyContainerStatus.vue';
 import NotCollectedContainers from '@/components/panel/dashboard/NotCollectedContainers.vue';
 import WebApi from '@/services/webapi.service';
-import ResultType from '@/models/ResultType';
-import CustomerRfidDevicesListType from '@/models/CustomerRfidDevicesListType';
-import CustomerRecyDevicesListType from '@/models/CustomerRecyDevicesListType';
-import CustomerUltDevicesListType from '@/models/CustomerUltDevicesListType';
-import CustomerTagsListType from '@/models/CustomerTagsListType';
 import Enums from '@/config/system.enums';
 
 export default {

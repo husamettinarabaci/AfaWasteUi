@@ -1,6 +1,5 @@
 import axios from '@/middlewares/axios.middleware';
 import {apiUrl, webApiUrl} from '@/config/app.config';
-import HttpClientHeaderType from '@/models/HttpClientHeaderType';
 import Enums from '@/config/system.enums';
 var querystring = require('qs');
 
@@ -13,7 +12,7 @@ export default class WebApi {
     }
     
     static getDevices(deviceType){
-        let httpClientHeaderType = new HttpClientHeaderType();
+        let httpClientHeaderType = {};
         httpClientHeaderType.DeviceType = deviceType;
         let obj = {}
         obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
