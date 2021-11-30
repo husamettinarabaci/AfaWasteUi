@@ -8,6 +8,9 @@
     >
       <l-tile-layer :url="tileLayer.url" :subdomains="tileLayer.subdomains" />
       <sidebar/>
+      <l-control position="topright">
+        <filter-date/>
+      </l-control>
       <l-control v-if="showInfo" position="topright">
         <info @showTrucks="showTrucks"/>
       </l-control>
@@ -32,6 +35,7 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 // Map Layers
 import Sidebar from './map/sidebar/Index';
 import Info from './map/info/Index';
+import FilterDate from './map/FilterDate';
 
 // Config
 import Enums from '@/config/system.enums';
@@ -59,7 +63,8 @@ export default {
     LTileLayer,
     LControl,
     Sidebar,
-    Info
+    Info,
+    FilterDate
   },
 
   mixins: [socketMixin],
