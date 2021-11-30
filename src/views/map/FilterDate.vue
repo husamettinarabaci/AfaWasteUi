@@ -1,6 +1,12 @@
 <template>
     <b-card class="infoContent">
-        <datetime v-model="date"></datetime>
+        <datetime 
+        v-model="date"
+        :phrases="{ok: 'Seç', cancel: 'Vazgeç'}"
+        :min-datetime="minDate"
+        :max-datetime="maxDate"
+        >
+        </datetime>
     </b-card>
 </template>
 
@@ -19,8 +25,15 @@ export default {
 
     data(){
         return {
-            date: ''
+            date: '',
+            minDate: '',
+            maxDate: '',
         }
+    },
+
+    created(){
+        this.minDate = this.$moment.utc().subtract(1, 'month').format('YYYY-MM-DD');
+        this.maxDate = this.$moment.utc().format('YYYY-MM-DD');
     }
 }
 </script>
