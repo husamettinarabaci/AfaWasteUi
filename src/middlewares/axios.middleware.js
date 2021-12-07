@@ -8,7 +8,7 @@ const instance = axios.create();
 axios.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     config.headers = {
       ...config.headers,
@@ -24,11 +24,11 @@ axios.interceptors.response.use(response => {
   switch(response.data.Result){
     case Enums.RESULT_OK:
       return JSON.parse(response.data.Retval);
-    case Enums.RESULT_ERROR:
+    case Enums.RESULT_FAIL:
       if (response.data.Retval === Enums.RESULT_ERROR_USER_AUTH){
-        localStorage.deleteItem('token');
-        localStorage.deleteItem('user');
-        return router.push({name: 'auth-login'});
+        //localStorage.removeItem('token');
+        //localStorage.removeItem('user');
+        //return router.push({name: 'auth-login'});
       }
       return Promise.reject(response.data.Retval);
   }

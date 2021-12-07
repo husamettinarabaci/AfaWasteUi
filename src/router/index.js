@@ -5,6 +5,7 @@ import map from './routes/map';
 import auth from './routes/auth';
 import panel from './routes/panel';
 import errors from './routes/errors';
+import afatek from './routes/afatek';
 
 Vue.use(VueRouter)
 
@@ -18,7 +19,8 @@ const router = new VueRouter({
     ...map,
     ...auth,
     ...panel,
-    ...errors
+    ...errors,
+    ...afatek
   ],
 })
 

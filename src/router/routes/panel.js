@@ -92,6 +92,7 @@ const routes = [
 ]
 
 routes.forEach(route => {
+    route.path = '/panel' + route.path
     route.meta.middleware = [auth];
 })
 

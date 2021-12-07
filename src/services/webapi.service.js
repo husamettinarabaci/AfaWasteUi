@@ -6,9 +6,9 @@ var querystring = require('qs');
 export default class WebApi {
     static getCustomer(){
         return axios.post(apiUrl + webApiUrl + '/getCustomer')
-            .then(response => {
-                return response;
-            })
+        .then(response => {
+            return response;
+        })
     }
     
     static getDevices(deviceType, date){
