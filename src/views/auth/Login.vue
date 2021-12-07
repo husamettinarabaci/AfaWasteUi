@@ -106,13 +106,16 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { extend, ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BButton, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
 import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import AuthApi from '@/services/authapi.service'
+import Enums from '@/config/system.enums'
 
 export default {
   components: {
@@ -148,9 +151,48 @@ export default {
     },
   },
 
+  mounted(){
+    extend('required', {
+      ...required,
+      message: 'Bu alan boş bırakılamaz.',
+    })
+
+    extend('email', {
+      ...email,
+      message: 'Geçerli bir email adresi olmalıdır.',
+    })
+  },
+
   methods: {
     login(){
-      this.$router.push({name: 'dashboard'})
+      let data = {
+        Email: this.userEmail,
+        Password: this.password,
+      }
+      AuthApi.login(data)
+        .then(response => {
+          /*
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Giriş başarılı!',
+              icon: 'CheckCircleIcon',
+              variant: 'success',
+            },
+          })
+          */
+          this.$router.push({ name: 'map' })
+        })
+        .catch(error => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Kullanıcı adı veya parola hatalı!',
+              icon: 'AlertIcon',
+              variant: 'danger',
+            },
+          })
+        })
     }
   }
 }

@@ -12,15 +12,18 @@
         </b-link>
 
         <!-- form -->
-        <validation-observer ref="registerForm">
+        <validation-observer 
+        ref="registerForm"
+        #default="{invalid}"
+        >
           <b-form
             class="auth-register-form mt-2"
-            @submit.prevent="validationForm"
+            @submit.prevent
           >
-            <!-- username -->
+            <!-- firstName -->
             <b-form-group
               label="İsim"
-              label-for="fullname"
+              label-for="firstName"
             >
               <validation-provider
                 #default="{ errors }"
@@ -28,11 +31,32 @@
                 rules="required"
               >
                 <b-form-input
-                  id="fullname"
-                  v-model="fullname"
+                  id="firstName"
+                  v-model="firstName"
                   :state="errors.length > 0 ? false:null"
-                  name="register-fullname"
-                  placeholder="John Doe"
+                  name="register-firstName"
+                  placeholder="John"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+
+            <!-- lastName -->
+            <b-form-group
+              label="Soyisim"
+              label-for="lastName"
+            >
+              <validation-provider
+                #default="{ errors }"
+                name="Soyisim"
+                rules="required"
+              >
+                <b-form-input
+                  id="lastName"
+                  v-model="lastName"
+                  :state="errors.length > 0 ? false:null"
+                  name="register-lastName"
+                  placeholder="Doe"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -97,8 +121,10 @@
             <!-- submit button -->
             <b-button
               variant="primary"
-              block
               type="submit"
+              block
+              :disabled="invalid"
+              @click="register"
             >
               Kayıt Ol
             </b-button>
@@ -119,7 +145,7 @@
 </template>
 
 <script>
-import { localize, extend, ValidationProvider, ValidationObserver } from 'vee-validate'
+import { extend, ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BCard, BLink, BCardTitle, BCardText, BForm,
   BButton, BFormInput, BFormGroup, BInputGroup, BInputGroupAppend, BFormCheckbox,
@@ -128,6 +154,7 @@ import VuexyLogo from '@core/layouts/components/Logo.vue'
 import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import AuthApi from '@/services/authapi.service';
 
 export default {
   components: {
@@ -151,8 +178,9 @@ export default {
   mixins: [togglePasswordVisibility],
   data() {
     return {
+      firstName: '',
+      lastName: '',
       email: '',
-      fullname: '',
       password: '',
 
       // validation rules
@@ -167,15 +195,6 @@ export default {
   },
 
   mounted(){
-    localize({
-      tr: {
-        messages: {
-          required: '{{ field }} alanı boş bırakılamaz.',
-          email: '{{ field }} alanı geçerli bir email adresi olmalıdır.',
-        }
-      }
-    })
-
     extend('required', {
       ...required,
       message: 'Bu alan boş bırakılamaz.',
@@ -188,20 +207,34 @@ export default {
   },
 
   methods: {
-    validationForm() {
-      this.$refs.registerForm.validate().then(success => {
-        if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Form Submitted',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
-        }
+    register(){
+      let data = {
+        FirstName: this.firstName,
+        LastName: this.lastName,
+        Email: this.email,
+        Password: this.password,
+      }
+      AuthApi.register(data).then(response => {
+        this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Kayıt Başarılı!',
+            icon: 'EditIcon',
+            variant: 'success',
+          },
+        })
+      }).catch(error => {
+        console.log('error: ', error)
+        this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Bir hata ile karşılaşıldı',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
+        })
       })
-    },
+    }
   },
 }
 </script>

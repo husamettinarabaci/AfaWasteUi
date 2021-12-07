@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 import Enums from '@/config/system.enums';
+import router from '@/router'
 
 const instance = axios.create();
 
@@ -20,9 +21,17 @@ axios.interceptors.request.use(config => {
 });
 
 axios.interceptors.response.use(response => {
-    if (response.data.Result == Enums.RESULT_OK){
-        return JSON.parse(response.data.Retval);
-    }
+  switch(response.data.Result){
+    case Enums.RESULT_OK:
+      return JSON.parse(response.data.Retval);
+    case Enums.RESULT_ERROR:
+      if (response.data.Retval === Enums.RESULT_ERROR_USER_AUTH){
+        localStorage.deleteItem('token');
+        localStorage.deleteItem('user');
+        return router.push({name: 'auth-login'});
+      }
+      return Promise.reject(response.data.Retval);
+  }
 }, error => {
   if (error.response.status === 401) {
     localStorage.removeItem('token');

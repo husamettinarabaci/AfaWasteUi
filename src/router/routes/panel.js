@@ -1,4 +1,6 @@
-export default [
+import auth from '@/middlewares/auth.middleware';
+
+const routes = [
     {
         path: '/rfid/reports/dashboard',
         name: 'rfidReportsDashboard',
@@ -88,3 +90,9 @@ export default [
         }
     }
 ]
+
+routes.forEach(route => {
+    route.meta.middleware = [auth];
+})
+
+export default routes;

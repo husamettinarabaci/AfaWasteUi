@@ -174,6 +174,7 @@ export default {
 
         RESULT_ERROR_HTTP_PARSE                      : "HTTP_PARSE",
         RESULT_ERROR_HTTP_POST                       : "HTTP_POST",
+        RESULT_ERROR_USER_AUTH                       : "ERROR_USER_AUTH",
         RESULT_ERROR_USER_INVALIDTOKEN               : "USER_INVALIDTOKEN",
         RESULT_ERROR_USER_ENDTOKEN                   : "USER_ENDTOKEN",
         RESULT_ERROR_USER_INVALIDUSER                : "USER_INVALIDUSER",

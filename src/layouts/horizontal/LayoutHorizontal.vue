@@ -33,6 +33,6 @@ export default {
     return {
       // showCustomizer: $themeConfig.layout.customizer,
     }
-  },
+  }
 }
 </script>

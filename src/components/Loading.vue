@@ -109,6 +109,12 @@ export default {
                 this.$store.commit(step.commit, Object.freeze(response));
                 let filtered = this.steps.filter(s => s.id === step.id);
                 filtered[0].completed = true;
+            }).catch(e => {
+                if (e == Enums.RESULT_ERROR_CUSTOMER_NOTFOUND) {
+                    console.log('Customer not found!')
+                    //this.$store.commit('app/SET_LOADING', false);
+                    //this.$store.commit('app/SET_ERROR', 'Customer not found!');
+                }
             })
         }
     }
