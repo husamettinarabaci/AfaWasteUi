@@ -5,6 +5,7 @@ export default [
         component: () => import('@/views/Map.vue'),
         meta: {
           layout: 'full',
+          loading: true,
           //pageTitle: 'Homeqq',
           //breadcrumb: [
           //  {

@@ -4,7 +4,7 @@
     class="h-100"
     :class="[skinClasses]"
   >
-    <loading v-if="getLoading"/>
+    <loading v-if="$route.meta.loading && getLoading"/>
     <component v-else :is="layout">
       <router-view />
     </component>
@@ -54,7 +54,7 @@ export default {
 
     getLoading() {
       return this.$store.getters['app/getLoading']
-    },
+    }
   },
   beforeCreate() {
     // Set colors in theme

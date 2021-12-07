@@ -2,37 +2,46 @@
   <div class="auth-wrapper auth-v1 px-2">
     <div class="auth-inner py-2">
 
-      <!-- Login v1 -->
+      <!-- Register v1 -->
       <b-card class="mb-0">
         <b-link class="brand-logo">
           <vuexy-logo />
-
           <h2 class="brand-text text-primary ml-1">
             Vuexy
           </h2>
         </b-link>
 
-        <b-card-title class="mb-1">
-          Welcome to Vuexy! 👋
-        </b-card-title>
-        <b-card-text class="mb-2">
-          Please sign-in to your account and start the adventure
-        </b-card-text>
-
         <!-- form -->
-        <validation-observer
-          ref="loginForm"
-          #default="{invalid}"
-        >
+        <validation-observer ref="registerForm">
           <b-form
-            class="auth-login-form mt-2"
-            @submit.prevent
+            class="auth-register-form mt-2"
+            @submit.prevent="validationForm"
           >
+            <!-- username -->
+            <b-form-group
+              label="İsim"
+              label-for="fullname"
+            >
+              <validation-provider
+                #default="{ errors }"
+                name="İsim"
+                rules="required"
+              >
+                <b-form-input
+                  id="fullname"
+                  v-model="fullname"
+                  :state="errors.length > 0 ? false:null"
+                  name="register-fullname"
+                  placeholder="John Doe"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
 
             <!-- email -->
             <b-form-group
-              label-for="email"
               label="Email"
+              label-for="email"
             >
               <validation-provider
                 #default="{ errors }"
@@ -41,24 +50,20 @@
               >
                 <b-form-input
                   id="email"
-                  v-model="userEmail"
-                  name="login-email"
+                  v-model="email"
                   :state="errors.length > 0 ? false:null"
+                  name="register-email"
                   placeholder="john@example.com"
-                  autofocus
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
 
             <!-- password -->
-            <b-form-group>
-              <div class="d-flex justify-content-between">
-                <label for="password">Password</label>
-                <b-link :to="{name:'auth-forgot-password-v1'}">
-                  <small>Forgot Password?</small>
-                </b-link>
-              </div>
+            <b-form-group
+              label="Parola"
+              label-for="password"
+            >
               <validation-provider
                 #default="{ errors }"
                 name="Password"
@@ -72,16 +77,15 @@
                     id="password"
                     v-model="password"
                     :type="passwordFieldType"
-                    class="form-control-merge"
                     :state="errors.length > 0 ? false:null"
-                    name="login-password"
-                    placeholder="Password"
+                    class="form-control-merge"
+                    name="register-password"
+                    placeholder="············"
                   />
-
                   <b-input-group-append is-text>
                     <feather-icon
-                      class="cursor-pointer"
                       :icon="passwordToggleIcon"
+                      class="cursor-pointer"
                       @click="togglePasswordVisibility"
                     />
                   </b-input-group-append>
@@ -90,75 +94,67 @@
               </validation-provider>
             </b-form-group>
 
-            <!-- checkbox -->
-            <b-form-group>
-              <b-form-checkbox
-                id="remember-me"
-                v-model="status"
-                name="checkbox-1"
-              >
-                Remember Me
-              </b-form-checkbox>
-            </b-form-group>
-
             <!-- submit button -->
             <b-button
               variant="primary"
-              type="submit"
               block
-              :disabled="invalid"
-              @click="login"
+              type="submit"
             >
-              Sign in
+              Kayıt Ol
             </b-button>
           </b-form>
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-          <span>New on our platform? </span>
-          <b-link :to="{name:'auth-register-v1'}">
-            <span>Create an account</span>
+          <span>Zaten bir hesabınız var mı? </span>
+          <b-link :to="{name:'auth-login'}">
+            <span>Giriş Yapın</span>
           </b-link>
         </b-card-text>
       </b-card>
-      <!-- /Login v1 -->
+    <!-- /Register v1 -->
     </div>
   </div>
+
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { localize, extend, ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
-  BButton, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
+  BCard, BLink, BCardTitle, BCardText, BForm,
+  BButton, BFormInput, BFormGroup, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
 import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
+    VuexyLogo,
     // BSV
-    BButton,
+    BCard,
+    BLink,
+    BCardTitle,
+    BCardText,
     BForm,
+    BButton,
     BFormInput,
     BFormGroup,
-    BCard,
-    BCardTitle,
-    BLink,
-    VuexyLogo,
-    BCardText,
     BInputGroup,
     BInputGroupAppend,
     BFormCheckbox,
+    // validations
     ValidationProvider,
     ValidationObserver,
   },
   mixins: [togglePasswordVisibility],
   data() {
     return {
-      userEmail: '',
+      email: '',
+      fullname: '',
       password: '',
-      status: '',
+
       // validation rules
       required,
       email,
@@ -170,11 +166,43 @@ export default {
     },
   },
 
+  mounted(){
+    localize({
+      tr: {
+        messages: {
+          required: '{{ field }} alanı boş bırakılamaz.',
+          email: '{{ field }} alanı geçerli bir email adresi olmalıdır.',
+        }
+      }
+    })
+
+    extend('required', {
+      ...required,
+      message: 'Bu alan boş bırakılamaz.',
+    })
+
+    extend('email', {
+      ...email,
+      message: 'Geçerli bir email adresi olmalıdır.',
+    })
+  },
+
   methods: {
-    login(){
-      this.$router.push({name: 'dashboard'})
-    }
-  }
+    validationForm() {
+      this.$refs.registerForm.validate().then(success => {
+        if (success) {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Form Submitted',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })
+        }
+      })
+    },
+  },
 }
 </script>
 
