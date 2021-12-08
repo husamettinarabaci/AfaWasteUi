@@ -166,7 +166,7 @@ export default {
             notCollectedStatus: Enums.CONTAINER_FULLNESS_STATU_FULL,
             table: {
                 currentPage: 1,
-                items: [],
+                //items: [],
                 perPage: 5,
                 perPageOptions: [5, 10, 15, 20, 25, 50],
                 searchQuery: '',

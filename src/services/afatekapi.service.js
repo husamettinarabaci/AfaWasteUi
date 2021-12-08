@@ -9,4 +9,13 @@ export default class AfatekApi {
             return response;
         })
     }
+
+    //static getCustomer
+
+    static setCustomer(data){
+        return axios.post(apiUrl + afatekApiUrl + '/setCustomer', data)
+        .then(response => {
+            return response;
+        })
+    }
 }

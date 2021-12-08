@@ -1,6 +1,6 @@
 <template>
     <div>
-        Afatek customers
+        Afatek customers edit
     </div>
 </template>
 

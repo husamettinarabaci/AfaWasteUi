@@ -26,9 +26,9 @@ axios.interceptors.response.use(response => {
       return JSON.parse(response.data.Retval);
     case Enums.RESULT_FAIL:
       if (response.data.Retval === Enums.RESULT_ERROR_USER_AUTH){
-        //localStorage.removeItem('token');
-        //localStorage.removeItem('user');
-        //return router.push({name: 'auth-login'});
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        return router.push({name: 'auth-login'});
       }
       return Promise.reject(response.data.Retval);
   }

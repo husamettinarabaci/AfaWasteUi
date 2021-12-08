@@ -5,10 +5,23 @@ let items = [];
 if (vm.$route.name.includes('afatek')){
   items = [
     {
-      title: 'Anasayfa',
-      route: 'rfidReportsDashboard',
+      header: 'Müşteriler'
+    },
+    {
+      title: 'Müşteri Listesi',
+      route: 'afatek-customers',
       icon: 'HomeIcon',
     },
+    {
+      title: 'Yeni Müşteri',
+      route: 'afatek-customers-new',
+      icon: 'HomeIcon',
+    },
+    {
+      title: 'Müşteri Cihaz Atama',
+      route: 'afatek-customers-edit',
+      icon: 'HomeIcon',
+    }    
   ]
 }
 else {
