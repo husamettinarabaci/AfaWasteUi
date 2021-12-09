@@ -2,6 +2,45 @@ import auth from '@/middlewares/auth.middleware';
 
 const routes = [
     {
+        path: '/users',
+        name: 'admin-users',
+        component: () => import('@/views/admin/users/List')
+    },
+    {
+        path: '/devices/tags',
+        name: 'admin-devices-tags',
+        component: () => import('@/views/admin/devices/Tags')
+    },
+    {
+        path: '/devices/rfid',
+        name: 'admin-devices-rfid',
+        component: () => import('@/views/admin/devices/Rfid')
+    },
+    {
+        path: '/devices/ult',
+        name: 'admin-devices-ult',
+        component: () => import('@/views/admin/devices/Ult')
+    },
+    {
+        path: '/devices/recy',
+        name: 'admin-devices-recy',
+        component: () => import('@/views/admin/devices/Recy')
+    },
+    {
+        path: '/settings/admin',
+        name: 'admin-settings-admin',
+        component: () => import('@/views/admin/settings/Admin')
+    },
+    {
+        path: '/settings/local',
+        name: 'admin-settings-local',
+        component: () => import('@/views/admin/settings/Local')
+    },
+
+
+
+
+    {
         path: '/rfid/reports/dashboard',
         name: 'rfidReportsDashboard',
         component: () => import('@/views/panel/rfid/Dashboard'),
@@ -92,8 +131,11 @@ const routes = [
 ]
 
 routes.forEach(route => {
-    route.path = '/panel' + route.path
-    route.meta.middleware = [auth];
+    route.path = '/admin' + route.path
+    route.meta = {
+        layout: 'default',
+        middleware: [auth]
+    }
 })
 
 export default routes;

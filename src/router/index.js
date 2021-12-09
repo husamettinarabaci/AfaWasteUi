@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import map from './routes/map';
 import auth from './routes/auth';
-import panel from './routes/panel';
 import errors from './routes/errors';
+import map from './routes/map';
+import admin from './routes/admin';
 import afatek from './routes/afatek';
 
 Vue.use(VueRouter)
@@ -16,10 +16,10 @@ const router = new VueRouter({
     return { x: 0, y: 0 }
   },
   routes: [
-    ...map,
     ...auth,
-    ...panel,
     ...errors,
+    ...map,
+    ...admin,
     ...afatek
   ],
 })

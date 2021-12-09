@@ -27,71 +27,52 @@ if (vm.$route.name.includes('afatek')){
 else {
   items = [
     {
-      title: 'Anasayfa',
-      route: 'rfidReportsDashboard',
-      icon: 'HomeIcon',
+      header: 'Kullanıcılar'
     },
     {
-      header: 'Raporlar',
-    },
-    {
-      title: 'RFID Takip Sistemi',
-      route: 'containers',
-      icon: 'HomeIcon',
-    },
-    {
-      title: 'Kamyonlar',
-      route: 'trucks',
-      icon: 'TruckIcon',
-    },
-    /*
-    {
-      header: 'Reports'
-    },
-    {
-      title: 'Daily',
-      route: 'containersDailyReports',
+      title: 'Kullanıcı Listesi',
+      route: 'admin-users',
       icon: 'HomeIcon'
     },
     {
-      title: 'All',
-      route: 'containersReports',
-      icon: 'HomeIcon'
+      header: 'Ayarlar'
     },
     {
-      header: 'Management',
-    },
-    {
-      title: 'Container List',
-      route: 'containersManagement',
+      title: 'Cihaz Ayarları',
       icon: 'HomeIcon',
-    },
-    {
-      title: 'Truck List',
-      route: 'trucksManagement',
-      icon: 'TruckIcon',
-    },
-    {
-      title: 'Users',
-      icon: 'UserIcon',
-      tag: '2',
-      tagVariant: 'light-warning',
       children: [
         {
-          title: 'Users',
-          route: 'usersList',
+          title: 'Tag Ayarları',
+          route: 'admin-devices-tags'
+        },
+        {
+          title: 'Rfid Ayarları',
+          route: 'admin-devices-rfid'
+        },
+        {
+          title: 'Ult Ayarları',
+          route: 'admin-devices-ult'
+        },
+        {
+          title: 'Recy Ayarları',
+          route: 'admin-devices-recy'
         }
-      ],
+      ]
     },
     {
-      header: 'System',
-    },
-    {
-      title: 'Settings',
-      route: 'settings',
-      icon: 'SettingsIcon',
+      title: 'Genel Ayarlar',
+      icon: 'HomeIcon',
+      children: [
+        {
+          title: 'Admin ayarları',
+          route: 'admin-settings-admin'
+        },
+        {
+          title: 'Localization',
+          route: 'admin-settings-local'
+        }
+      ]
     }
-    */
   ]
 }
 
