@@ -76,7 +76,7 @@
                         name="recyApp"
                         v-model="apps[Enums.WEB_APP_TYPE_RECY]"
                     >
-                        RFID APP
+                        RECY APP
                     </b-form-checkbox>
                     </b-form-group>
                 </b-col>
@@ -158,6 +158,8 @@ export default {
           })
           AfatekApi.setCustomer(obj).then(response => {
               console.log('res: ', response)
+          }).catch(e => {
+              console.log('e: ', e)
           })
       }
   }

@@ -26,19 +26,25 @@
                         <!-- Column: Customer Link -->
                         <template #cell(CustomerLink)="data">
                             <b-badge pill variant="light-primary" :title="data.value">
-                                {{ $moment(data.value).format('HH:mm:ss') }}
+                                {{ data.value }}
                             </b-badge>
                         </template>
 
                         <!-- Column: Apps -->
                         <template #cell(Apps)="data">
-                            <b-badge variant="light-primary" v-if="data.items[Enums.WEB_APP_TYPE_RFID] === Enums.STATU_ACTIVE">RFID</b-badge>
-                            <b-badge variant="light-info" v-if="data.items[Enums.WEB_APP_TYPE_ULT] === Enums.STATU_ACTIVE">ULT</b-badge>
-                            <b-badge variant="light-warning" v-if="data.items[Enums.WEB_APP_TYPE_RECY] === Enums.STATU_ACTIVE">RECY</b-badge>
+                            <b-badge variant="light-primary" v-if="data.item[Enums.WEB_APP_TYPE_RFID] === Enums.STATU_ACTIVE">RFID</b-badge>
+                            <b-badge variant="light-info" v-if="data.item[Enums.WEB_APP_TYPE_ULT] === Enums.STATU_ACTIVE">ULT</b-badge>
+                            <b-badge variant="light-warning" v-if="data.item[Enums.WEB_APP_TYPE_RECY] === Enums.STATU_ACTIVE">RECY</b-badge>                            
                         </template>
 
                         <template #cell(actions)>
-                            Actions
+                            <b-button
+                            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                            variant="warning"
+                            class="btn-icon rounded-circle"
+                            >
+                                <feather-icon icon="ArchiveIcon" />
+                            </b-button>
                         </template>
                     </b-table>
                     <div class="mx-2 mb-2">
@@ -92,8 +98,11 @@
 </template>
 
 <script>
-import { BCard, BCardBody, BRow, BCol, BTable, BPagination} from 'bootstrap-vue';
+import { BCard, BCardBody, BRow, BCol, BTable, BPagination, BBadge, BButton} from 'bootstrap-vue';
 import AfatekApi from '@/services/afatekapi.service';
+import Enums from '@/config/system.enums'
+import Ripple from 'vue-ripple-directive'
+
 
 export default {
     components: {
@@ -102,7 +111,13 @@ export default {
         BRow,
         BCol,
         BTable,
-        BPagination
+        BPagination,
+        BBadge,
+        BButton
+    },  
+
+    directives: {
+        Ripple,
     },
 
     data(){
@@ -122,7 +137,8 @@ export default {
                 sortBy: 'ReadTime',
                 isSortDirDesc: true,
                 totalItems: 0
-            }
+            },
+            Enums
         }
     },
 

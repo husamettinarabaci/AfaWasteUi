@@ -13,7 +13,39 @@ export default class AfatekApi {
     //static getCustomer
 
     static setCustomer(data){
-        return axios.post(apiUrl + afatekApiUrl + '/setCustomer', data)
+        let obj = {}
+        obj[Enums.HTTP_DATA] = JSON.stringify(data);
+        return axios.post(apiUrl + afatekApiUrl + '/setCustomer', obj)
+        .then(response => {
+            return response;
+        })
+    }
+
+    static getConfig(data){
+        let obj = {}
+        obj[Enums.HTTP_DATA] = JSON.stringify(data);
+        return axios.post(apiUrl + afatekApiUrl + '/getConfig', obj)
+        .then(response => {
+            return response;
+        })
+    }
+
+    static setConfig(data){
+        return axios.post(apiUrl + afatekApiUrl + '/setConfig', data)
+        .then(response => {
+            return response;
+        })
+    }
+
+    static getDevices(data){
+        return axios.post(apiUrl + afatekApiUrl + '/getDevices', data)
+        .then(response => {
+            return response;
+        })
+    }
+
+    static setDevice(data){
+        return axios.post(apiUrl + afatekApiUrl + '/setDevice', data)
         .then(response => {
             return response;
         })

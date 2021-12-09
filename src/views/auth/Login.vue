@@ -184,6 +184,7 @@ export default {
           this.$router.push({ name: 'map' })
         })
         .catch(error => {
+          console.log('error: ', error)
           this.$toast({
             component: ToastificationContent,
             props: {
