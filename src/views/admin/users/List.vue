@@ -23,27 +23,27 @@
                     :sort-desc.sync="table.isSortDirDesc"
                     class="position-relative"
                     >
-                        <!-- Column: Device ID -->
-                        <template #cell(DeviceId)="data">
-                            <span>{{ data.value }}</span>
-                        </template>
-
-                        <!-- Column: Customer ID -->
-                        <template #cell(CustomerId)="data">
-                            <span>{{ data.value }}</span>
-                        </template>
-
-                        <!-- Column: Customer Name -->
-                        <template #cell(CustomerName)="data">
+                        <!-- Column: First Name -->
+                        <template #cell(FirstName)="data">
                             <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
                             <span v-else>{{ data.value }}</span>
                         </template>
 
-                        <!-- Column: Serial Number -->
-                        <template #cell(SerialNumber)="data">
-                            <b-badge pill variant="light-primary" :title="data.value">
-                                {{ data.value }}
-                            </b-badge>
+                        <!-- Column: Last Name -->
+                        <template #cell(LastName)="data">
+                            <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
+                            <span v-else>{{ data.value }}</span>
+                        </template>
+
+                        <!-- Column: Email -->
+                        <template #cell(Email)="data">
+                            <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
+                            <span v-else>{{ data.value }}</span>
+                        </template>
+
+                        <!-- Column: Role -->
+                        <template #cell(UserRole)="data">
+                            <b-badge variant="light-primary">{{ data.value }}</b-badge>
                         </template>
 
                         <template #cell(actions)>
@@ -132,10 +132,10 @@ export default {
                 perPageOptions: [5, 10, 15, 20, 25, 50],
                 searchQuery: '',
                 fields: [
-                    {key: 'DeviceId', label: 'Device ID'},
-                    {key: 'CustomerId', label: 'Customer ID'},
-                    {key: 'CustomerName', label: 'Customer Name'},
-                    {key: 'SerialNumber', label: 'Serial Number'},
+                    {key: 'FirstName', label: 'İsim'},
+                    {key: 'LastName', label: 'Soyisim'},
+                    {key: 'Email', label: 'Email'},
+                    {key: 'UserRole', label: 'Rol'},
                     {key: 'actions', label: 'Edit'},
                 ],
                 sortBy: 'DeviceId',
@@ -147,6 +147,13 @@ export default {
 
     computed: {
         filteredUsers: function(){
+            if (this.table.searchQuery.length > 3){
+                return this.users.filter(user => 
+                user.FirstName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase())
+                || user.LastName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase())
+                || user.Email.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase())
+                )
+            }
             return this.users;
         }
     },
@@ -158,7 +165,7 @@ export default {
     methods: {
         getUsers(){
             AdminApi.getUsers().then(response => {
-                console.log('geldi: ', response)
+                this.users = Object.values(response.Users)
             })
         }
     }
