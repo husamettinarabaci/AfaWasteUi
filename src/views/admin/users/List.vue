@@ -147,7 +147,7 @@ export default {
 
     computed: {
         filteredUsers: function(){
-            if (this.table.searchQuery.length > 3){
+            if (this.table.searchQuery.length >= 3){
                 return this.users.filter(user => 
                 user.FirstName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase())
                 || user.LastName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase())

@@ -27,4 +27,17 @@ export default class AdminApi {
             return response;
         })
     }
+
+
+
+    static getConfig(dataType){
+        let httpClientHeaderType = {};
+        httpClientHeaderType.DataType = dataType;
+        let obj = {}
+        obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
+        return axios.post(apiUrl + adminApiUrl + '/getConfig', obj)
+        .then(response => {
+            return response;
+        })
+    }
 }
