@@ -264,6 +264,8 @@ export default {
     mounted(){
         AfatekApi.getCustomers().then(response => {
             this.items = Object.values(response.Customers);
+            this.table.totalItems = this.items.length;
+            this.$store.commit('afatek/setCustomers', this.items);
         })
     },
 

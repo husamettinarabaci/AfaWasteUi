@@ -151,7 +151,13 @@ export default {
         }
     },
     
-    mounted(){
+    async mounted(){
+        let customers = this.$store.getters['afatek/getCustomers'];
+        if (!customers.length){
+            await AfatekApi.getCustomers().then(response => {
+                this.$store.commit('afatek/setCustomers', Object.values(response.Customers));
+            })
+        }
         this.getDevices()
     },
 

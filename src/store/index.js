@@ -9,6 +9,7 @@ import verticalMenu from './vertical-menu'
 import dashboard from './dashboard'
 import panel from './panel'
 import socket from './socket'
+import afatek from './afatek'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
     verticalMenu,
     dashboard,
     panel,
-    socket
+    socket,
+    afatek
   },
   strict: process.env.DEV,
 })

@@ -50,8 +50,11 @@ export default class AfatekApi {
         })
     }
 
-    static setDevice(data){
-        return axios.post(apiUrl + afatekApiUrl + '/setDevice', data)
+    static setDevice(deviceType, data){
+        let obj = {}
+        obj[Enums.HTTP_HEADER] = JSON.stringify({DeviceType: deviceType});
+        obj[Enums.HTTP_DATA] = JSON.stringify({...data});
+        return axios.post(apiUrl + afatekApiUrl + '/setDevice', obj)
         .then(response => {
             return response;
         })
