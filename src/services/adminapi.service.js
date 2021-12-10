@@ -40,4 +40,15 @@ export default class AdminApi {
             return response;
         })
     }
+
+    static setConfig(data){
+        let httpClientHeaderType = {};
+        httpClientHeaderType.DeviceType = deviceType;
+        let obj = {}
+        obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
+        return axios.post(apiUrl + webApiUrl + '/getDevices' + (date ? ('?date=' + date) : ''), obj)
+        .then(response => {
+            return response.Devices;
+        })
+    }
 }

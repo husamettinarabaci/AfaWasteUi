@@ -37,11 +37,12 @@
                             <b-badge variant="light-warning" v-if="data.item[Enums.WEB_APP_TYPE_RECY] === Enums.STATU_ACTIVE">RECY</b-badge>                            
                         </template>
 
-                        <template #cell(actions)>
+                        <template #cell(actions)="data">
                             <b-button
                             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                             variant="warning"
                             class="btn-icon rounded-circle"
+                            @click="getConfig(data.item)"
                             >
                                 <feather-icon icon="ArchiveIcon" />
                             </b-button>
@@ -94,11 +95,118 @@
                 </b-col>
             </b-row>
         </b-card-body>
+        <b-modal
+        id="modal-configs"
+        ref="configModal"
+        cancel-variant="outline-secondary"
+        ok-title="Save"
+        @ok="saveConfig"
+        cancel-title="Close"
+        centered
+        title="Set Config"
+        >
+            <b-form @submit.prevent>
+                <b-row>
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Arvento App"
+                        label-for="h-arvento-app"
+                        label-cols-md="4"
+                        >
+                            <b-form-checkbox
+                                id="h-arvento-app"
+                                :checked="config.ArventoApp == Enums.STATU_ACTIVE"
+                                class="custom-control-primary"
+                                name="check-button"
+                                v-model="config.ArventoApp"
+                                switch
+                            />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Arvento User Name"
+                        label-for="h-arvento-user-name"
+                        label-cols-md="4"
+                        >
+                        <b-form-input
+                            id="h-arvento-user-name"
+                            placeholder="Arvento User Name"
+                            v-model="config.ArventoUserName"
+                        />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Arvento Pin 1"
+                        label-for="h-arvento-pin-1"
+                        label-cols-md="4"
+                        >
+                        <b-form-input
+                            id="h-arvento-pin-1"
+                            placeholder="Arvento Pin 1"
+                            v-model="config.ArventoPin1"
+                        />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Arvento Pin 2"
+                        label-for="h-arvento-pin-2"
+                        label-cols-md="4"
+                        >
+                        <b-form-input
+                            id="h-arvento-pin-2"
+                            placeholder="Arvento Pin 2"
+                            v-model="config.ArventoPin2"
+                        />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="System Problem"
+                        label-for="h-system-problem"
+                        label-cols-md="4"
+                        >
+                            <b-form-checkbox
+                                id="h-system-problem"
+                                :checked="config.SystemProblem == Enums.STATU_ACTIVE"
+                                class="custom-control-primary"
+                                name="check-button"
+                                v-model="config.SystemProblem"
+                                switch
+                            />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Truck Stop Trace"
+                        label-for="h-truck-stop-trace"
+                        label-cols-md="4"
+                        >
+                            <b-form-checkbox
+                                id="h-truck-stop-trace"
+                                :checked="config.TruckStopTrace == Enums.STATU_ACTIVE"
+                                class="custom-control-primary"
+                                name="check-button"
+                                v-model="config.TruckStopTrace"
+                                switch
+                            />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+            </b-form>
+        </b-modal>
     </b-card>
 </template>
 
 <script>
-import { BCard, BCardBody, BRow, BCol, BTable, BPagination, BBadge, BButton} from 'bootstrap-vue';
+import { BCard, BCardBody, BRow, BCol, BTable, BPagination, BBadge, BFormCheckbox, BButton, BForm, BFormGroup, BFormInput } from 'bootstrap-vue';
 import AfatekApi from '@/services/afatekapi.service';
 import Enums from '@/config/system.enums'
 import Ripple from 'vue-ripple-directive'
@@ -113,7 +221,11 @@ export default {
         BTable,
         BPagination,
         BBadge,
-        BButton
+        BFormCheckbox,
+        BButton,
+        BForm, 
+        BFormGroup, 
+        BFormInput
     },  
 
     directives: {
@@ -123,6 +235,7 @@ export default {
     data(){
         return {
             items: [],
+            config: {},
             table: {
                 currentPage: 1,
                 perPage: 5,
@@ -152,6 +265,37 @@ export default {
         AfatekApi.getCustomers().then(response => {
             this.items = Object.values(response.Customers);
         })
+    },
+
+    methods: {
+        getConfig(item){
+            let d = {
+                CustomerId: item.CustomerId
+            }
+            this.$refs.configModal.show();
+            AfatekApi.getConfig(d).then(response => {
+                console.log('response: ', response);
+                this.config = {
+                    ...response,
+                    ArventoApp: response.ArventoApp == Enums.STATU_ACTIVE ? true : false,
+                    SystemProblem: response.SystemProblem == Enums.STATU_ACTIVE ? true : false,
+                    TruckStopTrace: response.TruckStopTrace == Enums.STATU_ACTIVE ? true : false
+                };
+            })
+        },
+
+        saveConfig(){
+            let config = {
+                ...this.config
+            }
+            config.ArventoApp = this.config.ArventoApp == true ? Enums.STATU_ACTIVE : Enums.STATU_PASSIVE;
+            config.SystemProblem = this.config.SystemProblem == true ? Enums.STATU_ACTIVE : Enums.STATU_PASSIVE;
+            config.TruckStopTrace = this.config.TruckStopTrace == true ? Enums.STATU_ACTIVE : Enums.STATU_PASSIVE;
+            
+            AfatekApi.setConfig(config).then(response => {
+                console.log('response: ', response)
+            })
+        }
     }
 }
 </script>

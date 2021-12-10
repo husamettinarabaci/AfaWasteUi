@@ -31,7 +31,9 @@ export default class AfatekApi {
     }
 
     static setConfig(data){
-        return axios.post(apiUrl + afatekApiUrl + '/setConfig', data)
+        let obj = {}
+        obj[Enums.HTTP_DATA] = JSON.stringify({...data});
+        return axios.post(apiUrl + afatekApiUrl + '/setConfig', obj)
         .then(response => {
             return response;
         })

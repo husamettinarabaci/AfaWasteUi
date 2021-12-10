@@ -350,15 +350,13 @@ export default {
                 }
             })
 
-            console.log('config: ', config)
+            return;
 
-            /*
-            AdminApi.setConfig(Enums.DATATYPE_ADMINCONFIG, this.config).then(response => {
+            AdminApi.setConfig(Enums.DATATYPE_ADMINCONFIG, config).then(response => {
                 console.log('response: ', response)
             }).catch(e => {
                 console.log('error: ', e)
             })
-            */
         },
     }
 }
