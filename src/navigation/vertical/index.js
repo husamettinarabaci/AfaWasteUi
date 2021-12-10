@@ -18,10 +18,23 @@ if (vm.$route.name.includes('afatek')){
       icon: 'HomeIcon',
     },
     {
-      title: 'Müşteri Cihaz Atama',
-      route: 'afatek-customers-edit',
+      title: 'Cihazlar',
       icon: 'HomeIcon',
-    }    
+      children: [
+        {
+          title: 'Rfid',
+          route: 'afatek-devices-rfid'
+        },
+        {
+          title: 'Ult',
+          route: 'afatek-devices-ult'
+        },
+        {
+          title: 'Recy',
+          route: 'afatek-devices-recy'
+        }
+      ]
+    } 
   ]
 }
 else {

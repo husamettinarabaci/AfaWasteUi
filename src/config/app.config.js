@@ -6,7 +6,8 @@ module.exports = {
     webApiUrl: '/webapi',
     authApiUrl: '/authapi',
     adminApiUrl: '/adminapi',
-    reportApiUrl: '/reportapi',
     afatekApiUrl: '/afatekapi',
+    
+    reportApiUrl: '/reportapi',
     optimizeApiUrl: '/optimizeapi',
 }

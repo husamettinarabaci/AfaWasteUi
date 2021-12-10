@@ -37,8 +37,12 @@ export default class AfatekApi {
         })
     }
 
-    static getDevices(data){
-        return axios.post(apiUrl + afatekApiUrl + '/getDevices', data)
+    static getDevices(deviceType){
+        let httpClientHeaderType = {};
+        httpClientHeaderType.DeviceType = deviceType;
+        let obj = {}
+        obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
+        return axios.post(apiUrl + afatekApiUrl + '/getDevices', obj)
         .then(response => {
             return response;
         })

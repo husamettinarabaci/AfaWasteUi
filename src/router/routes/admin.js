@@ -39,7 +39,7 @@ const routes = [
 
 
 
-
+    /*
     {
         path: '/rfid/reports/dashboard',
         name: 'rfidReportsDashboard',
@@ -128,6 +128,7 @@ const routes = [
             layout: 'default'
         }
     }
+    */
 ]
 
 routes.forEach(route => {
