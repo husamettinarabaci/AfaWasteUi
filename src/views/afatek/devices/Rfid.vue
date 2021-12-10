@@ -60,11 +60,6 @@
                             </b-badge>
                         </template>
 
-                        <!-- Column: Create Time -->
-                        <template #cell(DeviceMain.CreateTime)="data">
-                            <span>{{ data.value }}</span>
-                        </template>
-
                         <template #cell(actions)="data">
                             <b-button
                             variant="warning"
@@ -210,7 +205,6 @@ export default {
                     {key: 'DeviceMain.SerialNumber', label: 'Serial Number'},
                     {key: 'DeviceMain.DeviceType', label: 'Device Type'},
                     {key: 'DeviceMain.Active', label: 'Active'},
-                    {key: 'DeviceMain.CreateTime', label: 'Create Time'},
                     {key: 'actions', label: 'Edit'},
                 ],
                 sortBy: 'DeviceId',

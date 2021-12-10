@@ -22,34 +22,49 @@
                     empty-text="No matching records found"
                     :sort-desc.sync="table.isSortDirDesc"
                     class="position-relative"
-                    >
+                    >                    
                         <!-- Column: Device ID -->
                         <template #cell(DeviceId)="data">
                             <span>{{ data.value }}</span>
                         </template>
 
                         <!-- Column: Customer ID -->
-                        <template #cell(CustomerId)="data">
-                            <span>{{ data.value }}</span>
+                        <template #cell(DeviceMain.CustomerId)="data">
+                            <span>{{  data.value }}</span>
                         </template>
 
                         <!-- Column: Customer Name -->
                         <template #cell(CustomerName)="data">
-                            <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
-                            <span v-else>{{ data.value }}</span>
+                            <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(customerDetails(data.item.CustomerId).CustomerName, table.searchQuery)"></span>
+                            <span v-else>{{ customerDetails(data.item.DeviceMain.CustomerId) ? customerDetails(data.item.DeviceMain.CustomerId).CustomerName : '' }}</span>
                         </template>
 
                         <!-- Column: Serial Number -->
-                        <template #cell(SerialNumber)="data">
+                        <template #cell(DeviceMain.SerialNumber)="data">
                             <b-badge pill variant="light-primary" :title="data.value">
                                 {{ data.value }}
                             </b-badge>
                         </template>
 
-                        <template #cell(actions)>
+                        <!-- Column: Device Type -->
+                        <template #cell(DeviceMain.DeviceType)="data">
+                            <b-badge pill variant="light-primary" :title="data.value">
+                                {{ data.value }}
+                            </b-badge>
+                        </template>
+
+                        <!-- Column: Active -->
+                        <template #cell(DeviceMain.Active)="data">
+                            <b-badge pill variant="light-primary" :title="data.value">
+                                {{ data.value }}
+                            </b-badge>
+                        </template>
+
+                        <template #cell(actions)="data">
                             <b-button
                             variant="warning"
                             class="btn-icon rounded-circle"
+                            @click="showModal(data.item)"
                             >
                                 <feather-icon icon="ArchiveIcon" />
                             </b-button>
@@ -102,11 +117,83 @@
                 </b-col>
             </b-row>
         </b-card-body>
+        <b-modal
+        id="modal-device"
+        ref="deviceModal"
+        cancel-variant="outline-secondary"
+        ok-title="Save"
+        @ok="saveDevice"
+        cancel-title="Close"
+        centered
+        title="Set Config"
+        >
+            <b-form @submit.prevent>
+                <b-row>
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Active"
+                        label-for="h-active"
+                        label-cols-md="4"
+                        >
+                            <b-form-checkbox
+                                id="h-active"
+                                :checked="currentDevice.Active == Enums.STATU_ACTIVE"
+                                class="custom-control-primary"
+                                name="check-button"
+                                v-model="currentDevice.Active"
+                                switch
+                            />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Choose customer"
+                        label-for="h-customer"
+                        label-cols-md="4"
+                        >
+                            <v-select
+                                id="h-customer"
+                                v-model="currentDevice.CustomerId"
+                                :options="customerOptions"
+                            />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Longitude"
+                        label-for="h-longitude"
+                        label-cols-md="4"
+                        >
+                            <b-form-input
+                                id="h-longitude"
+                                v-model.number="currentDevice.Longitude"
+                            />
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Latitude"
+                        label-for="h-latitude"
+                        label-cols-md="4"
+                        >
+                            <b-form-input
+                                id="h-latitude"
+                                v-model.number="currentDevice.Latitude"
+                            />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+            </b-form>
+        </b-modal>
     </b-card>
 </template>
 
 <script>
-import { BCard, BCardBody, BRow, BCol, BTable, BPagination, BFormInput, BBadge, BButton} from 'bootstrap-vue';
+import { BCard, BCardBody, BRow, BCol, BTable, BPagination, BForm, BFormGroup, BFormCheckbox, BFormInput, BBadge, BButton} from 'bootstrap-vue';
+import vSelect from 'vue-select'
 import AfatekApi from '@/services/afatekapi.service';
 import Enums from '@/config/system.enums';
 
@@ -118,14 +205,20 @@ export default {
         BCol,
         BTable,
         BPagination,
+        BForm, 
+        BFormGroup, 
+        BFormCheckbox,
         BFormInput,
         BBadge,
-        BButton
+        BButton,
+        vSelect
     },  
 
     data(){
         return {
+            Enums,
             devices: [],
+            currentDevice: {},
             table: {
                 currentPage: 1,
                 perPage: 5,
@@ -133,9 +226,12 @@ export default {
                 searchQuery: '',
                 fields: [
                     {key: 'DeviceId', label: 'Device ID'},
-                    {key: 'CustomerId', label: 'Customer ID'},
                     {key: 'CustomerName', label: 'Customer Name'},
-                    {key: 'SerialNumber', label: 'Serial Number'},
+                    {key: 'DeviceMain.SerialNumber', label: 'Serial Number'},
+                    {key: 'DeviceMain.Latitude', label: 'Latitude'},
+                    {key: 'DeviceMain.Longitude', label: 'Longitude'},
+                    {key: 'DeviceMain.DeviceType', label: 'Device Type'},
+                    {key: 'DeviceMain.Active', label: 'Active'},
                     {key: 'actions', label: 'Edit'},
                 ],
                 sortBy: 'DeviceId',
@@ -147,13 +243,26 @@ export default {
 
     computed: {
         filteredDevices: function(){
+            return this.devices;
             return this.devices.filter(device => device.CustomerName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase()));
-        }
+        },
+
+        customers: function(){
+            return this.$store.getters['afatek/getCustomers'];
+        },
+
+        customerOptions: function(){
+            return this.customers.map(customer => {
+                return {
+                    id: customer.CustomerId,
+                    label: customer.CustomerName
+                }
+            })
+        },
     },
     
     async mounted(){
-        let customers = this.$store.getters['afatek/getCustomers'];
-        if (!customers.length){
+        if (!this.customers.length){
             await AfatekApi.getCustomers().then(response => {
                 this.$store.commit('afatek/setCustomers', Object.values(response.Customers));
             })
@@ -164,15 +273,43 @@ export default {
     methods: {
         getDevices(){
             AfatekApi.getDevices(Enums.DEVICETYPE_RECY).then(response => {
-                console.log('geldi: ', response)
+                console.log('response', response)
                 this.devices = Object.values(response.Devices)
                 this.table.totalItems = this.devices.length;
             })
-        }
+        },
+
+        customerDetails(id){
+            return this.customers.find(customer => customer.CustomerId === id)
+        },
+
+        showModal(item){
+            this.currentDevice = {
+                ...item.DeviceMain
+            }
+            this.currentDevice.CustomerId = {
+                id: item.DeviceMain.CustomerId,
+                label: this.customerDetails(item.DeviceMain.CustomerId).CustomerName
+            }
+            this.currentDevice.Active = this.currentDevice.Active == Enums.STATU_ACTIVE ? true : false
+            this.$refs.deviceModal.show()
+        },
+
+        saveDevice(){
+            let device = {
+                ...this.currentDevice
+            }
+            device.CustomerId = this.currentDevice.CustomerId.id
+            device.Active = this.currentDevice.Active ? Enums.STATU_ACTIVE : Enums.STATU_PASSIVE
+
+            AfatekApi.setDevice(Enums.DEVICETYPE_RECY, device).then(response => {
+                console.log('device: ', response)
+            })
+        },
     }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-select.scss';
 </style>
