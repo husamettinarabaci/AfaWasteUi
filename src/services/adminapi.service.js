@@ -9,4 +9,22 @@ export default class AdminApi {
             return response;
         })
     }
+
+    static getTags(){
+        return axios.post(apiUrl + adminApiUrl + '/getTags')
+        .then(response => {
+            return response;
+        })
+    }
+
+    static getDevices(deviceType){
+        let httpClientHeaderType = {};
+        httpClientHeaderType.DeviceType = deviceType;
+        let obj = {}
+        obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
+        return axios.post(apiUrl + adminApiUrl + '/getDevices', obj)
+        .then(response => {
+            return response;
+        })
+    }
 }
