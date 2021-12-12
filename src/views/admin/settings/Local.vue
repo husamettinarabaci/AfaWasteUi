@@ -31,8 +31,7 @@
 
                         <!-- Column: value -->
                         <template #cell(value)="data">
-                            <span v-if="table.searchQuery.length" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
-                            <b-form-input v-else v-model="data.value"></b-form-input>
+                            <b-form-input v-model="data.item.value"></b-form-input>
                         </template>
                     </b-table>
                     <div class="mx-2 mb-2">
@@ -76,9 +75,20 @@
                             </b-pagination>
 
                             </b-col>
-
                         </b-row>
                     </div>
+                </b-col>
+            </b-row>
+            <b-row>
+                <!-- submit and reset -->
+                <b-col cols="12">
+                    <b-button
+                    variant="primary"
+                    class="save-btn mr-1"
+                    @click="saveConfig"
+                    >
+                    Save
+                    </b-button>
                 </b-col>
             </b-row>
         </b-card-body>
@@ -131,6 +141,7 @@ export default {
                 this.table.totalItems = items.length;
                 return items;
             }
+            this.table.totalItems = this.configs.length;
             return this.configs;
         }
     },
@@ -153,11 +164,25 @@ export default {
             }).catch(e => {
                 console.log('error: ', e)
             })
+        },
+
+        saveConfig(){
+            let config = {};
+            this.configs.forEach(c => {
+                config[c.key] = c.value;
+            })
+            AdminApi.setConfig(Enums.DATATYPE_LOCALCONFIG, config).then(response => {
+                console.log('response: ', response)
+            }).catch(e => {
+                console.log('error: ', e)
+            })
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+.save-btn{
+    float: right;
+}
 </style>
