@@ -126,12 +126,19 @@
                     >
                     <b-button
                     variant="gradient-primary"
-                    class="btn-icon rounded-circle"
+                    :class="`btn-icon rounded-circle ${parkLocations.length ? 'add': 'remove'}-park-location`"
                     @click="addParkLocation"
                     >
                         <feather-icon icon="PlusIcon" />
                     </b-button>
                     <b-row class="park-locations" v-for="park in parkLocations">
+                        <b-button
+                        variant="gradient-primary"
+                        class="btn-icon rounded-circle remove-park-location"
+                        @click="removeParkLocation(park)"
+                        >
+                            <feather-icon icon="MinusIcon" />
+                        </b-button>
                         <b-col lg="3">
                             <b-form-input
                                 placeholder="Location Name"
@@ -319,13 +326,16 @@ export default {
                         ZoneRadius: ''
                     })
                 }
+                else {
+                    this.parkLocations = response.ParkLocations;
+                }
             }).catch(e => {
                 console.log('error: ', e)
             })
         },
 
         addParkLocation(){
-            if (this.parkLocations[this.parkLocations.length - 1].LocationName){
+            if (!this.parkLocations.length || this.parkLocations[this.parkLocations.length - 1].LocationName){
                 this.parkLocations.push({
                     LocationName: '',
                     Latitude: '',
@@ -338,20 +348,29 @@ export default {
             }
         },
 
+        removeParkLocation(park){
+            this.parkLocations.splice(this.parkLocations.indexOf(park), 1)
+        },
+
         saveConfig(){
             let config = {
                 ...this.config
             }
+            this.parkLocations.forEach((park, idx, object) => {
+                if (!park.LocationName){
+                    object.splice(idx, 1)
+                }
+            })
             config.DeviceBaseWork = config.DeviceBaseWork ? Enums.STATU_ACTIVE : Enums.STATU_PASSIVE;
             config.WebUIPrivate = config.WebUIPrivate ? Enums.STATU_ACTIVE : Enums.STATU_PASSIVE;
+            config.ParkLocations = this.parkLocations;
+            /*
             this.parkLocations.forEach(park => {
                 if (park.LocationName){
                     config.ParkLocations.push(park)
                 }
             })
-
-            return;
-
+            */
             AdminApi.setConfig(Enums.DATATYPE_ADMINCONFIG, config).then(response => {
                 console.log('response: ', response)
             }).catch(e => {
@@ -368,6 +387,11 @@ export default {
 }
 .btn-icon.rounded-circle {
     position: absolute;
+}
+.btn-icon.remove-park-location {
     left: -50px;
+}
+.btn-icon.add-park-location {
+    left: -100px;
 }
 </style>

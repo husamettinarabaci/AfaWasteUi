@@ -32,7 +32,7 @@
                         <!-- Column: value -->
                         <template #cell(value)="data">
                             <span v-if="table.searchQuery.length" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
-                            <span v-else>{{ data.value }}</span>
+                            <b-form-input v-else v-model="data.value"></b-form-input>
                         </template>
                     </b-table>
                     <div class="mx-2 mb-2">
@@ -113,7 +113,7 @@ export default {
                 searchQuery: '',
                 fields: [
                     {key: 'key', label: 'İsim'},
-                    {key: 'value', label: 'Değer', editable: true},
+                    {key: 'value', label: 'Değer'},
                 ],
                 sortBy: 'key',
                 isSortDirDesc: true,
@@ -143,8 +143,11 @@ export default {
         getLocalConfig(){
             AdminApi.getConfig(Enums.DATATYPE_LOCALCONFIG).then(response => {
                 this.configs = [];
-                Object.keys(response).forEach(key => {
-                    if (key.includes('_')) this.configs.push({key, value: response[key]})
+                Object.keys(response.Locs).forEach(key => {
+                    this.configs.push({
+                        key: key,
+                        value: response.Locs[key]
+                    })
                 })
                 this.table.totalItems = this.configs.length;
             }).catch(e => {

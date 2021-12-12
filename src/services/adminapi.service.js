@@ -41,12 +41,11 @@ export default class AdminApi {
         })
     }
 
-    static setConfig(data){
-        let httpClientHeaderType = {};
-        httpClientHeaderType.DeviceType = deviceType;
+    static setConfig(configType, data){
         let obj = {}
-        obj[Enums.HTTP_HEADER] = JSON.stringify({...httpClientHeaderType});
-        return axios.post(apiUrl + webApiUrl + '/getDevices' + (date ? ('?date=' + date) : ''), obj)
+        obj[Enums.HTTP_HEADER] = JSON.stringify({DataType: configType});
+        obj[Enums.HTTP_DATA] = JSON.stringify({...data});
+        return axios.post(apiUrl + adminApiUrl + '/setConfig', obj)
         .then(response => {
             return response.Devices;
         })
