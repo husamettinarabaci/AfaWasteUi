@@ -24,6 +24,8 @@ axios.interceptors.response.use(response => {
   switch(response.data.Result){
     case Enums.RESULT_OK:
       return JSON.parse(response.data.Retval);
+    case Enums.RESULT_SUCCESS:
+      return response.data.Retval;
     case Enums.RESULT_FAIL:
       if (response.data.Retval === Enums.RESULT_ERROR_USER_AUTH){
         localStorage.removeItem('token');

@@ -46,10 +46,11 @@
                             <b-badge variant="light-primary">{{ data.value }}</b-badge>
                         </template>
 
-                        <template #cell(actions)>
+                        <template #cell(actions)="data">
                             <b-button
                             variant="warning"
                             class="btn-icon rounded-circle"
+                            @click="editUser(data.item)"
                             >
                                 <feather-icon icon="ArchiveIcon" />
                             </b-button>
@@ -102,12 +103,42 @@
                 </b-col>
             </b-row>
         </b-card-body>
+
+        <b-modal
+        id="modal-configs"
+        ref="userModal"
+        cancel-variant="outline-secondary"
+        ok-title="Save"
+        @ok="updateUser"
+        cancel-title="Close"
+        centered
+        title="Update User"
+        >
+            <b-form @submit.prevent>
+                <b-row>
+                    <b-col cols="12">
+                        <b-form-group
+                        label="Role"
+                        label-for="h-customer"
+                        label-cols-md="4"
+                        >
+                            <v-select
+                                id="h-customer"
+                                v-model="currentUser.UserRole"
+                                :options="roles"
+                            />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+            </b-form>
+        </b-modal>
     </b-card>
 </template>
 
 <script>
-import { BCard, BCardBody, BRow, BCol, BTable, BPagination, BFormInput, BBadge, BButton} from 'bootstrap-vue';
+import { BCard, BCardBody, BRow, BCol, BTable, BModal, BFormCheckbox, BForm, BFormGroup, BPagination, BFormInput, BBadge, BButton} from 'bootstrap-vue';
 import AdminApi from '@/services/adminapi.service';
+import vSelect from 'vue-select'
 import Enums from '@/config/system.enums';
 
 export default {
@@ -117,15 +148,21 @@ export default {
         BRow,
         BCol,
         BTable,
+        BModal,
+        BFormCheckbox, 
+        BForm, 
+        BFormGroup,
         BPagination,
         BFormInput,
         BBadge,
-        BButton
+        BButton,
+        vSelect
     },  
 
     data(){
         return {
             users: [],
+            currentUser: {},
             table: {
                 currentPage: 1,
                 perPage: 5,
@@ -142,6 +179,12 @@ export default {
                 isSortDirDesc: true,
                 totalItems: 0
             },
+            roles: [
+                {id: Enums.USER_ROLE_GUEST, label: 'Guest'},
+                {id: Enums.USER_ROLE_REPORT, label: 'Report'},
+                {id: Enums.USER_ROLE_ADMIN, label: 'Admin'},
+                
+            ]
         }
     },
 
@@ -167,11 +210,29 @@ export default {
             AdminApi.getUsers().then(response => {
                 this.users = Object.values(response.Users)
             })
+        },
+
+        editUser(user){
+            this.currentUser = {
+                ...user
+            };
+            this.$refs.userModal.show();
+        },
+
+        updateUser(){
+            console.log('update user: ', this.currentUser)
+            let u = {
+                ...this.currentUser
+            }
+            u.UserRole = u.UserRole.id
+            AdminApi.setUser(u).then(response => {
+                console.log('response for user: ', response)
+            })
         }
     }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-select.scss';
 </style>

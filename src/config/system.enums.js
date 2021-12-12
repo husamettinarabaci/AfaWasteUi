@@ -1,6 +1,7 @@
 export default {
         // ResultType
         RESULT_FAIL: "FAIL",
+        RESULT_SUCCESS: "SUCCESS",
         RESULT_OK  : "OK",
         RESULT_NOT : "NOT",
 

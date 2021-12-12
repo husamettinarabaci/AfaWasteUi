@@ -10,6 +10,15 @@ export default class AdminApi {
         })
     }
 
+    static setUser(user){
+        let obj = {}
+        obj[Enums.HTTP_DATA] = JSON.stringify(user);
+        return axios.post(apiUrl + adminApiUrl + '/setUser', obj)
+        .then(response => {
+            return response;
+        })
+    }
+
     static getTags(){
         return axios.post(apiUrl + adminApiUrl + '/getTags')
         .then(response => {

@@ -23,20 +23,18 @@
                     :sort-desc.sync="table.isSortDirDesc"
                     class="position-relative"
                     >
-                        <!-- Column: Device ID -->
-                        <template #cell(DeviceId)="data">
-                            <span>{{ data.value }}</span>
+                        <!-- Column: Container Type -->
+                        <template #cell(ContainerType)="data">
+                            <b-badge pill variant="light-primary" :title="data.value">
+                                {{ data.value }}
+                            </b-badge>
                         </template>
 
-                        <!-- Column: Customer ID -->
-                        <template #cell(CustomerId)="data">
-                            <span>{{ data.value }}</span>
-                        </template>
-
-                        <!-- Column: Customer Name -->
-                        <template #cell(CustomerName)="data">
-                            <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
-                            <span v-else>{{ data.value }}</span>
+                        <!-- Column: Serial Number -->
+                        <template #cell(SerialNumber)="data">
+                            <b-badge pill variant="light-primary" :title="data.value">
+                                {{ data.value }}
+                            </b-badge>
                         </template>
 
                         <!-- Column: Serial Number -->
@@ -132,9 +130,8 @@ export default {
                 perPageOptions: [5, 10, 15, 20, 25, 50],
                 searchQuery: '',
                 fields: [
-                    {key: 'DeviceId', label: 'Device ID'},
-                    {key: 'CustomerId', label: 'Customer ID'},
-                    {key: 'CustomerName', label: 'Customer Name'},
+                    {key: 'ContainerNo', label: 'Konteyner No'},
+                    {key: 'ContainerType', label: 'Konteyner Tipi'},
                     {key: 'SerialNumber', label: 'Serial Number'},
                     {key: 'actions', label: 'Edit'},
                 ],
@@ -147,6 +144,7 @@ export default {
 
     computed: {
         filteredDevices: function(){
+            return this.devices;
             return this.devices.filter(device => device.CustomerName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase()));
         }
     },

@@ -23,20 +23,11 @@
                     :sort-desc.sync="table.isSortDirDesc"
                     class="position-relative"
                     >
-                        <!-- Column: Device ID -->
-                        <template #cell(DeviceId)="data">
-                            <span>{{ data.value }}</span>
-                        </template>
-
-                        <!-- Column: Customer ID -->
-                        <template #cell(CustomerId)="data">
-                            <span>{{ data.value }}</span>
-                        </template>
-
-                        <!-- Column: Customer Name -->
-                        <template #cell(CustomerName)="data">
-                            <span v-if="table.searchQuery.length >= 3" v-html="$options.filters.highlight(data.value, table.searchQuery)"></span>
-                            <span v-else>{{ data.value }}</span>
+                        <!-- Column: Plate No -->
+                        <template #cell(PlateNo)="data">
+                            <b-badge pill variant="light-primary">
+                                {{ data.value }}
+                            </b-badge>
                         </template>
 
                         <!-- Column: Serial Number -->
@@ -132,13 +123,13 @@ export default {
                 perPageOptions: [5, 10, 15, 20, 25, 50],
                 searchQuery: '',
                 fields: [
-                    {key: 'DeviceId', label: 'Device ID'},
-                    {key: 'CustomerId', label: 'Customer ID'},
-                    {key: 'CustomerName', label: 'Customer Name'},
+                    {key: 'PlateNo', label: 'Plaka'},
+                    {key: 'DriverName', label: 'Sürücü Ad'},
+                    {key: 'DriverSurname', label: 'Sürücü Soyad'},
                     {key: 'SerialNumber', label: 'Serial Number'},
                     {key: 'actions', label: 'Edit'},
                 ],
-                sortBy: 'DeviceId',
+                sortBy: 'PlateNo',
                 isSortDirDesc: true,
                 totalItems: 0
             },
@@ -147,6 +138,7 @@ export default {
 
     computed: {
         filteredDevices: function(){
+            return this.devices;
             return this.devices.filter(device => device.CustomerName.toLocaleLowerCase().includes(this.table.searchQuery.toLocaleLowerCase()));
         }
     },

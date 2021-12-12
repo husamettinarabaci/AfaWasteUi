@@ -152,6 +152,15 @@ export default {
   },
 
   mounted(){
+    let items = [];
+    this.$router.options.routes.forEach(route => {
+            items.push({
+                name: route.name
+                , path: route.path
+            })
+        })
+        console.log('items: ', items)
+
     extend('required', {
       ...required,
       message: 'Bu alan boş bırakılamaz.',
