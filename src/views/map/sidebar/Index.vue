@@ -22,9 +22,9 @@
                 </li>
                 -->
                 <li>
-                    <router-link :to="{name: 'rfidReportsDashboard'}">
+                    <a>
                         <img class="customerLogo" src="https://seeklogo.com/images/B/bodrum-belediyesi-logo-82326D761F-seeklogo.com.png" alt="Bodrum Logo">
-                    </router-link>
+                    </a>
                 </li>
             </ul>
 

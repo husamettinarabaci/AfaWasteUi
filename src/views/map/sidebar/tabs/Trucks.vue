@@ -49,8 +49,8 @@
                             size="16"
                             />
                         </span>
-                        <span v-if="filterQuery" v-html="$options.filters.highlight(truck.data.DeviceDetail.PlateNo, filterQuery)"></span>
-                        <span v-else>{{ truck.data.DeviceDetail.PlateNo }}</span>
+                        <span v-if="filterQuery" v-html="$options.filters.highlight(truck.data.PlateNo, filterQuery)"></span>
+                        <span v-else>{{ truck.data.PlateNo }}</span>
                         <b-badge class="truckBadge" variant="light-info">
                             <feather-icon
                             icon="ArrowRightIcon"
@@ -126,7 +126,7 @@ export default {
       if (this.filteredType.length){
         if (this.filterQuery) {
           return Object.values(markers.truck).filter(device => {
-            return device.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase());
+            return device.data.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase());
           });
           //return filtered.filter(marker => marker.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase()));
         }
@@ -135,7 +135,7 @@ export default {
       else {
         if (this.filterQuery) {
           return Object.values(markers.truck).filter(device => {
-            return device.data.DeviceDetail.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase());
+            return device.data.PlateNo.toLowerCase().includes(this.filterQuery.toLowerCase());
           });
         }
       }

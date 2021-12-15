@@ -8,7 +8,7 @@
     >
       <l-tile-layer :url="tileLayer.url" :subdomains="tileLayer.subdomains" />
       <sidebar/>
-      <l-control position="topright">
+      <l-control v-if="false" position="topright">
         <filter-date @dateChanged="dateChanged"/>
       </l-control>
       <l-control v-if="showInfo" position="topright">
@@ -570,7 +570,7 @@ export default {
             shape: 'square',
             prefix: 'fa'
         });
-        var marker = L.marker([data.DeviceGps.Latitude, data.DeviceGps.Longitude], {icon: markerIcon});
+        var marker = L.marker([data.Latitude, data.Longitude], {icon: markerIcon});
         var popupContent = `
         <div class="card">
           <div class="card-body">
@@ -581,11 +581,11 @@ export default {
               </tr>
               <tr>
                 <td class="text-bold">PLAKA NO</td>
-                <td>${data.DeviceDetail.PlateNo}</td>
+                <td>${data.PlateNo}</td>
               </tr>
               <tr>
                 <td class="text-bold">ŞOFÖR</td>
-                <td>${data.DeviceDetail.DriverName}</td>
+                <td>${data.DriverName}</td>
               </tr>
             </table>
           </div>
