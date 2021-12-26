@@ -42,7 +42,7 @@
                         icon="TruckIcon"
                         class="mr-25"
                     />
-                    <span>{{ truck.DeviceDetail.PlateNo }}</span>
+                    <span>{{ truck.PlateNo }}</span>
                 </b-badge>
                 <div v-else>
                     Bulunamadı

@@ -585,7 +585,7 @@ export default {
               </tr>
               <tr>
                 <td class="text-bold">ŞOFÖR</td>
-                <td>${data.DriverName}</td>
+                <td>${data.DriverName ? data.DriverName : '-'}</td>
               </tr>
             </table>
           </div>
